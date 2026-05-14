@@ -31,6 +31,13 @@ app.get("/api/health", (_req, res) => {
   res.status(200).json({ ok: true, time: new Date().toISOString() });
 });
 
+app.get("/api/config", (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.status(200).json({
+    stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY || "",
+  });
+});
+
 const distPath = path.join(__dirname, "dist");
 app.use(
   express.static(distPath, {

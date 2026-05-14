@@ -3,15 +3,38 @@ import { loadStripe } from "@stripe/stripe-js";
 /**
  * Stripe.js loader.
  *
- * - Uses `VITE_STRIPE_PUBLISHABLE_KEY` from .env.local in production.
- * - Falls back to Stripe's public docs example key so that the embedded
- *   `<PaymentElement />` still renders in dev mode (UI-only). Real
- *   confirmation is skipped client-side when no real key is configured.
+ * Fetches the publishable key from /api/config at runtime. This avoids
+ * having to pass VITE_STRIPE_PUBLISHABLE_KEY at Docker build time, which
+ * is not supported by all hosts (e.g. Easypanel UI).
+ *
+ * Falls back to Stripe's public docs demo key so the PaymentElement
+ * still renders in UI-only preview mode.
  */
 const DEMO_PUBLISHABLE_KEY = "pk_test_TYooMQauvdEDq54NiTphI7jx";
 
-const configuredKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+let cachedKey = null;
+let cachedKeyIsReal = false;
 
-export const stripePromise = loadStripe(configuredKey || DEMO_PUBLISHABLE_KEY);
+async function resolveKey() {
+  if (cachedKey) return cachedKey;
+  try {
+    const res = await fetch("/api/config", { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.stripePublishableKey) {
+        cachedKey = data.stripePublishableKey;
+        cachedKeyIsReal = true;
+        return cachedKey;
+      }
+    }
+  } catch {
+    /* fall through to demo */
+  }
+  cachedKey = DEMO_PUBLISHABLE_KEY;
+  cachedKeyIsReal = false;
+  return cachedKey;
+}
 
-export const isStripeConfigured = () => Boolean(configuredKey);
+export const stripePromise = resolveKey().then((key) => loadStripe(key));
+
+export const isStripeConfigured = () => cachedKeyIsReal;
