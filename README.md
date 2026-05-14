@@ -170,6 +170,37 @@ Any future expiry, any 3-digit CVC.
 5. Enable Radar rules (block high-risk score, require CVC).
 6. Redeploy.
 
+## AI agent tooling (Claude Code, Cursor, etc.)
+
+This repo ships a curated set of agent skills under `.claude/`. The project-specific
+skill (`.claude/skills/massar/SKILL.md`) teaches any Claude/Cursor agent the
+stack, the Stripe rules, and the deployment constraints automatically on every
+session.
+
+First-time setup on a fresh clone:
+
+```bash
+./scripts/install-claude-skills.sh
+```
+
+That installs (gitignored, so each developer keeps their own copy):
+
+- **garrytan/gstack** — `/plan-ceo-review`, `/plan-eng-review`, `/review`, `/qa` slash commands.
+- **nextlevelbuilder/ui-ux-pro-max-skill** — landing + checkout design library.
+- **obra/superpowers** — TDD + spec + subagent discipline.
+- **anthropics/skills** (sparse) — official `frontend-design`, `webapp-testing`, `mcp-builder`, `theme-factory`.
+- **wshobson/agents** — specialist agents for payments, security, React perf, Express, devops.
+
+Optional MCP servers are configured in `.claude/mcp.json`:
+
+```bash
+export GITHUB_PERSONAL_ACCESS_TOKEN=ghp_xxx        # enables the GitHub MCP server
+export STRIPE_SECRET_KEY=sk_test_xxx               # if you flip the Stripe MCP entry to enabled
+docker pull ghcr.io/github/github-mcp-server       # one-time
+```
+
+See `.claude/README.md` for the full rationale and usage examples.
+
 ## Project structure
 
 ```

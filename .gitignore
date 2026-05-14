@@ -30,3 +30,11 @@ dist-ssr
 
 .env
 .vite
+
+# Claude / Cursor agent tooling — vendored skills are installed locally via scripts/install-claude-skills.sh.
+# Keep the project-specific skill (.claude/skills/massar) and config (.claude/mcp.json) committed.
+.claude/skills/*
+!.claude/skills/massar
+.claude/agents/*
+!.claude/agents/.gitkeep
+.claude/.cache/

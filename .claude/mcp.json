@@ -1,0 +1,25 @@
+{
+  "_comment": "MCP servers for this project. Tokens are read from the host environment — never commit them. Copy GITHUB_PERSONAL_ACCESS_TOKEN into a local shell rc or use a secret manager.",
+  "mcpServers": {
+    "github": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "stripe": {
+      "_comment": "Optional. Uncomment after `npm i -g @stripe/mcp` and set STRIPE_SECRET_KEY in your shell. Read-only tools by default.",
+      "command": "npx",
+      "args": ["-y", "@stripe/mcp", "--tools=all", "--api-key=${STRIPE_SECRET_KEY}"],
+      "disabled": true
+    }
+  }
+}
