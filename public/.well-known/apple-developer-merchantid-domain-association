@@ -1,0 +1,11 @@
+REPLACE_THIS_FILE_WITH_THE_ONE_STRIPE_GIVES_YOU
+
+Steps to get the real file:
+1. Go to Stripe Dashboard > Settings > Payment methods > Apple Pay
+2. Click "Add new domain"
+3. Enter: aswadir.store
+4. Stripe gives you a file to download
+5. Replace this file's contents with the downloaded content
+6. Redeploy so the file is served at:
+   https://aswadir.store/.well-known/apple-developer-merchantid-domain-association
+7. Click "Verify" in Stripe Dashboard
