@@ -1,0 +1,12 @@
+# Easypanel / Nixpacks: build the Vite app, then run the Express server.
+[phases.setup]
+nixPkgs = ["nodejs_20", "python3", "gcc"]
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "node server.js"
