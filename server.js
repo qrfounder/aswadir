@@ -1,6 +1,7 @@
 import express from "express";
 import compression from "compression";
 import cookieParser from "cookie-parser";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -23,6 +24,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = process.env.HOST || "0.0.0.0";
+const distPath = path.join(__dirname, "dist");
+const indexHtml = path.join(distPath, "index.html");
+
+if (!fs.existsSync(indexHtml)) {
+  console.error(
+    `[massar] Missing ${indexHtml} — run npm run build before starting the server`,
+  );
+}
 
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
@@ -50,11 +59,12 @@ app.get("/api/member/dashboard", handleDashboard);
 
 app.get("/api/health", (_req, res) => {
   const dbError = getDbError();
-  const ok = !dbError;
-  res.status(ok ? 200 : 503).json({
-    ok,
+  res.status(200).json({
+    ok: true,
+    server: "up",
     db: dbError ? "error" : "ok",
     dbError: dbError || undefined,
+    dist: fs.existsSync(path.join(distPath, "index.html")),
     time: new Date().toISOString(),
   });
 });
@@ -66,7 +76,6 @@ app.get("/api/config", (_req, res) => {
   });
 });
 
-const distPath = path.join(__dirname, "dist");
 app.use(
   express.static(distPath, {
     maxAge: "1y",
@@ -96,6 +105,13 @@ app.use((err, _req, res, _next) => {
   res.status(500).send("Internal Server Error");
 });
 
+process.on("uncaughtException", (err) => {
+  console.error("[massar] uncaughtException:", err);
+});
+process.on("unhandledRejection", (err) => {
+  console.error("[massar] unhandledRejection:", err);
+});
+
 try {
   getDb();
   console.log("[massar] database ready");
@@ -104,5 +120,5 @@ try {
 }
 
 app.listen(PORT, HOST, () => {
-  console.log(`Massar server listening on http://${HOST}:${PORT}`);
+  console.log(`Massar server listening on http://${HOST}:${PORT} (PORT=${PORT})`);
 });

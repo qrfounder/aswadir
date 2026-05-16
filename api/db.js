@@ -1,7 +1,22 @@
-import Database from "better-sqlite3";
+import { createRequire } from "node:module";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+const require = createRequire(import.meta.url);
+
+let SqliteDatabase;
+
+function loadSqliteDriver() {
+  if (SqliteDatabase) return SqliteDatabase;
+  try {
+    SqliteDatabase = require("better-sqlite3");
+    return SqliteDatabase;
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(`better-sqlite3 failed to load: ${message}`);
+  }
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const defaultPath = path.join(__dirname, "..", "data", "massar.db");
@@ -26,6 +41,7 @@ export function getDb() {
   const dbPath = process.env.DATABASE_PATH || defaultPath;
   try {
     fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+    const Database = loadSqliteDriver();
     db = new Database(dbPath);
     db.pragma("journal_mode = WAL");
     db.pragma("foreign_keys = ON");

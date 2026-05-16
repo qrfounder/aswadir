@@ -35,13 +35,11 @@ RUN npm ci --omit=dev \
     && npm rebuild better-sqlite3 \
     && npm cache clean --force
 
-RUN mkdir -p /app/data && chown -R node:node /app
+RUN mkdir -p /app/data
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/api ./api
 COPY --from=builder /app/server.js ./
-
-USER node
 
 VOLUME ["/app/data"]
 
