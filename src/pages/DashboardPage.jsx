@@ -11,7 +11,9 @@ import {
 import { useAuth } from "@/lib/AuthContext";
 import { client } from "@/api/client";
 import { getDeliveryUrl, hasDeliveryUrl } from "@/lib/delivery";
-import DailyHabitsPanel from "@/components/member/DailyHabitsPanel";
+import { PACK_META } from "@/lib/tracker-catalog";
+import MemberTrackerHub from "@/components/member/MemberTrackerHub";
+import BundleUpgradeBanner from "@/components/member/BundleUpgradeBanner";
 
 const PRODUCT_LABELS = {
   habit: "متتبع العادات",
@@ -42,12 +44,16 @@ export default function DashboardPage() {
     };
   }, []);
 
-  const entitlements = data?.entitlements?.map((e) => e.product_key) || [];
+  const ownedKeys = [...new Set(data?.entitlements?.map((e) => e.product_key) || [])];
+  const hasHabit = hasEntitlement("habit");
+  const hasTask = hasEntitlement("task");
+  const hasBundle = hasEntitlement("bundle");
+  const showUpsell = !hasBundle && (hasHabit || hasTask);
 
   return (
     <div className="min-h-screen bg-background font-cairo" dir="rtl">
       <header className="bg-black/60 border-b border-yellow-400/10 sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="" className="w-10 h-10 rounded-xl ring-1 ring-yellow-400/30" />
             <div>
@@ -68,7 +74,7 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8 space-y-8">
+      <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
         <section className="hero-gradient rounded-2xl p-6 md:p-8 border border-yellow-400/20">
           <div className="flex items-start gap-3">
             <LayoutDashboard className="w-8 h-8 text-yellow-400 flex-shrink-0" />
@@ -77,8 +83,8 @@ export default function DashboardPage() {
                 أهلاً، <span className="gold-gradient">{user?.name?.split(" ")[0] || "بك"}</span>
               </h1>
               <p className="text-gray-300 text-sm md:text-base leading-relaxed max-w-2xl">
-                هنا مركزك: تسجّل عاداتك، تفتح أنظمتك، وتستقبل تحديثات ومنتجات جديدة لتحسين حياتك — بدون
-                ما تدور على روابط متفرقة.
+                لوحة مسار الموحّدة: تتبّع عاداتك ومهامك بنفس هيكل Google Sheets — مدمجة هنا.{" "}
+                {hasBundle ? "✦ لديك الباقة الكاملة." : "يمكنك الترقية للباقة الكاملة في أي وقت."}
               </p>
             </div>
           </div>
@@ -91,51 +97,42 @@ export default function DashboardPage() {
           <p className="text-center text-red-300 text-sm">{error}</p>
         )}
 
-        <div className="grid lg:grid-cols-2 gap-6">
-            {(hasEntitlement("habit") || hasEntitlement("bundle")) && user?.id && (
-              <DailyHabitsPanel userId={user.id} />
+        {showUpsell && <BundleUpgradeBanner ownedKeys={ownedKeys} />}
+
+        {user?.id && (hasHabit || hasTask) && (
+          <MemberTrackerHub
+            userId={user.id}
+            hasHabit={hasHabit}
+            hasTask={hasTask}
+            hasBundle={hasBundle}
+          />
+        )}
+
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="space-y-4">
+            <h2 className="text-white font-black text-lg flex items-center gap-2">
+              <Package className="w-5 h-5 text-yellow-400" />
+              أنظمتك
+            </h2>
+            {ownedKeys.length === 0 ? (
+              <p className="text-gray-500 text-sm">لا توجد منتجات مفعّلة بعد.</p>
+            ) : (
+              <ul className="space-y-3">
+                {ownedKeys.filter((k) => PACK_META[k]).map((key) => (
+                  <li key={key} className="dark-card rounded-xl p-4 border border-gray-800">
+                    <p className="text-white font-bold text-sm">{PACK_META[key].icon} {PRODUCT_LABELS[key] || key}</p>
+                    <p className="text-gray-500 text-xs mt-1">{PACK_META[key].tagline}</p>
+                    {hasDeliveryUrl(key) && (
+                      <a href={getDeliveryUrl(key)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex text-xs font-bold text-yellow-400 border border-yellow-400/30 px-3 py-1.5 rounded-lg hover:bg-yellow-400/10 items-center gap-1">
+                        <ExternalLink className="w-3.5 h-3.5" /> نسخة Google Sheets
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
             )}
-
-            <div className="space-y-4">
-              <h2 className="text-white font-black text-lg flex items-center gap-2">
-                <Package className="w-5 h-5 text-yellow-400" />
-                أنظمتك النشطة
-              </h2>
-              {entitlements.length === 0 ? (
-                <p className="text-gray-500 text-sm">لا توجد منتجات مفعّلة بعد.</p>
-              ) : (
-                <ul className="space-y-3">
-                  {[...new Set(entitlements)].map((key) => (
-                    <li key={key} className="dark-card rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-3">
-                      <div className="flex-1">
-                        <p className="text-white font-bold text-sm">
-                          {PRODUCT_LABELS[key] || key}
-                        </p>
-                        <p className="text-gray-500 text-xs mt-0.5">
-                          وصول مدى الحياة · تحديثات عبر هذه اللوحة
-                        </p>
-                      </div>
-                      {hasDeliveryUrl(key) && (
-                        <a
-                          href={getDeliveryUrl(key)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm font-bold text-yellow-400 border border-yellow-400/30 px-4 py-2 rounded-lg hover:bg-yellow-400/10 flex items-center justify-center gap-1.5"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          نسخة Sheets
-                        </a>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <p className="text-gray-600 text-xs">
-                النسخة داخل الموقع تتوسّع تدريجياً. نسخ Google Sheets تبقى متاحة كنسخة احتياطية.
-              </p>
-            </div>
-        </div>
-
+          </div>
+          <div className="lg:col-span-2 space-y-4">
         <section className="space-y-4">
           <h2 className="text-white font-black text-lg flex items-center gap-2">
             <Bell className="w-5 h-5 text-yellow-400" />
@@ -159,6 +156,8 @@ export default function DashboardPage() {
             ))}
           </div>
         </section>
+          </div>
+        </div>
 
         <section className="dark-card rounded-2xl p-6 text-center border border-dashed border-yellow-400/25">
           <Sparkles className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
