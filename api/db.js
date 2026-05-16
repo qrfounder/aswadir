@@ -7,16 +7,35 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const defaultPath = path.join(__dirname, "..", "data", "massar.db");
 
 let db;
+let initError;
+
+export function getDbError() {
+  if (db) return null;
+  if (initError) return initError.message || String(initError);
+  try {
+    getDb();
+    return null;
+  } catch (err) {
+    return err.message || String(err);
+  }
+}
 
 export function getDb() {
   if (db) return db;
+  if (initError) throw initError;
   const dbPath = process.env.DATABASE_PATH || defaultPath;
-  fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-  db = new Database(dbPath);
-  db.pragma("journal_mode = WAL");
-  db.pragma("foreign_keys = ON");
-  migrate(db);
-  return db;
+  try {
+    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+    db = new Database(dbPath);
+    db.pragma("journal_mode = WAL");
+    db.pragma("foreign_keys = ON");
+    migrate(db);
+    return db;
+  } catch (err) {
+    initError = err;
+    console.error(`[massar] SQLite failed at ${dbPath}:`, err);
+    throw err;
+  }
 }
 
 function migrate(database) {

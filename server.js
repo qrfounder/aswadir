@@ -15,12 +15,10 @@ import {
   handleClaimPurchase,
 } from "./api/auth-handlers.js";
 import { handleDashboard } from "./api/member-handlers.js";
-import { getDb } from "./api/db.js";
+import { getDb, getDbError } from "./api/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-getDb();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -51,7 +49,14 @@ app.post("/api/auth/claim-purchase", handleClaimPurchase);
 app.get("/api/member/dashboard", handleDashboard);
 
 app.get("/api/health", (_req, res) => {
-  res.status(200).json({ ok: true, time: new Date().toISOString() });
+  const dbError = getDbError();
+  const ok = !dbError;
+  res.status(ok ? 200 : 503).json({
+    ok,
+    db: dbError ? "error" : "ok",
+    dbError: dbError || undefined,
+    time: new Date().toISOString(),
+  });
 });
 
 app.get("/api/config", (_req, res) => {
@@ -80,8 +85,23 @@ app.use(
 app.use((req, res, next) => {
   if (req.method !== "GET") return next();
   if (req.path.startsWith("/api/")) return next();
-  res.sendFile(path.join(distPath, "index.html"));
+  res.sendFile(path.join(distPath, "index.html"), (err) => {
+    if (err) next(err);
+  });
 });
+
+app.use((err, _req, res, _next) => {
+  console.error("[massar] request error:", err);
+  if (res.headersSent) return;
+  res.status(500).send("Internal Server Error");
+});
+
+try {
+  getDb();
+  console.log("[massar] database ready");
+} catch (err) {
+  console.error("[massar] database init failed (API routes may fail):", err);
+}
 
 app.listen(PORT, HOST, () => {
   console.log(`Massar server listening on http://${HOST}:${PORT}`);
