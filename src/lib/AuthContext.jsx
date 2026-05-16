@@ -1,77 +1,101 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { client } from '@/api/client';
-import { appParams } from '@/lib/app-params';
+import React, { createContext, useState, useContext, useEffect, useCallback } from "react";
+import { client } from "@/api/client";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
-/**
- * Massar auth context.
- *
- * Detached from base44. By default the app runs in "public storefront"
- * mode, no auth required, the landing + thank-you pages are open. If a
- * `VITE_API_BASE_URL` is configured and a token is present, we try to
- * resolve the current user via `client.auth.me()`.
- */
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [entitlements, setEntitlements] = useState([]);
+  const [purchases, setPurchases] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
-  const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(false);
-  const [authError, setAuthError] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
-  const [appPublicSettings] = useState(null);
+  const [authError, setAuthError] = useState(null);
 
-  useEffect(() => {
-    if (appParams.token) {
-      checkUserAuth();
-    } else {
-      setIsLoadingAuth(false);
-      setAuthChecked(true);
-    }
-  }, []);
+  const applySession = (data) => {
+    setUser(data.user);
+    setEntitlements(data.entitlements || []);
+    setPurchases(data.purchases || []);
+    setIsAuthenticated(true);
+    setAuthError(null);
+  };
 
-  const checkUserAuth = async () => {
+  const checkUserAuth = useCallback(async () => {
     try {
       setIsLoadingAuth(true);
-      const currentUser = await client.auth.me();
-      setUser(currentUser);
-      setIsAuthenticated(true);
+      const data = await client.auth.me();
+      applySession(data);
     } catch (error) {
+      setUser(null);
+      setEntitlements([]);
+      setPurchases([]);
       setIsAuthenticated(false);
-      if (error.status === 401 || error.status === 403) {
-        setAuthError({ type: 'auth_required', message: 'Authentication required' });
+      if (error.status === 401) {
+        setAuthError(null);
+      } else {
+        setAuthError({ type: "network", message: error.message });
       }
     } finally {
       setIsLoadingAuth(false);
       setAuthChecked(true);
     }
+  }, []);
+
+  useEffect(() => {
+    checkUserAuth();
+  }, [checkUserAuth]);
+
+  const login = async (email, password) => {
+    const data = await client.auth.login(email, password);
+    applySession(data);
+    return data;
   };
 
-  const logout = (shouldRedirect = true) => {
+  const register = async (payload) => {
+    const data = await client.auth.register(payload);
+    applySession(data);
+    return data;
+  };
+
+  const logout = async (shouldRedirect = true) => {
+    try {
+      await client.auth.logout();
+    } catch {
+      /* ignore */
+    }
     setUser(null);
+    setEntitlements([]);
+    setPurchases([]);
     setIsAuthenticated(false);
-    client.auth.logout();
-    if (shouldRedirect && typeof window !== 'undefined') {
-      window.location.href = '/';
+    if (shouldRedirect && typeof window !== "undefined") {
+      window.location.href = "/";
     }
   };
 
-  const navigateToLogin = () => {
-    client.auth.redirectToLogin(window.location.href);
+  const claimPurchase = async (paymentIntentId) => {
+    const data = await client.auth.claimPurchase(paymentIntentId);
+    setEntitlements(data.entitlements || []);
+    setPurchases(data.purchases || []);
+    return data;
   };
+
+  const hasEntitlement = (key) => entitlements.some((e) => e.product_key === key);
 
   return (
     <AuthContext.Provider
       value={{
         user,
+        entitlements,
+        purchases,
         isAuthenticated,
         isLoadingAuth,
-        isLoadingPublicSettings,
         authError,
-        appPublicSettings,
         authChecked,
+        login,
+        register,
         logout,
-        navigateToLogin,
+        claimPurchase,
+        hasEntitlement,
         checkUserAuth,
         checkAppState: checkUserAuth,
       }}
@@ -84,7 +108,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

@@ -1,10 +1,5 @@
 /**
- * Massar API client.
- *
- * Calls Vercel serverless functions under /api/*.
- * If VITE_API_BASE_URL is empty (e.g. during local dev without `vercel dev`),
- * `createPaymentIntent` falls back to a simulated success so the UI flow
- * still works end-to-end for design preview.
+ * Massar API client — calls Express /api/* with session cookies.
  */
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
@@ -12,6 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 async function request(path, options = {}) {
   const url = API_BASE_URL ? `${API_BASE_URL}${path}` : path;
   const res = await fetch(url, {
+    credentials: "include",
     headers: { "Content-Type": "application/json", ...(options.headers || {}) },
     ...options,
   });
@@ -28,36 +24,75 @@ async function request(path, options = {}) {
   return res.json();
 }
 
+function isLocalHostname() {
+  const h = window.location.hostname;
+  return h === "localhost" || h === "127.0.0.1" || h === "[::1]";
+}
+
 export const client = {
   auth: {
     async me() {
-      const err = new Error("Unauthenticated (public storefront)");
-      err.status = 401;
-      throw err;
+      return request("/api/auth/me");
     },
-    logout() {
-      try {
-        localStorage.removeItem("massar_token");
-      } catch {
-        /* ignore */
-      }
+    async register(payload) {
+      return request("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
     },
-    redirectToLogin() {
-      /* no-op for storefront */
+    async login(email, password) {
+      return request("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+    },
+    async logout() {
+      return request("/api/auth/logout", { method: "POST" });
+    },
+    async claimPurchase(paymentIntentId) {
+      return request("/api/auth/claim-purchase", {
+        method: "POST",
+        body: JSON.stringify({ paymentIntentId }),
+      });
+    },
+    redirectToLogin(returnUrl) {
+      const next = encodeURIComponent(returnUrl || window.location.href);
+      window.location.href = `/login?next=${next}`;
+    },
+  },
+  member: {
+    async dashboard() {
+      return request("/api/member/dashboard");
     },
   },
   functions: {
-    /**
-     * Invoke a serverless function by name. Maps to /api/<name>.
-     */
     async invoke(name, payload = {}) {
-      const isLocalDev = !API_BASE_URL && window.location.hostname === "localhost";
-
-      if (isLocalDev && name === "createPaymentIntent") {
-        console.warn(
-          "[Massar] Local dev without backend, simulating PaymentIntent. Run `vercel dev` to test real Stripe locally.",
-        );
-        return { data: { clientSecret: null, simulated: true } };
+      if (isLocalHostname() && name === "createPaymentIntent") {
+        try {
+          const data = await request("/api/createPaymentIntent", {
+            method: "POST",
+            body: JSON.stringify(payload),
+          });
+          return { data };
+        } catch (firstErr) {
+          try {
+            console.warn(
+              "[Massar] Stripe API unavailable — using dev simulate-order. Run: npm run dev:all",
+            );
+            const sim = await request("/api/dev/simulate-order", {
+              method: "POST",
+              body: JSON.stringify(payload),
+            });
+            return {
+              data: {
+                simulated: true,
+                paymentIntentId: sim.paymentIntentId,
+              },
+            };
+          } catch {
+            throw firstErr;
+          }
+        }
       }
 
       const data = await request(`/api/${name}`, {

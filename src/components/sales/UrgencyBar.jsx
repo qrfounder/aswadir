@@ -11,7 +11,7 @@ export default function UrgencyBar() {
         </span>
         <CountdownTimer initialMinutes={47} initialSeconds={0} />
         <Zap className="w-4 h-4 text-red-200" />
-        <span className="text-yellow-300 text-sm font-black">خصم 85%</span>
+        <span className="text-yellow-300 text-sm font-black">خصم 67%</span>
       </div>
     </div>
   );

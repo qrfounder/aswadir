@@ -1,30 +1,31 @@
 import Stripe from "stripe";
+import { markPurchasePaid } from "./purchases.js";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2024-06-20",
-});
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error("STRIPE_SECRET_KEY is not configured");
+  return new Stripe(key, { apiVersion: "2024-06-20" });
+}
 
-const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
-
-/**
- * Called when a payment succeeds. Plug in WhatsApp / email delivery here.
- * Keep this idempotent: Stripe may retry the same event.
- */
-async function fulfillOrder({ productId, productName, customerName, whatsapp, amount }) {
+async function fulfillOrder({ paymentIntentId, productId, productName, customerName, whatsapp, amount }) {
+  const newlyPaid = markPurchasePaid(paymentIntentId);
   console.log("[fulfill] Order paid", {
+    paymentIntentId,
     productId,
     productName,
     customerName,
     whatsapp,
     amount,
+    newlyPaid,
   });
 }
 
 export default async function stripeWebhook(req, res) {
+  const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
   let event;
   try {
     const signature = req.headers["stripe-signature"];
-    event = stripe.webhooks.constructEvent(req.body, signature, WEBHOOK_SECRET);
+    event = getStripe().webhooks.constructEvent(req.body, signature, WEBHOOK_SECRET);
   } catch (err) {
     console.error("[webhook] Signature verification failed:", err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -36,6 +37,7 @@ export default async function stripeWebhook(req, res) {
         const intent = event.data.object;
         const meta = intent.metadata || {};
         await fulfillOrder({
+          paymentIntentId: intent.id,
           productId: meta.productId,
           productName: meta.productName,
           customerName: meta.customerName,

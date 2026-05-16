@@ -1,25 +1,41 @@
 import { useState, useEffect } from "react";
 
+const STORAGE_KEY = "countdown_end";
+
+function readEndTime(initialMinutes, initialSeconds) {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const endTime = parseInt(stored, 10);
+      if (!Number.isNaN(endTime)) return endTime;
+    }
+    const endTime = Date.now() + (initialMinutes * 60 + initialSeconds) * 1000;
+    localStorage.setItem(STORAGE_KEY, endTime.toString());
+    return endTime;
+  } catch {
+    return Date.now() + (initialMinutes * 60 + initialSeconds) * 1000;
+  }
+}
+
+function persistEndTime(endTime) {
+  try {
+    localStorage.setItem(STORAGE_KEY, endTime.toString());
+  } catch {
+    /* ignore */
+  }
+}
+
 export default function CountdownTimer({ initialMinutes = 47, initialSeconds = 0 }) {
   const [time, setTime] = useState({ hours: 0, minutes: initialMinutes, seconds: initialSeconds });
 
   useEffect(() => {
-    // Initialize from localStorage or start fresh
-    const stored = localStorage.getItem("countdown_end");
-    let endTime;
-    if (stored) {
-      endTime = parseInt(stored);
-    } else {
-      endTime = Date.now() + (initialMinutes * 60 + initialSeconds) * 1000;
-      localStorage.setItem("countdown_end", endTime.toString());
-    }
+    let endTime = readEndTime(initialMinutes, initialSeconds);
 
     const tick = () => {
       const remaining = endTime - Date.now();
       if (remaining <= 0) {
-        // Reset timer when it hits 0
-        const newEnd = Date.now() + (47 * 60) * 1000;
-        localStorage.setItem("countdown_end", newEnd.toString());
+        const newEnd = Date.now() + 47 * 60 * 1000;
+        persistEndTime(newEnd);
         endTime = newEnd;
         return;
       }
@@ -32,7 +48,7 @@ export default function CountdownTimer({ initialMinutes = 47, initialSeconds = 0
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [initialMinutes, initialSeconds]);
 
   const pad = (n) => String(n).padStart(2, "0");
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, Star, Zap } from "lucide-react";
+import { Check, Info, Star, Zap } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
 import { PRODUCTS } from "@/lib/products";
 
@@ -77,6 +77,27 @@ export default function PricingSection({ onSelectProduct }) {
         ))}
       </div>
 
+      <div className="dark-card rounded-xl p-4 border border-yellow-400/15 flex gap-3 items-start">
+        <Info className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+        <div className="text-right space-y-2">
+          <p className="text-white font-black text-sm">وضوح السعر</p>
+          <ul className="text-gray-400 text-xs leading-relaxed space-y-1.5">
+            <li className="flex gap-2 items-start">
+              <Check className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
+              <span>دفعة واحدة فقط: ما في اشتراك شهري بعد الشراء.</span>
+            </li>
+            <li className="flex gap-2 items-start">
+              <Check className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
+              <span>السعر يشمل الملفات الجاهزة والصيغ ووصولك بحسب وصف الباقة.</span>
+            </li>
+            <li className="flex gap-2 items-start">
+              <Check className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
+              <span>عروض الخصم على الصفحة تختلف أحياناً عن الإعلانات حسب الفترة.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
       {/* CTA */}
       <button
         onClick={handleBuy}
@@ -86,7 +107,7 @@ export default function PricingSection({ onSelectProduct }) {
       </button>
 
       {/* Micro copy */}
-      <p className="text-center text-gray-400 text-xs flex items-center justify-center gap-2">
+      <p className="text-center text-gray-400 text-xs flex items-center justify-center gap-2 flex-wrap">
         دفع آمن • ضمان استرداد 21 يوم • توصلك فوري
       </p>
     </div>

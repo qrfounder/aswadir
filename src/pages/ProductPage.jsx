@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Users, Award, Link2, TrendingUp, Brain, Target, BarChart, Zap, Smartphone, Rocket } from "lucide-react";
 
 import UrgencyBar from "@/components/sales/UrgencyBar";
@@ -10,7 +10,15 @@ import FAQSection from "@/components/sales/FAQSection";
 import TrustBadges from "@/components/sales/TrustBadges";
 import SocialProofBar from "@/components/sales/SocialProofBar";
 import StarRating from "@/components/sales/StarRating";
-import CountdownTimer from "@/components/sales/CountdownTimer";
+import StatsResults from "@/components/sales/StatsResults";
+import ResearchSection from "@/components/sales/ResearchSection";
+import PerformersSection from "@/components/sales/PerformersSection";
+import TrustPillars from "@/components/sales/TrustPillars";
+import GiftBanner from "@/components/sales/GiftBanner";
+import VideoTestimonialsStrip from "@/components/sales/VideoTestimonialsStrip";
+import { BUNDLE_PRODUCT } from "@/lib/products";
+import ComparisonTableSection from "@/components/sales/ComparisonTableSection";
+import HabitJourneySection from "@/components/sales/HabitJourneySection";
 
 const TESTIMONIALS = [
   {
@@ -32,7 +40,7 @@ const TESTIMONIALS = [
   {
     name: "عبدالله القحطاني",
     role: "طالب ماجستير، الرياض",
-    text: "أحسن 37 ريال صرفتها في حياتي بدون مبالغة. حطيت أهدافي الدراسية والصحية وبديت أشوف نتايج من أول أسبوع. يخليك تحاسب نفسك بنفسك.",
+    text: "أحسن استثمار صرفته على نفسي. حطيت أهدافي الدراسية والصحية وبديت أشوف نتايج من أول أسبوع. يخليك تحاسب نفسك بنفسك.",
     verified: true,
     date: "أبريل 2026",
     avatar: "/avatars/abdullah.png",
@@ -93,11 +101,11 @@ export default function ProductPage() {
   const [activeImage, setActiveImage] = useState(0);
   const [showStickyBuy, setShowStickyBuy] = useState(false);
 
-  const productImages = [
-    "/products/hero.png",
-    "/products/box.png",
-    "/products/habits.png",
-    "/products/tasks.png",
+  const productGallery = [
+    { src: "/products/hero.png", label: "نظرة سريعة" },
+    { src: "/products/box.png", label: "الباقة" },
+    { src: "/products/habits.png", label: "العادات" },
+    { src: "/products/tasks.png", label: "المهام" },
   ];
 
   useEffect(() => {
@@ -139,16 +147,25 @@ export default function ProductPage() {
               <p className="text-gray-500 text-xs">متتبع العادات والمهام</p>
             </div>
           </div>
-          <button
-            onClick={scrollToPricing}
-            className="cta-button px-5 py-2 rounded-xl text-sm font-black"
-          >
-            اشتري الآن
-          </button>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/login"
+              className="text-gray-400 hover:text-yellow-400 text-sm font-bold px-3 py-2 hidden sm:inline"
+            >
+              دخول الأعضاء
+            </Link>
+            <button
+              type="button"
+              onClick={scrollToPricing}
+              className="cta-button px-5 py-2 rounded-xl text-sm font-black"
+            >
+              اشتري الآن
+            </button>
+          </div>
         </div>
       </header>
 
-      <main>
+      <main className="pb-28 md:pb-16">
         {/* ─── HERO ─── */}
         <section className="hero-gradient pt-10 pb-14 px-4">
           <div className="max-w-6xl mx-auto">
@@ -170,18 +187,22 @@ export default function ProductPage() {
                 </h1>
 
                 <p className="text-gray-300 text-base md:text-lg leading-relaxed">
-                  النظام الوحيد اللي يخلّي عاداتك ومهامك <strong className="text-white">قدام عينك، ممتعة، ومستحيل تتجاهلها</strong>. مبني على أبحاث علم السلوك ويشتغل على Google Sheets و Excel.
+                  النظام الوحيد اللي يخلّي عاداتك ومهامك{" "}
+                  <strong className="text-white">قدام عينك، ممتعة، ومستحيل تتجاهلها</strong>. مبني على أبحاث
+                  علم السلوك ويشتغل على Google Sheets و Excel.
                 </p>
 
-                {/* Mini social proof */}
                 <div className="flex items-center gap-3">
                   <StarRating size="lg" />
                   <span className="text-gray-300 text-sm">
                     <strong className="text-white">4.9/5</strong> من +2,544 تقييم حقيقي
                   </span>
                 </div>
+                <p className="text-gray-500 text-[11px] leading-relaxed -mt-2">
+                  * أرقام التقييمات والمستخدمين على الصفحة تسويقية وقد لا تعكس قاعدة كل المستخدمين الفعلية.
+                  النتائج الشخصية تختلف حسب الالتزام.
+                </p>
 
-                {/* Quick benefits */}
                 <ul className="space-y-2.5">
                   {[
                     { icon: Link2, text: "سلاسل يومية، كل ما طالت صعب توقفها" },
@@ -199,7 +220,7 @@ export default function ProductPage() {
                 </ul>
 
                 <button onClick={scrollToPricing} className="cta-button w-full py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black pulse-gold flex justify-center items-center gap-2">
-                   <Rocket className="w-6 h-6" /> خذه الحين بس 37 ر.س
+                  <Rocket className="w-6 h-6" /> خذه الحين بس {BUNDLE_PRODUCT.salePrice} ر.س
                 </button>
                 <p className="text-center text-gray-500 text-xs">✅ ضمان استرداد 21 يوم • بدون أي أسئلة</p>
               </div>
@@ -208,24 +229,34 @@ export default function ProductPage() {
               <div className="order-1 lg:order-2 space-y-3">
                 <div className="relative rounded-2xl overflow-hidden border border-yellow-400/20 glow-gold">
                   <img
-                    src={productImages[activeImage]}
-                    alt="مسار · Massar"
+                    src={productGallery[activeImage].src}
+                    alt={`مسار · Massar — ${productGallery[activeImage].label}`}
                     className="w-full h-auto object-cover"
                   />
                   <div className="absolute top-3 right-3 bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-full">
-                    خصم 85%
+                    خصم {BUNDLE_PRODUCT.discount}
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  {productImages.map((img, i) => (
+                  {productGallery.map((item, i) => (
                     <button
-                      key={i}
+                      key={item.src}
+                      type="button"
                       onClick={() => setActiveImage(i)}
-                      className={`flex-1 rounded-lg overflow-hidden border-2 transition-all ${
-                        activeImage === i ? "border-yellow-400" : "border-gray-700"
+                      className={`flex-1 flex flex-col gap-1 min-w-0 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400/80 ${
+                        activeImage === i ? "ring-2 ring-yellow-400/60 rounded-lg" : ""
                       }`}
                     >
-                      <img src={img} alt="" className="w-full h-16 object-cover" />
+                      <span
+                        className={`block rounded-lg overflow-hidden border-2 transition-all ${
+                          activeImage === i ? "border-yellow-400" : "border-gray-700"
+                        }`}
+                      >
+                        <img src={item.src} alt="" className="w-full h-14 sm:h-16 object-cover" />
+                      </span>
+                      <span className="text-[10px] text-center text-gray-500 font-bold truncate">
+                        {item.label}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -236,8 +267,14 @@ export default function ProductPage() {
 
         {/* ─── SOCIAL PROOF BAR ─── */}
         <section className="py-6 px-4 bg-black/30 border-y border-yellow-400/10">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto space-y-4">
             <SocialProofBar />
+          </div>
+        </section>
+
+        <section className="py-12 px-4">
+          <div className="max-w-5xl mx-auto">
+            <StatsResults />
           </div>
         </section>
 
@@ -273,6 +310,12 @@ export default function ProductPage() {
           </div>
         </section>
 
+        <section className="py-12 px-4 bg-black/15">
+          <div className="max-w-6xl mx-auto">
+            <VideoTestimonialsStrip />
+          </div>
+        </section>
+
         <hr className="section-divider mx-8" />
 
         {/* ─── FEATURES ─── */}
@@ -305,9 +348,9 @@ export default function ProductPage() {
           <div className="max-w-5xl mx-auto">
             <div className="grid md:grid-cols-3 gap-4">
               {[
-                "https://mindsetstack.co/cdn/shop/files/Video_1.gif?v=1765127696",
-                "https://mindsetstack.co/cdn/shop/files/Video_2.gif?v=1765128013",
-                "https://mindsetstack.co/cdn/shop/files/Video_3.gif?v=1765128020",
+                "https://cdn.shopify.com/s/files/1/0798/1675/3394/files/Video_1.gif?v=1765127696",
+                "https://cdn.shopify.com/s/files/1/0798/1675/3394/files/Video_2.gif?v=1765128013",
+                "https://cdn.shopify.com/s/files/1/0798/1675/3394/files/Video_3.gif?v=1765128020",
               ].map((gif, i) => (
                 <div key={i} className="rounded-xl overflow-hidden border border-yellow-400/10">
                   <img src={gif} alt="" className="w-full h-auto" />
@@ -381,11 +424,13 @@ export default function ProductPage() {
         {/* ─── PRICING ─── */}
         <section ref={pricingRef} className="py-16 px-4" id="pricing">
           <div className="max-w-2xl mx-auto">
-            <div className="text-center mb-10">
+            <div className="text-center mb-10 space-y-5">
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
                 ابدأ <span className="gold-gradient">نظامك اليوم</span>
               </h2>
               <p className="text-gray-400">عرض محدود، السعر هذا ما بيستمر طويل</p>
+              <GiftBanner />
+              <TrustPillars />
             </div>
             <PricingSection onSelectProduct={handleSelectProduct} />
             <div className="mt-6">
@@ -397,7 +442,7 @@ export default function ProductPage() {
         <hr className="section-divider mx-8" />
 
         {/* ─── FAQ ─── */}
-        <section className="py-16 px-4">
+        <section className="py-16 px-4" id="faq">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
@@ -419,7 +464,7 @@ export default function ProductPage() {
               كل شخص ناجح عنده نظام. هذا نظامك، جاهز خلال 60 ثانية.
             </p>
             <button onClick={scrollToPricing} className="cta-button w-full max-w-sm px-8 py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black flex justify-center items-center gap-2 mx-auto pulse-gold">
-              <Rocket className="w-6 h-6" /> ابدأ الحين بس 37 ر.س
+              <Rocket className="w-6 h-6" /> ابدأ الحين بس {BUNDLE_PRODUCT.salePrice} ر.س
             </button>
             <p className="text-gray-500 text-sm">✅ ضمان استرداد كامل 21 يوم • دفع آمن • تحميل فوري</p>
           </div>
@@ -444,22 +489,38 @@ export default function ProductPage() {
 
       {/* Sticky Buy CTA */}
       {showStickyBuy && (
-        <div className="sticky-cta fixed bottom-0 left-0 right-0 z-50 px-4 py-3">
-          <div className="max-w-lg mx-auto flex items-center gap-3">
-            <div className="flex-1">
-              <p className="text-white font-black text-sm">الباقة الكاملة</p>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-500 text-xs line-through">225 ر.س</span>
-                <span className="text-yellow-400 font-black">37 ر.س</span>
-                <span className="bg-red-500/20 text-red-400 text-xs px-1.5 py-0.5 rounded">-85%</span>
-              </div>
+        <div className="sticky-cta fixed bottom-0 left-0 right-0 z-50 px-4 pt-3">
+          <div className="max-w-lg mx-auto space-y-2.5">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[10px] sm:text-xs text-gray-400">
+              <span className="inline-flex items-center gap-1">
+                <span className="text-emerald-400">✓</span> ضمان 21 يوم
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <span className="text-emerald-400">✓</span> دفع آمن
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <span className="text-emerald-400">✓</span> تحميل فوري
+              </span>
             </div>
-            <button
-              onClick={scrollToPricing}
-              className="cta-button px-6 py-3 rounded-xl text-sm font-black flex-shrink-0"
-            >
-              اشتري الآن
-            </button>
+            <div className="flex items-center gap-3 pb-1">
+              <div className="flex-1 min-w-0">
+                <p className="text-white font-black text-sm truncate">الباقة الكاملة</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-gray-500 text-xs line-through">{BUNDLE_PRODUCT.originalPrice} ر.س</span>
+                <span className="text-yellow-400 font-black">{BUNDLE_PRODUCT.salePrice} ر.س</span>
+                <span className="bg-red-500/20 text-red-400 text-xs px-1.5 py-0.5 rounded">
+                  -{BUNDLE_PRODUCT.discount}
+                </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={scrollToPricing}
+                className="cta-button px-6 py-3 rounded-xl text-sm font-black flex-shrink-0"
+              >
+                اشتري الآن
+              </button>
+            </div>
           </div>
         </div>
       )}

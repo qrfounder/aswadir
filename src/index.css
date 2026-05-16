@@ -165,6 +165,7 @@
   backdrop-filter: blur(20px);
   background: rgba(10, 14, 26, 0.95);
   border-top: 1px solid rgba(212, 175, 55, 0.3);
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
 }
 
 /* Scrollbar */

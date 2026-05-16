@@ -21,8 +21,22 @@ A React + Vite landing and checkout for Massar, the habit and task tracker brand
 ```bash
 npm install
 cp .env.example .env.local
-# fill in Stripe keys
-npm run dev      # frontend only on http://localhost:5173
+# fill in Stripe keys (see .env.example)
+```
+
+**Recommended — frontend + API together (member accounts, checkout):**
+
+```bash
+npm run dev:all
+```
+
+- Site: http://localhost:5173/
+- API: http://localhost:3000 (Vite proxies `/api` → 3000)
+
+**Smoke test** (API must be running):
+
+```bash
+npm run smoke:member
 ```
 
 To run the full stack locally exactly as it runs in production:
@@ -46,19 +60,27 @@ Copy `.env.example` to `.env.local` for local dev. In Easypanel, set these in th
 | `STRIPE_WEBHOOK_SECRET` | Runtime (server) | `whsec_...` from your Stripe webhook endpoint |
 | `PORT` | Runtime (server) | Defaults to 3000, Easypanel sets this automatically |
 | `HOST` | Runtime (server) | Defaults to 0.0.0.0 |
+| `DATABASE_PATH` | Runtime (server) | SQLite file, e.g. `/app/data/massar.db` — **use a persistent volume** |
 
 The `VITE_*` vars are baked into the static bundle at build time. The non-prefixed vars are read by `server.js` at runtime.
+
+**Pricing (server-enforced, SAR):** habit/task **99**, bundle **149** — see `api/catalog.js` and `src/lib/products.js`.
 
 ## Routes
 
 | Route | Page |
 |---|---|
 | `/` | Landing page |
-| `/checkout` | Two-step checkout (info, then Stripe Payment Element) |
-| `/thank-you` | Confirmation page |
+| `/checkout` | Checkout (email + WhatsApp + Stripe) |
+| `/thank-you` | After payment → link to create account |
+| `/setup-account` | Create password, claim purchase |
+| `/login` | Member login |
+| `/dashboard` | Member area (protected) |
 | `/api/createPaymentIntent` | POST, creates Stripe PaymentIntent |
 | `/api/stripe-webhook` | POST, receives Stripe webhook events |
-| `/api/health` | GET, used by Easypanel/Docker health check |
+| `/api/auth/*` | Register, login, session |
+| `/api/member/dashboard` | GET, member data + updates feed |
+| `/api/health` | GET, health check |
 
 ## Deploy to Easypanel (Hostinger)
 
@@ -82,7 +104,17 @@ VITE_API_BASE_URL=
 STRIPE_SECRET_KEY=sk_test_xxxxx
 STRIPE_WEBHOOK_SECRET=whsec_xxxxx
 NODE_ENV=production
+DATABASE_PATH=/app/data/massar.db
 ```
+
+### 3b. Persistent storage (required for member accounts)
+
+Mount a volume in Easypanel:
+
+- **Mount path:** `/app/data`
+- Keeps SQLite (`massar.db`) across redeploys
+
+Without this, **all user accounts are lost** on every deploy.
 
 If using the Dockerfile, also add build-time args under **Build args**:
 
@@ -95,7 +127,8 @@ These are needed because Vite bakes `VITE_*` vars into the static bundle during 
 
 ### 4. Configure the service
 
-- **Port:** `3000`
+- **Internal URL for domain:** `http://<service-name>:3000` (or the port Easypanel shows after deploy)
+- **Port:** `3000` (or whatever `PORT` is set to)
 - **Health check path:** `/api/health`
 - **Resources:** 0.5 CPU / 512 MB RAM is plenty for this app
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Elements,
   PaymentElement,
@@ -14,6 +14,7 @@ import {
   CreditCard,
   Loader2,
   Lock,
+  Mail,
   ShieldCheck,
   Sparkles,
   Tag,
@@ -50,32 +51,35 @@ function PaymentForm({ product, customer, onSuccess }) {
       }
 
       const res = await client.functions.invoke("createPaymentIntent", {
-        amount: product.salePrice * 100,
-        currency: "sar",
         productId: product.id,
-        productName: product.name,
-        priceId: product.priceId,
         customerName: customer.name,
+        customerEmail: customer.email,
         whatsapp: customer.whatsapp,
       });
 
       if (res.data?.simulated) {
         await new Promise((r) => setTimeout(r, 700));
-        onSuccess();
+        onSuccess({ paymentIntentId: res.data.paymentIntentId });
         return;
       }
 
-      const { clientSecret } = res.data;
+      const { clientSecret, paymentIntentId } = res.data;
+      const returnParams = new URLSearchParams({
+        productId: product.id,
+        product: product.name,
+        price: String(product.salePrice),
+      });
+      if (paymentIntentId) returnParams.set("payment_intent", paymentIntentId);
+
       const { error: confirmErr } = await stripe.confirmPayment({
         elements,
         clientSecret,
         confirmParams: {
-          return_url: `${window.location.origin}/thank-you?product=${encodeURIComponent(
-            product.name,
-          )}&price=${product.salePrice}`,
+          return_url: `${window.location.origin}/thank-you?${returnParams.toString()}`,
           payment_method_data: {
             billing_details: {
               name: customer.name,
+              email: customer.email,
               phone: `+966${customer.whatsapp}`,
             },
           },
@@ -95,6 +99,29 @@ function PaymentForm({ product, customer, onSuccess }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-gray-400">
+        <span className="inline-flex items-center gap-1.5">
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+          ضمان استرداد 21 يوم
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <Lock className="w-3.5 h-3.5 text-yellow-400/90" />
+          Stripe + تشفير SSL
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <CheckCircle className="w-3.5 h-3.5 text-yellow-400/90" />
+          وصول فوري بعد الدفع
+        </span>
+      </div>
+      <p className="text-center">
+        <Link
+          to="/#faq"
+          className="text-yellow-400/90 text-xs font-bold hover:text-yellow-300 transition-colors"
+        >
+          سؤال قبل إتمام الدفع؟ الأسئلة الشائعة
+        </Link>
+      </p>
+
       <div className="dark-card rounded-2xl p-5">
         <h3 className="text-white font-black text-base mb-4 flex items-center gap-2">
           <CreditCard className="w-5 h-5 text-yellow-400" />
@@ -174,7 +201,7 @@ export default function CheckoutPage() {
   const product = useMemo(() => getProduct(productId), [productId]);
 
   const [step, setStep] = useState(1); // 1 = customer info, 2 = payment
-  const [customer, setCustomer] = useState({ name: "", whatsapp: "" });
+  const [customer, setCustomer] = useState({ name: "", email: "", whatsapp: "" });
   const [formError, setFormError] = useState(null);
 
   useEffect(() => {
@@ -185,9 +212,14 @@ export default function CheckoutPage() {
     e.preventDefault();
     setFormError(null);
     const name = customer.name.trim();
+    const email = customer.email.trim().toLowerCase();
     const phone = customer.whatsapp.trim();
     if (name.length < 2) {
       setFormError("اكتب اسمك الكامل من فضلك.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setFormError("اكتب إيميلاً صحيحاً — نستخدمه لحسابك في مسار.");
       return;
     }
     if (!/^[0-9]{8,12}$/.test(phone)) {
@@ -197,10 +229,14 @@ export default function CheckoutPage() {
     setStep(2);
   };
 
-  const goSuccess = () => {
-    navigate(
-      `/thank-you?product=${encodeURIComponent(product.name)}&price=${product.salePrice}`,
-    );
+  const goSuccess = ({ paymentIntentId } = {}) => {
+    const q = new URLSearchParams({
+      productId: product.id,
+      product: product.name,
+      price: String(product.salePrice),
+    });
+    if (paymentIntentId) q.set("payment_intent", paymentIntentId);
+    navigate(`/thank-you?${q.toString()}`);
   };
 
   const stripeOptions = useMemo(
@@ -346,6 +382,28 @@ export default function CheckoutPage() {
                     placeholder="مثال: محمد العمري"
                     className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 outline-none transition-colors"
                   />
+                </label>
+
+                <label className="block">
+                  <span className="text-gray-300 text-sm font-bold mb-2 flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-yellow-400" />
+                    الإيميل (لحسابك في مسار)
+                  </span>
+                  <input
+                    type="email"
+                    required
+                    autoComplete="email"
+                    dir="ltr"
+                    value={customer.email}
+                    onChange={(e) =>
+                      setCustomer((c) => ({ ...c, email: e.target.value }))
+                    }
+                    placeholder="you@example.com"
+                    className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 outline-none transition-colors text-left"
+                  />
+                  <p className="text-gray-500 text-xs mt-2 leading-relaxed">
+                    بعد الدفع تنشئ كلمة مرور وتدخل لوحة التحكم — كل منتجاتك وتحديثاتك من مكان واحد.
+                  </p>
                 </label>
 
                 <label className="block">
