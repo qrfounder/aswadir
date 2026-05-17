@@ -10,7 +10,7 @@ import AnimatedValue from "@/components/member/analytics/AnimatedValue";
 import MentalMoodLive from "@/components/member/analytics/MentalMoodLive";
 
 export default function DailyHabitsPanel({ userId }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { defaultHabits, mentalMetrics, monthLabel } = useTrackerCatalog();
   const { flashInsight, refresh } = useTracker();
   const today = new Date();
