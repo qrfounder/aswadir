@@ -62,6 +62,7 @@ function siteUrl(req, preferredOrigin) {
 
 export default async function createCheckoutSession(req, res) {
   try {
+    const body = req.body || {};
     const {
       productId,
       customerName,
@@ -69,8 +70,8 @@ export default async function createCheckoutSession(req, res) {
       whatsapp,
       embedded = false,
       locale: preferredLocale,
-      returnOrigin,
-    } = req.body || {};
+    } = body;
+    const preferredReturnOrigin = body.returnOrigin ?? body.return_origin;
     const product = getCatalogProduct(productId);
     if (!product) {
       return res.status(400).json({ error: "invalid_product" });
@@ -105,7 +106,7 @@ export default async function createCheckoutSession(req, res) {
       });
     }
 
-    const base = siteUrl(req, returnOrigin);
+    const base = siteUrl(req, preferredReturnOrigin);
     const stripe = getStripe();
     const trialDays = getTrialPeriodDays();
     const useEmbedded = embedded === true || embedded === "true";
@@ -171,9 +172,13 @@ export default async function createCheckoutSession(req, res) {
   } catch (err) {
     console.error("[createCheckoutSession]", err);
     const code = err.type?.startsWith("Stripe") ? mapStripeError(err) : "server_error";
+    const safeDetail =
+      process.env.NODE_ENV !== "production" && err?.message && !/is not defined/i.test(err.message)
+        ? err.message
+        : undefined;
     return res.status(500).json({
       error: code,
-      detail: process.env.NODE_ENV === "production" ? undefined : err.message,
+      detail: safeDetail,
     });
   }
 }

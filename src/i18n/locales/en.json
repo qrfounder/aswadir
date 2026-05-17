@@ -313,7 +313,8 @@
       "payments_not_configured": "Payments are not enabled on the server. Add Stripe keys to .env and restart npm run dev:all.",
       "stripe_price_invalid": "Invalid Price ID — check STRIPE_PRICE_* in .env",
       "stripe_auth_invalid": "Invalid Stripe key in .env",
-      "stripe_checkout_failed": "Could not open checkout. Check Stripe keys and price IDs."
+      "stripe_checkout_failed": "Could not open checkout. Check Stripe keys and price IDs.",
+      "server_error": "Payment server error. Refresh the page and try again, or contact support if it persists."
     },
     "personalInfo": "Your details",
     "checkingPayments": "Checking payment settings…",

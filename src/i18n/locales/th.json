@@ -317,7 +317,8 @@
       "payments_not_configured": "ยังไม่เปิดใช้งานการชำระเงินบนเซิร์ฟเวอร์",
       "stripe_price_invalid": "Price ID ไม่ถูกต้อง",
       "stripe_auth_invalid": "คีย์ Stripe ไม่ถูกต้อง",
-      "stripe_checkout_failed": "เปิดหน้าชำระเงินไม่ได้"
+      "stripe_checkout_failed": "เปิดหน้าชำระเงินไม่ได้",
+      "server_error": "เซิร์ฟเวอร์ชำระเงินขัดข้อง โปรดรีเฟรชแล้วลองอีกครั้ง"
     },
     "personalInfo": "ข้อมูลส่วนตัว",
     "checkingPayments": "กำลังตรวจสอบการชำระเงิน…",

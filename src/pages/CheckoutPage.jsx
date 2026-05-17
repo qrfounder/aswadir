@@ -130,10 +130,12 @@ export default function CheckoutPage() {
     } catch (err) {
       console.error(err);
       const code = err.data?.error;
+      const rawDetail = err.data?.detail || "";
+      const showDetail =
+        import.meta.env.DEV && rawDetail && !/is not defined/i.test(rawDetail);
       setFormError(
         t(`checkout.errors.${code}`, { defaultValue: "" }) ||
-          err.data?.detail ||
-          err.message ||
+          (showDetail ? rawDetail : "") ||
           t("checkout.errors.generic"),
       );
     } finally {

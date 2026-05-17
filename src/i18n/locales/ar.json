@@ -312,7 +312,8 @@
       "payments_not_configured": "الدفع غير مفعّل على الخادم.",
       "stripe_price_invalid": "معرّف سعر غير صالح",
       "stripe_auth_invalid": "مفتاح Stripe غير صالح",
-      "stripe_checkout_failed": "تعذّر فتح الدفع"
+      "stripe_checkout_failed": "تعذّر فتح الدفع",
+      "server_error": "خطأ في خادم الدفع. حدّث الصفحة وحاول مرة أخرى."
     },
     "personalInfo": "بياناتك الشخصية",
     "checkingPayments": "جاري التحقق من إعدادات الدفع…",
