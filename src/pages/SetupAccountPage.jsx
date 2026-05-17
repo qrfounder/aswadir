@@ -19,6 +19,7 @@ export default function SetupAccountPage() {
 
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
   const [error, setError] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(Boolean(checkoutSessionId));
   const [paymentReady, setPaymentReady] = useState(!checkoutSessionId);
@@ -100,6 +101,7 @@ export default function SetupAccountPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    setErrorCode(null);
 
     if (!paymentRef) {
       setError(t("auth.errors.payment_intent_required"));
@@ -144,7 +146,11 @@ export default function SetupAccountPage() {
             t(`auth.errors.${retryCode}`, { defaultValue: "" }) || t("auth.genericError"),
           );
         }
+      } else if (code === "email_in_use") {
+        setErrorCode("email_in_use");
+        setError(t("auth.errors.email_in_use"));
       } else {
+        setErrorCode(code || "unknown");
         setError(t(`auth.errors.${code}`, { defaultValue: "" }) || t("auth.genericError"));
       }
     } finally {
@@ -161,7 +167,7 @@ export default function SetupAccountPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background font-cairo">
+    <div className="min-h-screen bg-background">
       <div className="max-w-md mx-auto px-4 py-12 space-y-8">
         <div className="text-center space-y-3">
           <BrandLogo size="auth" className="mx-auto object-center" />
@@ -243,8 +249,16 @@ export default function SetupAccountPage() {
           </label>
 
           {error && (
-            <div className="bg-red-900/30 border border-red-500/40 text-red-300 rounded-xl p-3 text-sm">
-              {error}
+            <div className="bg-red-900/30 border border-red-500/40 text-red-300 rounded-xl p-3 text-sm space-y-2">
+              <p>{error}</p>
+              {errorCode === "email_in_use" && checkoutSessionId && (
+                <Link
+                  to={`/login?session_id=${encodeURIComponent(checkoutSessionId)}&next=${encodeURIComponent("/dashboard")}`}
+                  className="text-yellow-400 font-bold hover:underline inline-block"
+                >
+                  {t("auth.loginToClaim")}
+                </Link>
+              )}
             </div>
           )}
 

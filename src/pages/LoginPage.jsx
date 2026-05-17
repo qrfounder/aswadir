@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Loader2, Lock, Mail, KeyRound } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
+import { client } from "@/api/client";
 import BrandLogo from "@/components/BrandLogo";
 import CurrencySwitcher from "@/components/CurrencySwitcher";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const [searchParams] = useSearchParams();
   const { login, claimPurchase, isAuthenticated } = useAuth();
 
+  const checkoutSessionId = searchParams.get("session_id") || "";
   const next = searchParams.get("next") || "/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,8 +34,16 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password);
-      if (claimId.trim()) {
-        await claimPurchase(claimId.trim());
+      if (checkoutSessionId) {
+        await client.checkout.complete(checkoutSessionId);
+        await claimPurchase({ checkoutSessionId });
+      } else if (claimId.trim()) {
+        const ref = claimId.trim();
+        if (ref.startsWith("cs_") || ref.startsWith("dev_cs_")) {
+          await claimPurchase({ checkoutSessionId: ref });
+        } else {
+          await claimPurchase({ paymentIntentId: ref });
+        }
       }
       navigate(next, { replace: true });
     } catch (err) {

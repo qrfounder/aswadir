@@ -3,6 +3,22 @@ import { entitlementsForProduct, getCatalogProduct } from "./catalog.js";
 
 const ACTIVE_STATUSES = new Set(["active", "trialing"]);
 
+/** Resolve purchases.payment_intent_id for FK-safe entitlement rows */
+function purchaseKeyForSubscription(subscription) {
+  if (!subscription) return null;
+  const db = getDb();
+  if (subscription.checkout_session_id) {
+    const row = db
+      .prepare(`SELECT payment_intent_id FROM purchases WHERE checkout_session_id = ?`)
+      .get(subscription.checkout_session_id);
+    if (row?.payment_intent_id) return row.payment_intent_id;
+  }
+  const row = db
+    .prepare(`SELECT payment_intent_id FROM purchases WHERE subscription_id = ? LIMIT 1`)
+    .get(subscription.stripe_subscription_id);
+  return row?.payment_intent_id || null;
+}
+
 export function upsertSubscription({
   stripeSubscriptionId,
   stripeCustomerId,
@@ -79,7 +95,7 @@ export function syncEntitlementsFromSubscription(subscription) {
 
   const db = getDb();
   const keys = entitlementsForProduct(subscription.product_id);
-  const sourceRef = subscription.stripe_subscription_id;
+  const sourceRef = purchaseKeyForSubscription(subscription);
   const isActive = ACTIVE_STATUSES.has(subscription.status);
 
   const tx = db.transaction(() => {
@@ -96,14 +112,21 @@ export function syncEntitlementsFromSubscription(subscription) {
       subscription.status === "unpaid" ||
       subscription.status === "incomplete_expired"
     ) {
-      const placeholders = keys.map(() => "?").join(",");
-      db.prepare(
-        `DELETE FROM entitlements
-         WHERE user_id = ? AND product_key IN (${placeholders}) AND source_purchase_id = ?`,
-      ).run(subscription.user_id, ...keys, sourceRef);
+      const del = db.prepare(
+        `DELETE FROM entitlements WHERE user_id = ? AND product_key = ?`,
+      );
+      for (const key of keys) {
+        del.run(subscription.user_id, key);
+      }
     }
   });
   tx();
+}
+
+/** Backfill entitlements when subscription is active but rows are missing (e.g. after FK bug) */
+export function repairEntitlementsForUser(userId) {
+  const sub = getActiveSubscriptionForUser(userId);
+  if (sub) syncEntitlementsFromSubscription(sub);
 }
 
 export function subscriptionForClient(row) {

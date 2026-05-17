@@ -84,7 +84,13 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  const hasEntitlement = (key) => entitlements.some((e) => e.product_key === key);
+  const hasEntitlement = (key) => {
+    if (entitlements.some((e) => e.product_key === key)) return true;
+    const sub = subscription;
+    if (!sub?.isActive || !sub.productId) return false;
+    if (sub.productId === "bundle") return true;
+    return sub.productId === key;
+  };
 
   return (
     <AuthContext.Provider

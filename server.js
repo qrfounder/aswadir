@@ -73,7 +73,7 @@ app.get("/api/health", (_req, res) => {
   res.status(200).json({
     ok: true,
     server: "up",
-    build: "checkout-return-origin-v2",
+    build: "launch-campaign-v1",
     db: dbError ? "error" : "ok",
     dbError: dbError || undefined,
     dist: fs.existsSync(path.join(distPath, "index.html")),

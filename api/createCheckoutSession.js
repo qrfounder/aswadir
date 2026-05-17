@@ -22,14 +22,20 @@ function getStripe() {
   return new Stripe(key, { apiVersion: "2024-06-20" });
 }
 
-function simulateCheckout(res, { product, productId, cleanName, cleanEmail, cleanPhone }) {
+function formatWhatsApp(digits, dialCode) {
+  const code = String(dialCode || "+966").trim().replace(/[^\d+]/g, "");
+  const normalized = code.startsWith("+") ? code : `+${code}`;
+  return `${normalized}${digits}`;
+}
+
+function simulateCheckout(res, { product, productId, cleanName, cleanEmail, whatsappE164 }) {
   const checkoutSessionId = createDevSimulatedCheckout({
     productId,
     productName: product.name,
     amount: product.amount,
     customerName: cleanName,
     customerEmail: cleanEmail,
-    whatsapp: `+966${cleanPhone}`,
+    whatsapp: whatsappE164,
   });
   return res.status(200).json({
     simulated: true,
@@ -68,6 +74,7 @@ export default async function createCheckoutSession(req, res) {
       customerName,
       customerEmail,
       whatsapp,
+      whatsappDialCode,
       embedded = false,
       locale: preferredLocale,
     } = body;
@@ -84,6 +91,7 @@ export default async function createCheckoutSession(req, res) {
     if (cleanPhone.length < 8 || cleanPhone.length > 12) {
       return res.status(400).json({ error: "invalid_phone" });
     }
+    const whatsappE164 = formatWhatsApp(cleanPhone, whatsappDialCode);
     const cleanName = String(customerName || "").trim();
     if (cleanName.length < 2) {
       return res.status(400).json({ error: "invalid_name" });
@@ -102,7 +110,7 @@ export default async function createCheckoutSession(req, res) {
         productId,
         cleanName,
         cleanEmail,
-        cleanPhone,
+        whatsappE164,
       });
     }
 
@@ -123,7 +131,7 @@ export default async function createCheckoutSession(req, res) {
         productName: product.name,
         customerName: cleanName,
         customerEmail: cleanEmail,
-        whatsapp: `+966${cleanPhone}`,
+        whatsapp: whatsappE164,
       },
       subscription_data: {
         ...(trialDays > 0 ? { trial_period_days: trialDays } : {}),
@@ -131,7 +139,7 @@ export default async function createCheckoutSession(req, res) {
           productId,
           customerName: cleanName,
           customerEmail: cleanEmail,
-          whatsapp: `+966${cleanPhone}`,
+          whatsapp: whatsappE164,
         },
       },
       allow_promotion_codes: true,
@@ -155,7 +163,7 @@ export default async function createCheckoutSession(req, res) {
       amount: product.amount,
       customerName: cleanName,
       customerEmail: cleanEmail,
-      whatsapp: `+966${cleanPhone}`,
+      whatsapp: whatsappE164,
     });
 
     if (useEmbedded) {

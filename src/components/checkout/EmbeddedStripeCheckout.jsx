@@ -30,6 +30,7 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
           customerName: customer.name.trim(),
           customerEmail: customer.email.trim().toLowerCase(),
           whatsapp: customer.whatsapp.trim(),
+          whatsappDialCode: t("checkout.whatsappPrefix"),
           embedded: true,
           locale: stripeLocale,
           returnOrigin: window.location.origin,

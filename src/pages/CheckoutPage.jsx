@@ -104,6 +104,7 @@ export default function CheckoutPage() {
         customerName: customer.name.trim(),
         customerEmail: customer.email.trim().toLowerCase(),
         whatsapp: customer.whatsapp.trim(),
+        whatsappDialCode: t("checkout.whatsappPrefix"),
         locale: LOCALE_META[locale]?.stripe || locale,
         returnOrigin: window.location.origin,
       });
@@ -289,7 +290,7 @@ export default function CheckoutPage() {
                       {customer.email}
                     </p>
                     <p className="text-gray-500 text-xs mt-0.5" dir="ltr">
-                      +966 {customer.whatsapp}
+                      {t("checkout.whatsappPrefix")} {customer.whatsapp}
                     </p>
                   </div>
                   <button

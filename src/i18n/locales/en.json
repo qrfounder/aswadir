@@ -367,6 +367,7 @@
     "hasAccount": "Already have an account?",
     "createLink": "Create account after purchase",
     "loginLink": "Sign in",
+    "loginToClaim": "Sign in to link this purchase to your account",
     "claimPrompt": "Paid but no account? Link your order",
     "claimLabel": "Payment reference (pi_ or dev_)",
     "invalidCredentials": "Incorrect email or password.",

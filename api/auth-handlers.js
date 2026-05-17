@@ -9,6 +9,7 @@ import {
 } from "./purchases.js";
 import {
   getActiveSubscriptionForUser,
+  repairEntitlementsForUser,
   subscriptionForClient,
 } from "./subscriptions.js";
 import {
@@ -88,6 +89,7 @@ export async function handleRegister(req, res) {
   const { sessionId, expiresAt } = createSession(userId);
   attachSession(res, sessionId, expiresAt);
 
+  repairEntitlementsForUser(userId);
   const sub = getActiveSubscriptionForUser(userId);
 
   return res.status(201).json({
@@ -120,6 +122,7 @@ export async function handleLogin(req, res) {
   const { sessionId, expiresAt } = createSession(user.id);
   attachSession(res, sessionId, expiresAt);
 
+  repairEntitlementsForUser(user.id);
   const sub = getActiveSubscriptionForUser(user.id);
 
   return res.status(200).json({
@@ -150,6 +153,7 @@ export function handleMe(req, res) {
     return res.status(401).json({ error: "unauthenticated" });
   }
 
+  repairEntitlementsForUser(userId);
   const sub = getActiveSubscriptionForUser(userId);
 
   return res.status(200).json({
@@ -179,6 +183,7 @@ export async function handleClaimPurchase(req, res) {
     return res.status(400).json({ error: claim.error });
   }
 
+  repairEntitlementsForUser(userId);
   const sub = getActiveSubscriptionForUser(userId);
 
   return res.status(200).json({

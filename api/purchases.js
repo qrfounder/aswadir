@@ -126,10 +126,11 @@ export function createDevSimulatedPurchase({ productId, productName, amount, cus
   return paymentIntentId;
 }
 
+/** FK entitlements.source_purchase_id → purchases.payment_intent_id only */
 function grantEntitlementsForPurchase(userId, purchase) {
   const db = getDb();
   const keys = entitlementsForProduct(purchase.product_id);
-  const sourceRef = purchase.subscription_id || purchase.checkout_session_id || purchase.payment_intent_id;
+  const sourceRef = purchase.payment_intent_id || null;
   const insert = db.prepare(
     `INSERT OR IGNORE INTO entitlements (user_id, product_key, source_purchase_id)
      VALUES (?, ?, ?)`,
