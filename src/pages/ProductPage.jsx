@@ -91,7 +91,7 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background font-cairo" >
+    <div className="min-h-screen bg-background">
       <UrgencyBar />
 
       <SiteHeader

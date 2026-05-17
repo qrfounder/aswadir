@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Bell,
@@ -44,9 +44,13 @@ function TrustStrip() {
 }
 
 export default function DashboardPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { dir } = useLocale();
   const { packMeta } = useTrackerCatalog();
+  const updates = useMemo(() => {
+    const items = t("dashboard.updateItems", { returnObjects: true });
+    return Array.isArray(items) ? items : [];
+  }, [t, i18n.language]);
   const { user, logout, hasEntitlement, subscription: authSubscription } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -188,12 +192,12 @@ export default function DashboardPage() {
               {t("dashboard.updates")}
             </h2>
             <div className="space-y-3">
-              {(data?.updates || []).length === 0 && !loading ? (
+              {updates.length === 0 && !loading ? (
                 <p className="text-gray-500 text-sm dark-card rounded-xl p-4 border border-gray-800">
                   {t("dashboard.noUpdates")}
                 </p>
               ) : (
-                (data?.updates || []).map((item) => (
+                updates.map((item) => (
                   <article
                     key={item.id}
                     className="dark-card rounded-2xl p-4 sm:p-5 border border-yellow-400/10 hover:border-yellow-400/25 transition-colors"

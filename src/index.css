@@ -44,8 +44,15 @@
   /* Direction follows <html dir> set by applyDocumentLocale — never hardcode RTL globally */
   html[dir="ltr"] body {
     direction: ltr;
-    font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans Thai", sans-serif;
     text-align: start;
+  }
+
+  html[lang="en"][dir="ltr"] body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  html[lang="th"][dir="ltr"] body {
+    font-family: "Noto Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
 
   html[dir="rtl"] body {

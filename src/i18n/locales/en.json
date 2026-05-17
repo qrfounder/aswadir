@@ -3,6 +3,11 @@
     "title": "Massar | Habit & Task Tracker",
     "description": "Massar — the habit & task tracker built for consistency. Build discipline in 5 minutes a day inside your member dashboard."
   },
+  "appErrors": {
+    "boundaryTitle": "Could not load the app",
+    "boundaryHint": "Copy the text below or take a screenshot for support. You can also open the site in a normal browser window outside Cursor preview.",
+    "rootMissing": "#root element missing in index.html"
+  },
   "lang": {
     "label": "Language",
     "en": "English",
@@ -312,7 +317,12 @@
     },
     "personalInfo": "Your details",
     "checkingPayments": "Checking payment settings…",
-    "whatsappPrefix": "+966"
+    "whatsappPrefix": "+1",
+    "whatsappFlag": "🌐",
+    "whatsappPlaceholder": "5551234567",
+    "stripeCardTitle": "Card details",
+    "stripeLoading": "Loading secure payment form…",
+    "stripeFormAria": "Stripe payment form"
   },
   "thankYou": {
     "redirecting": "Payment confirmed — opening your dashboard setup…",
@@ -399,7 +409,30 @@
       "bundle": "Full Bundle"
     },
     "noProducts": "No active products yet.",
-    "defaultName": "there"
+    "defaultName": "there",
+    "updateItems": [
+      {
+        "id": "welcome",
+        "title": "Welcome to Massar",
+        "body": "Your account is ready. Start from the dashboard below — we'll add courses, updates, and resources here as we ship them.",
+        "tag": "New",
+        "publishedAt": "2026-05-16"
+      },
+      {
+        "id": "habits-roadmap",
+        "title": "Habit roadmap (coming soon)",
+        "body": "A short series: build 3 core habits in 21 days — inside the app, no external files.",
+        "tag": "Soon",
+        "publishedAt": "2026-06-01"
+      },
+      {
+        "id": "productivity-pack",
+        "title": "Productivity pack (coming soon)",
+        "body": "Ready-made templates and tasks for founders and students — unlocked automatically for full bundle members.",
+        "tag": "Soon",
+        "publishedAt": "2026-07-01"
+      }
+    ]
   },
   "currency": {
     "label": "Currency",
@@ -547,6 +580,13 @@
       "journal": "Gratitude journal",
       "shower": "Cold shower",
       "quran": "Quran reading"
+    },
+    "defaultTasks": {
+      "t1": "Plan the week (Massar)",
+      "t2": "Review yesterday's wins",
+      "t3": "Deep work block — no notifications",
+      "t4": "Weekly review + next priorities",
+      "t5": "Rest & recharge day"
     },
     "weekDays": [
       "Sunday",

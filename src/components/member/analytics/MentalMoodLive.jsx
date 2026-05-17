@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { Trans, useTranslation } from "react-i18next";
 import { useTracker } from "@/lib/TrackerContext";
+import { useTrackerCatalog } from "@/lib/useTrackerCatalog";
 
 /** Compact mood summary — links mental sliders to overview metrics */
 export default function MentalMoodLive({ variant = "overview" }) {
   const { t } = useTranslation();
+  const { mentalMetrics } = useTrackerCatalog();
   const { analytics } = useTracker();
   const breakdown = analytics.habit?.mentalBreakdown;
   const score = analytics.habit?.mentalToday;
@@ -38,7 +40,8 @@ export default function MentalMoodLive({ variant = "overview" }) {
           <div key={m.id} className="rounded-lg bg-black/35 border border-gray-800/80 px-3 py-2">
             <div className="flex justify-between items-center gap-2 text-xs mb-1.5">
               <span className="text-gray-300">
-                {m.icon} {m.label}
+                {mentalMetrics.find((x) => x.id === m.id)?.icon}{" "}
+                {mentalMetrics.find((x) => x.id === m.id)?.label}
               </span>
               <span className="text-sky-300 font-bold tabular-nums">
                 {m.value != null ? `${m.value}/10` : "—"}

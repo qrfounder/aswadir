@@ -5,13 +5,13 @@ import { buildInsight, computeFullAnalytics } from "@/lib/tracker-analytics";
 const TrackerContext = createContext(null);
 
 export function TrackerProvider({ userId, hasHabit, hasTask, children }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [tick, setTick] = useState(0);
   const [insight, setInsight] = useState(null);
 
   const analytics = useMemo(
-    () => computeFullAnalytics(userId, { hasHabit, hasTask }),
-    [userId, hasHabit, hasTask, tick],
+    () => computeFullAnalytics(userId, { hasHabit, hasTask }, t),
+    [userId, hasHabit, hasTask, tick, t, i18n.language],
   );
 
   const refresh = useCallback(() => setTick((t) => t + 1), []);
@@ -19,7 +19,7 @@ export function TrackerProvider({ userId, hasHabit, hasTask, children }) {
   const flashInsight = useCallback(
     (payload) => {
       const next = buildInsight(
-        { ...payload, analytics: computeFullAnalytics(userId, { hasHabit, hasTask }) },
+        { ...payload, analytics: computeFullAnalytics(userId, { hasHabit, hasTask }, t) },
         t,
       );
       if (next) setInsight({ ...next, id: Date.now() });

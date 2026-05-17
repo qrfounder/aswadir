@@ -4,6 +4,7 @@ import { daysInMonth } from "@/lib/tracker-catalog";
 import { useTrackerCatalog } from "@/lib/useTrackerCatalog";
 import { useTranslation } from "react-i18next";
 import { useTracker } from "@/lib/TrackerContext";
+import { localizeHabits } from "@/lib/tracker-resolve";
 import { habitCompletionRate, habitDayRate, loadHabitTracker, saveHabitTracker } from "@/lib/tracker-storage";
 import AnimatedValue from "@/components/member/analytics/AnimatedValue";
 import MentalMoodLive from "@/components/member/analytics/MentalMoodLive";
@@ -18,7 +19,13 @@ export default function DailyHabitsPanel({ userId }) {
   const [{ month, data }, setState] = useState(() => loadHabitTracker(userId));
   const monthData = data.months[month] || { checks: {}, mental: {} };
   const { checks, mental } = monthData;
-  const habits = data.habits?.length ? data.habits : defaultHabits;
+  const rawHabits = data.habits?.length
+    ? data.habits
+    : defaultHabits.map(({ id, icon }) => ({ id, icon }));
+  const habits = useMemo(
+    () => localizeHabits(rawHabits, t),
+    [rawHabits, t, i18n.language],
+  );
   const [newHabit, setNewHabit] = useState("");
 
   const persist = (next) => {

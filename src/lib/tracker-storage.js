@@ -1,7 +1,5 @@
-import {
-  DEFAULT_HABITS,
-  monthStorageKey,
-} from "@/lib/tracker-catalog";
+import { defaultHabitDefs, defaultTaskItems } from "@/lib/tracker-resolve";
+import { monthStorageKey } from "@/lib/tracker-catalog";
 
 function safeParse(raw, fallback) {
   try {
@@ -15,10 +13,21 @@ function key(userId, namespace) {
   return `massar_tracker_${userId}_${namespace}`;
 }
 
+function stripHabitsForStorage(habits) {
+  return (habits || []).map((h) => ({
+    id: h.id,
+    icon: h.icon || "✨",
+    ...(String(h.id).startsWith("c") && h.name ? { name: h.name } : {}),
+  }));
+}
+
 export function loadHabitTracker(userId) {
   const month = monthStorageKey();
   const raw = localStorage.getItem(key(userId, "habits"));
-  const data = safeParse(raw, { habits: DEFAULT_HABITS, months: {} });
+  const parsed = safeParse(raw, null);
+  const data = parsed || { habits: defaultHabitDefs(), months: {} };
+  if (!data.habits?.length) data.habits = defaultHabitDefs();
+  data.habits = stripHabitsForStorage(data.habits);
   if (!data.months[month]) {
     data.months[month] = { checks: {}, mental: {} };
   }
@@ -26,7 +35,11 @@ export function loadHabitTracker(userId) {
 }
 
 export function saveHabitTracker(userId, data) {
-  localStorage.setItem(key(userId, "habits"), JSON.stringify(data));
+  const toSave = {
+    ...data,
+    habits: stripHabitsForStorage(data.habits),
+  };
+  localStorage.setItem(key(userId, "habits"), JSON.stringify(toSave));
 }
 
 export function loadTaskTracker(userId) {
@@ -34,9 +47,22 @@ export function loadTaskTracker(userId) {
   const raw = localStorage.getItem(key(userId, "tasks"));
   const data = safeParse(raw, { weeks: {} });
   if (!data.weeks[week]) {
-    data.weeks[week] = { items: defaultWeekTasks() };
+    data.weeks[week] = { items: [] };
   }
   return { week, data };
+}
+
+/** Seed default week tasks when empty (titles resolved in UI via i18n). */
+export function ensureDefaultWeekTasks(userId, t) {
+  const { week, data } = loadTaskTracker(userId);
+  const weekData = data.weeks[week] || { items: [] };
+  if (weekData.items.length > 0) return { week, data };
+  const next = {
+    ...data,
+    weeks: { ...data.weeks, [week]: { items: defaultTaskItems(t) } },
+  };
+  saveTaskTracker(userId, next);
+  return loadTaskTracker(userId);
 }
 
 export function saveTaskTracker(userId, data) {
@@ -49,16 +75,6 @@ function weekStorageKey(date = new Date()) {
   const diff = d.getDate() - day;
   const sunday = new Date(d.setDate(diff));
   return sunday.toISOString().slice(0, 10);
-}
-
-function defaultWeekTasks() {
-  return [
-    { id: "t1", title: "مراجعة أهداف الأسبوع", day: 0, priority: "high", done: false },
-    { id: "t2", title: "تخطيط المهام الكبرى", day: 0, priority: "med", done: false },
-    { id: "t3", title: "متابعة البريد والرسائل", day: 1, priority: "med", done: false },
-    { id: "t4", title: "جلسة تركيز عميق 90 د", day: 2, priority: "high", done: false },
-    { id: "t5", title: "مراجعة نهاية الأسبوع", day: 6, priority: "low", done: false },
-  ];
 }
 
 export function habitCompletionRate(habits, checks, dayCount) {

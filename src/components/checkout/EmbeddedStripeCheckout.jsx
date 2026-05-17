@@ -1,16 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { Loader2, CreditCard } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { stripePromise } from "@/lib/stripe";
 import { client } from "@/api/client";
+
+const STRIPE_LOCALE = { ar: "ar", en: "en", th: "th" };
 
 /**
  * Stripe Embedded Checkout — mount in LTR full-width host (avoids RTL clip).
  */
 export default function EmbeddedStripeCheckout({ product, customer, onError }) {
+  const { t, i18n } = useTranslation();
   const mountRef = useRef(null);
   const checkoutRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const lang = i18n.language?.split("-")[0] || "en";
+  const stripeLocale = STRIPE_LOCALE[lang] || "auto";
 
   useEffect(() => {
     let cancelled = false;
@@ -25,7 +31,7 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
           customerEmail: customer.email.trim().toLowerCase(),
           whatsapp: customer.whatsapp.trim(),
           embedded: true,
-          locale: document.documentElement.lang === "ar" ? "ar" : "auto",
+          locale: stripeLocale,
           returnOrigin: window.location.origin,
         });
 
@@ -73,7 +79,16 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
       checkoutRef.current?.destroy?.();
       checkoutRef.current = null;
     };
-  }, [product.id, customer.name, customer.email, customer.whatsapp, onError]);
+  }, [
+    product.id,
+    product.name,
+    product.salePrice,
+    customer.name,
+    customer.email,
+    customer.whatsapp,
+    onError,
+    stripeLocale,
+  ]);
 
   return (
     <section className="checkout-stripe-section w-full min-w-0" aria-labelledby="stripe-checkout-heading">
@@ -82,23 +97,22 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
         className="text-white font-black text-base flex items-center gap-2 mb-4"
       >
         <CreditCard className="w-5 h-5 text-yellow-400" />
-        معلومات البطاقة
+        {t("checkout.stripeCardTitle")}
       </h3>
 
       <div className="checkout-stripe-frame rounded-2xl border border-yellow-400/15 bg-[#0a0e1a]/80 p-1 sm:p-2">
         {loading && (
           <p className="text-gray-400 text-sm flex items-center justify-center gap-2 py-12">
             <Loader2 className="w-5 h-5 animate-spin text-yellow-400" />
-            جاري تحميل نموذج الدفع الآمن...
+            {t("checkout.stripeLoading")}
           </p>
         )}
-        {/* LTR host: Stripe Embedded Checkout lays out left-to-right */}
         <div
           ref={mountRef}
           dir="ltr"
           lang="en"
           className={`embedded-checkout-host w-full min-w-0 ${loading && !mounted ? "min-h-0 h-0 overflow-hidden" : "min-h-[480px]"}`}
-          aria-label="نموذج دفع Stripe"
+          aria-label={t("checkout.stripeFormAria")}
         />
       </div>
     </section>

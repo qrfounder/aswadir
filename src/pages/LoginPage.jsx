@@ -48,7 +48,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background font-cairo">
+    <div className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 pt-4 flex justify-end gap-2">
         <CurrencySwitcher />
         <LanguageSwitcher />

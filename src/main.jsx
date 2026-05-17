@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "@/App.jsx";
-import "@/i18n/index.js";
+import i18n from "@/i18n/index.js";
 import "@/index.css";
 
 class RootErrorBoundary extends React.Component {
@@ -20,9 +20,10 @@ class RootErrorBoundary extends React.Component {
 
   render() {
     if (this.state.err) {
+      const dir = document.documentElement.dir || "ltr";
       return (
         <div
-          dir="rtl"
+          dir={dir}
           style={{
             fontFamily: "system-ui,sans-serif",
             padding: "2rem",
@@ -33,10 +34,11 @@ class RootErrorBoundary extends React.Component {
             minHeight: "100vh",
           }}
         >
-          <h1 style={{ fontSize: "1.25rem", marginBottom: "1rem" }}>تعذّر تشغيل الواجهة</h1>
+          <h1 style={{ fontSize: "1.25rem", marginBottom: "1rem" }}>
+            {i18n.t("appErrors.boundaryTitle")}
+          </h1>
           <p style={{ color: "#9ca3af", fontSize: "0.9rem", marginBottom: "1rem" }}>
-            انسخ النص أدناه أو التقط شاشة لدعم المطوّر. جرّب أيضاً فتح الموقع في نافذة متصفّح عادية خارج
-            معاينة Cursor.
+            {i18n.t("appErrors.boundaryHint")}
           </p>
           <pre
             style={{
@@ -61,7 +63,7 @@ class RootErrorBoundary extends React.Component {
 
 const rootEl = document.getElementById("root");
 if (!rootEl) {
-  throw new Error('عنصر #root غير موجود في index.html');
+  throw new Error(i18n.t("appErrors.rootMissing"));
 }
 
 ReactDOM.createRoot(rootEl).render(

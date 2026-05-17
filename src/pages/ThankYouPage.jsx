@@ -48,7 +48,7 @@ export default function ThankYouPage() {
   }, [checkoutSessionId, searchParams, navigate, isAuthenticated, claimPurchase]);
 
   return (
-    <div className="min-h-screen bg-background font-cairo flex flex-col items-center justify-center gap-4 px-4">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 px-4">
       <Loader2 className="w-10 h-10 animate-spin text-yellow-400" />
       <p className="text-gray-300 text-sm font-bold">{t("thankYou.redirecting")}</p>
     </div>

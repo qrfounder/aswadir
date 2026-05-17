@@ -142,7 +142,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background font-cairo">
+    <div className="min-h-screen bg-background">
       <header className="bg-black/60 backdrop-blur-md border-b border-yellow-400/10 py-4 px-4 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <button
@@ -241,7 +241,7 @@ export default function CheckoutPage() {
                   <span className="text-gray-300 text-sm font-bold mb-2 block">{t("checkout.whatsapp")}</span>
                   <div className="flex gap-2" dir="ltr">
                     <span className="bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-gray-300 text-sm font-mono flex items-center">
-                      🇸🇦 {t("checkout.whatsappPrefix")}
+                      {t("checkout.whatsappFlag")} {t("checkout.whatsappPrefix")}
                     </span>
                     <input
                       type="tel"
@@ -254,7 +254,7 @@ export default function CheckoutPage() {
                           whatsapp: e.target.value.replace(/[^0-9]/g, ""),
                         }))
                       }
-                      placeholder="5XXXXXXXX"
+                      placeholder={t("checkout.whatsappPlaceholder")}
                       maxLength={12}
                       className="flex-1 bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-3 text-white outline-none text-left"
                     />

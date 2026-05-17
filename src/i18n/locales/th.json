@@ -3,6 +3,11 @@
     "title": "Massar | ตัวติดตามนิสัยและงาน",
     "description": "Massar — ตัวติดตามนิสัยและงานเพื่อความสม่ำเสมอ สร้างวินัยใน 5 นาทีต่อวันภายในแดชบอร์ดสมาชิก"
   },
+  "appErrors": {
+    "boundaryTitle": "ไม่สามารถโหลดแอปได้",
+    "boundaryHint": "คัดลอกข้อความด้านล่างหรือแคปหน้าจอส่งให้ทีมสนับสนุน ลองเปิดเว็บในหน้าต่างเบราว์เซอร์ปกตินอก Cursor preview",
+    "rootMissing": "ไม่พบองค์ประกอบ #root ใน index.html"
+  },
   "lang": {
     "label": "ภาษา",
     "en": "English",
@@ -182,20 +187,20 @@
     "disclaimer": "ตัวเลขบนหน้านี้เพื่อการตลาด ผลลัพธ์ขึ้นกับความมุ่งมั่น",
     "features": [
       {
-        "title": "Streaks you won't want to break",
-        "desc": "Every day you complete, the chain grows in front of you. The longer it gets, the harder it is to stop — a challenge with yourself."
+        "title": "สตรีคที่อยากรักษาไว้",
+        "desc": "ทุกวันที่ทำสำเร็จ สายโซ่จะยาวขึ้นต่อหน้าคุณ — ยิ่งยาวยิ่งหยุดยาก เป็นความท้าทายกับตัวเอง"
       },
       {
-        "title": "A dashboard that runs itself",
-        "desc": "Everything updates automatically: points, charts, indicators. You see progress and feel the win — so you keep coming back."
+        "title": "แดชบอร์ดที่อัปเดตเอง",
+        "desc": "คะแนน กราฟ และตัวชี้วัดอัปเดตอัตโนมัติ — เห็นความก้าวหน้าและรู้สึกชนะ จึงกลับมาใช้ต่อ"
       },
       {
-        "title": "Goodbye to distraction",
-        "desc": "Instead of wondering what to do each morning, the system sets your priorities. Your energy goes to doing, not deciding."
+        "title": "ลดการฟุ้งซ่าน",
+        "desc": "ไม่ต้องคิดทุกเช้าว่าจะทำอะไร ระบบจัดลำดับให้ — พลังไปที่การลงมือ ไม่ใช่การตัดสินใจ"
       },
       {
-        "title": "Goals you can see as numbers",
-        "desc": "A goal only in your head doesn't motivate. When you see the number, percentage, and chart in front of you, you feel real daily progress."
+        "title": "เป้าหมายที่เห็นเป็นตัวเลข",
+        "desc": "เป้าในหัวไม่ดันพลังเท่าเป้าที่เห็นเป็นเปอร์เซ็นต์และกราหน้าคุณ — รู้สึกถึงความก้าวหน้าทุกวัน"
       }
     ],
     "stickyCta": "เริ่มทดลองใช้ฟรี 1 วัน",
@@ -316,7 +321,12 @@
     },
     "personalInfo": "ข้อมูลส่วนตัว",
     "checkingPayments": "กำลังตรวจสอบการชำระเงิน…",
-    "whatsappPrefix": "+966"
+    "whatsappPrefix": "+66",
+    "whatsappFlag": "🇹🇭",
+    "whatsappPlaceholder": "812345678",
+    "stripeCardTitle": "ข้อมูลบัตร",
+    "stripeLoading": "กำลังโหลดฟอร์มชำระเงินที่ปลอดภัย…",
+    "stripeFormAria": "ฟอร์มชำระเงิน Stripe"
   },
   "thankYou": {
     "redirecting": "ยืนยันการชำระแล้ว — กำลังเปิดหน้าตั้งค่าบัญชี…",
@@ -403,7 +413,30 @@
       "bundle": "แพ็กเกจเต็ม"
     },
     "noProducts": "ยังไม่มีผลิตภัณฑ์ที่เปิดใช้",
-    "defaultName": "คุณ"
+    "defaultName": "คุณ",
+    "updateItems": [
+      {
+        "id": "welcome",
+        "title": "ยินดีต้อนรับสู่ Massar",
+        "body": "บัญชีของคุณพร้อมแล้ว เริ่มจากแดชบอร์ดด้านล่าง — เราจะเพิ่มคอร์ส อัปเดต และทรัพยากรใหม่ที่นี่เมื่อปล่อย",
+        "tag": "ใหม่",
+        "publishedAt": "2026-05-16"
+      },
+      {
+        "id": "habits-roadmap",
+        "title": "แผนนิสัย (เร็วๆ นี้)",
+        "body": "ซีรีส์สั้น: สร้าง 3 นิสัยหลักใน 21 วัน — ในแอป ไม่ต้องดาวน์โหลดไฟล์",
+        "tag": "เร็วๆ นี้",
+        "publishedAt": "2026-06-01"
+      },
+      {
+        "id": "productivity-pack",
+        "title": "แพ็กประสิทธิภาพ (เร็วๆ นี้)",
+        "body": "เทมเพลตและงานสำเร็จรูปสำหรับผู้ประกอบการและนักเรียน — ปลดล็อกอัตโนมัติสำหรับแพ็กเต็ม",
+        "tag": "เร็วๆ นี้",
+        "publishedAt": "2026-07-01"
+      }
+    ]
   },
   "currency": {
     "label": "Currency",
@@ -551,6 +584,13 @@
       "journal": "บันทึกความดีใจ",
       "shower": "อาบน้ำเย็น",
       "quran": "อ่านคัมภีร์"
+    },
+    "defaultTasks": {
+      "t1": "วางแผนสัปดาห์ (Massar)",
+      "t2": "ทบทวนชัยชนะเมื่อวาน",
+      "t3": "โฟกัสลึก — ปิดการแจ้งเตือน",
+      "t4": "ทบทวนรายสัปดาห์ + ลำดับถัดไป",
+      "t5": "วันพักผ่อนและชาร์จพลัง"
     },
     "weekDays": [
       "อาทิตย์",

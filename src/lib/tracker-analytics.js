@@ -1,4 +1,5 @@
-import { DEFAULT_HABITS, MENTAL_METRICS, daysInMonth } from "@/lib/tracker-catalog";
+import { DEFAULT_HABITS, MENTAL_METRIC_IDS, daysInMonth } from "@/lib/tracker-catalog";
+import { localizeHabits } from "@/lib/tracker-resolve";
 import {
   habitCompletionRate,
   habitDayRate,
@@ -15,21 +16,22 @@ function habitStreak(habitId, checks, throughDay) {
   return streak;
 }
 
-function mentalScoreForDay(mental, day, metrics = MENTAL_METRICS) {
-  const vals = metrics
-    .map((m) => mental[`${day}:${m.id}`])
+function mentalScoreForDay(mental, day, metricIds = MENTAL_METRIC_IDS) {
+  const vals = metricIds
+    .map((id) => mental[`${day}:${id}`])
     .filter((v) => typeof v === "number");
   if (!vals.length) return null;
   const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
   return Math.round((avg / 10) * 100);
 }
 
-export function computeHabitAnalytics(userId, today = new Date()) {
+export function computeHabitAnalytics(userId, today = new Date(), t = null) {
   const state = loadHabitTracker(userId);
   const { month, data } = state;
   const monthData = data.months[month] || { checks: {}, mental: {} };
   const { checks, mental } = monthData;
-  const habits = data.habits?.length ? data.habits : DEFAULT_HABITS;
+  const rawHabits = data.habits?.length ? data.habits : DEFAULT_HABITS;
+  const habits = t ? localizeHabits(rawHabits, t) : rawHabits;
   const dayCount = daysInMonth(today);
   const todayNum = today.getDate();
 
@@ -89,10 +91,10 @@ export function computeHabitAnalytics(userId, today = new Date()) {
     bestStreak,
     completedToday,
     totalHabits: habits.length,
-    mentalBreakdown: MENTAL_METRICS.map((m) => {
-      const raw = mental[`${todayNum}:${m.id}`];
+    mentalBreakdown: MENTAL_METRIC_IDS.map((id) => {
+      const raw = mental[`${todayNum}:${id}`];
       return {
-        ...m,
+        id,
         value: raw ?? null,
         pct: raw != null ? Math.round((raw / 10) * 100) : null,
       };
@@ -146,8 +148,8 @@ export function computeLifeScore({ habit, task, hasHabit, hasTask }) {
   return Math.round(sum / weight);
 }
 
-export function computeFullAnalytics(userId, { hasHabit, hasTask }) {
-  const habit = hasHabit ? computeHabitAnalytics(userId) : null;
+export function computeFullAnalytics(userId, { hasHabit, hasTask }, t = null) {
+  const habit = hasHabit ? computeHabitAnalytics(userId, new Date(), t) : null;
   const task = hasTask ? computeTaskAnalytics(userId) : null;
   const lifeScore = computeLifeScore({ habit, task, hasHabit, hasTask });
 

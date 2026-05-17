@@ -154,7 +154,7 @@ export default function SetupAccountPage() {
 
   if (isAuthenticated) {
     return (
-      <div className="min-h-screen bg-background font-cairo flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-yellow-400" />
       </div>
     );

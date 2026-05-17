@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Check, Plus, Trash2 } from "lucide-react";
 import { useTrackerCatalog } from "@/lib/useTrackerCatalog";
 import { useTranslation } from "react-i18next";
 import { useTracker } from "@/lib/TrackerContext";
-import { loadTaskTracker, saveTaskTracker } from "@/lib/tracker-storage";
+import { localizeTasks } from "@/lib/tracker-resolve";
+import { ensureDefaultWeekTasks, loadTaskTracker, saveTaskTracker } from "@/lib/tracker-storage";
 import AnimatedValue from "@/components/member/analytics/AnimatedValue";
 
 function TaskCard({ task, pri, onToggle, onRemove, t }) {
@@ -44,12 +45,21 @@ function TaskCard({ task, pri, onToggle, onRemove, t }) {
 }
 
 export default function TaskWeeklyBoard({ userId }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { weekDays, taskPriorities } = useTrackerCatalog();
   const { flashInsight } = useTracker();
   const [{ week, data }, setState] = useState(() => loadTaskTracker(userId));
+
+  useEffect(() => {
+    ensureDefaultWeekTasks(userId, t);
+    setState(loadTaskTracker(userId));
+  }, [userId, t, i18n.language]);
+
   const weekData = data.weeks[week] || { items: [] };
-  const items = weekData.items;
+  const items = useMemo(
+    () => localizeTasks(weekData.items, t),
+    [weekData.items, t, i18n.language],
+  );
   const [draft, setDraft] = useState({ title: "", day: 0, priority: "med" });
 
   const persist = (next) => {
