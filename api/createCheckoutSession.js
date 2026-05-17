@@ -69,6 +69,7 @@ export default async function createCheckoutSession(req, res) {
       whatsapp,
       embedded = false,
       locale: preferredLocale,
+      returnOrigin,
     } = req.body || {};
     const product = getCatalogProduct(productId);
     if (!product) {
