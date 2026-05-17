@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import compression from "compression";
 import cookieParser from "cookie-parser";
@@ -6,6 +7,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import createPaymentIntent from "./api/createPaymentIntent.js";
+import createCheckoutSession from "./api/createCheckoutSession.js";
+import completeCheckout from "./api/complete-checkout.js";
+import createBillingPortal from "./api/billingPortal.js";
 import stripeWebhook from "./api/stripe-webhook.js";
 import { handleDevSimulateOrder } from "./api/dev-handlers.js";
 import {
@@ -17,6 +21,8 @@ import {
 } from "./api/auth-handlers.js";
 import { handleDashboard } from "./api/member-handlers.js";
 import { getDb, getDbError } from "./api/db.js";
+import { isStripeConfigured } from "./api/stripe-config.js";
+import { handleLocaleDetect } from "./api/locale-detect.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,6 +53,10 @@ app.post(
 app.use(express.json({ limit: "100kb" }));
 
 app.post("/api/createPaymentIntent", createPaymentIntent);
+app.post("/api/createCheckoutSession", createCheckoutSession);
+app.get("/api/checkout/complete", completeCheckout);
+app.post("/api/checkout/complete", completeCheckout);
+app.post("/api/billingPortal", createBillingPortal);
 app.post("/api/dev/simulate-order", handleDevSimulateOrder);
 
 app.post("/api/auth/register", handleRegister);
@@ -56,6 +66,7 @@ app.get("/api/auth/me", handleMe);
 app.post("/api/auth/claim-purchase", handleClaimPurchase);
 
 app.get("/api/member/dashboard", handleDashboard);
+app.get("/api/locale/detect", handleLocaleDetect);
 
 app.get("/api/health", (_req, res) => {
   const dbError = getDbError();
@@ -71,8 +82,14 @@ app.get("/api/health", (_req, res) => {
 
 app.get("/api/config", (_req, res) => {
   res.setHeader("Cache-Control", "no-store");
+  const key = process.env.STRIPE_PUBLISHABLE_KEY || "";
+  const publishable =
+    key && !key.includes("REPLACE") && (key.startsWith("pk_test_") || key.startsWith("pk_live_"))
+      ? key
+      : "";
   res.status(200).json({
-    stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY || "",
+    stripePublishableKey: publishable,
+    paymentsEnabled: isStripeConfigured(),
   });
 });
 

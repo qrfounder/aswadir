@@ -2,8 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Loader2, Lock, Mail, KeyRound } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
+import BrandLogo from "@/components/BrandLogo";
+import CurrencySwitcher from "@/components/CurrencySwitcher";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { login, claimPurchase, isAuthenticated } = useAuth();
@@ -34,8 +39,8 @@ export default function LoginPage() {
     } catch (err) {
       setError(
         err.data?.error === "invalid_credentials"
-          ? "الإيميل أو كلمة المرور غير صحيحة."
-          : "صار خطأ. حاول مرة ثانية.",
+          ? t("auth.invalidCredentials")
+          : t("auth.genericError"),
       );
     } finally {
       setLoading(false);
@@ -43,18 +48,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background font-cairo" dir="rtl">
-      <div className="max-w-md mx-auto px-4 py-12 space-y-8">
+    <div className="min-h-screen bg-background font-cairo">
+      <div className="max-w-6xl mx-auto px-4 pt-4 flex justify-end gap-2">
+        <CurrencySwitcher />
+        <LanguageSwitcher />
+      </div>
+      <div className="max-w-md mx-auto px-4 pb-12 space-y-8">
         <div className="text-center space-y-3">
-          <img src="/logo.png" alt="" className="w-14 h-14 rounded-xl mx-auto ring-1 ring-yellow-400/30" />
-          <h1 className="text-2xl font-black text-white">تسجيل الدخول</h1>
-          <p className="text-gray-400 text-sm">ادخل إلى منطقة الأعضاء في مسار</p>
+          <BrandLogo size="auth" className="mx-auto object-center" />
+          <h1 className="text-2xl font-black text-white">{t("auth.loginTitle")}</h1>
+          <p className="text-gray-400 text-sm">{t("auth.loginSub")}</p>
         </div>
 
         <form onSubmit={handleLogin} className="dark-card rounded-2xl p-6 space-y-5">
           <label className="block">
             <span className="text-gray-300 text-sm font-bold mb-2 flex items-center gap-2">
-              <Mail className="w-4 h-4 text-yellow-400" /> الإيميل
+              <Mail className="w-4 h-4 text-yellow-400" /> {t("auth.email")}
             </span>
             <input
               type="email"
@@ -69,7 +78,7 @@ export default function LoginPage() {
 
           <label className="block">
             <span className="text-gray-300 text-sm font-bold mb-2 flex items-center gap-2">
-              <Lock className="w-4 h-4 text-yellow-400" /> كلمة المرور
+              <Lock className="w-4 h-4 text-yellow-400" /> {t("auth.password")}
             </span>
             <input
               type="password"
@@ -87,13 +96,13 @@ export default function LoginPage() {
             className="text-yellow-400/90 text-xs font-bold hover:underline flex items-center gap-1"
           >
             <KeyRound className="w-3.5 h-3.5" />
-            دفعت وما أنشأت حساب؟ اربط طلبك
+            {t("auth.claimPrompt")}
           </button>
 
           {showClaim && (
             <label className="block">
               <span className="text-gray-400 text-xs mb-2 block">
-                رقم عملية الدفع (يبدأ بـ pi_ أو dev_)
+                {t("auth.claimLabel")}
               </span>
               <input
                 type="text"
@@ -118,13 +127,13 @@ export default function LoginPage() {
             className="cta-button w-full py-4 rounded-2xl font-black flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
-            دخول
+            {t("auth.loginBtn")}
           </button>
         </form>
 
         <p className="text-center text-gray-500 text-sm">
           <Link to="/" className="text-gray-400 hover:text-yellow-400">
-            العودة للرئيسية
+            {t("auth.backHome")}
           </Link>
         </p>
       </div>

@@ -1,25 +1,29 @@
 /**
- * Server-side catalog — amounts in halalas (1 SAR = 100).
- * Keep in sync with src/lib/products.js sale/original prices.
+ * Server-side catalog — amounts in USD cents ($1 = 100).
+ * priceId must match recurring Prices in Stripe Dashboard (monthly).
+ * Keep in sync with src/lib/products.js
  */
 export const CATALOG = {
   task: {
-    amount: 9900,
+    amount: 499,
     name: "متتبع المهام",
-    originalPrice: 249,
-    salePrice: 99,
+    originalPrice: 14.99,
+    salePrice: 4.99,
+    priceId: process.env.STRIPE_PRICE_TASK || "price_1TXxEPAUbMU3KadXuDkMv590",
   },
   habit: {
-    amount: 9900,
+    amount: 499,
     name: "متتبع العادات",
-    originalPrice: 249,
-    salePrice: 99,
+    originalPrice: 14.99,
+    salePrice: 4.99,
+    priceId: process.env.STRIPE_PRICE_HABIT || "price_1TWfyIBlMHf0a8IXhqhlxL2I",
   },
   bundle: {
-    amount: 14900,
+    amount: 999,
     name: "الباقة الكاملة",
-    originalPrice: 449,
-    salePrice: 149,
+    originalPrice: 24.99,
+    salePrice: 9.99,
+    priceId: process.env.STRIPE_PRICE_BUNDLE || "price_1TXxETAUbMU3KadXYl2vFgih",
   },
 };
 

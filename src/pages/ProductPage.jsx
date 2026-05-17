@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { Users, Award, Link2, TrendingUp, Brain, Target, BarChart, Zap, Smartphone, Rocket } from "lucide-react";
 
@@ -8,6 +9,7 @@ import BeforeAfter from "@/components/sales/BeforeAfter";
 import TestimonialCard from "@/components/sales/TestimonialCard";
 import FAQSection from "@/components/sales/FAQSection";
 import TrustBadges from "@/components/sales/TrustBadges";
+import BrandLogo from "@/components/BrandLogo";
 import SocialProofBar from "@/components/sales/SocialProofBar";
 import StarRating from "@/components/sales/StarRating";
 import StatsResults from "@/components/sales/StatsResults";
@@ -16,97 +18,52 @@ import PerformersSection from "@/components/sales/PerformersSection";
 import TrustPillars from "@/components/sales/TrustPillars";
 import GiftBanner from "@/components/sales/GiftBanner";
 import VideoTestimonialsStrip from "@/components/sales/VideoTestimonialsStrip";
-import { BUNDLE_PRODUCT } from "@/lib/products";
+import { useBundleProduct } from "@/lib/localizedProducts";
+import { usePricing } from "@/lib/usePricing";
+import SiteHeader from "@/components/layout/SiteHeader";
+import { getTestimonials } from "@/i18n/testimonials";
 import ComparisonTableSection from "@/components/sales/ComparisonTableSection";
 import HabitJourneySection from "@/components/sales/HabitJourneySection";
 
-const TESTIMONIALS = [
-  {
-    name: "محمد العمري",
-    role: "رائد أعمال، الرياض",
-    text: "صراحة أنا من الناس اللي جربت كل شي وما كملت. هالنظام غير، صار لي 6 شهور ما فوّتت يوم. يومي صار واضح ومرتب وأحس بإنجاز حقيقي.",
-    verified: true,
-    date: "مارس 2026",
-    avatar: "/avatars/mohammed.png",
-  },
-  {
-    name: "خالد الشمري",
-    role: "مدير تسويق، دبي",
-    text: "والله جربت تطبيقات كثير وكلها نفس الشي، تحمّلها وتنساها. هالنظام مختلف، لما تشوف السلسلة تطول قدامك مستحيل تبي توقف.",
-    verified: true,
-    date: "فبراير 2026",
-    avatar: "/avatars/khalid.png",
-  },
-  {
-    name: "عبدالله القحطاني",
-    role: "طالب ماجستير، الرياض",
-    text: "أحسن استثمار صرفته على نفسي. حطيت أهدافي الدراسية والصحية وبديت أشوف نتايج من أول أسبوع. يخليك تحاسب نفسك بنفسك.",
-    verified: true,
-    date: "أبريل 2026",
-    avatar: "/avatars/abdullah.png",
-  },
-  {
-    name: "سارة المطيري",
-    role: "مدربة لياقة، الرياض",
-    text: "أخيراً لقيت شي يخليني ألتزم! صار لي أكثر من 90 يوم ما قطعت تمريني ولا أكلي الصحي. الأداة ذي تناسب أي أحد يبي يغيّر عاداته.",
-    verified: true,
-    date: "مارس 2026",
-    avatar: "/avatars/sara.png",
-  },
-  {
-    name: "فيصل الدوسري",
-    role: "مستشار مالي، جدة",
-    text: "أبسط شي وأقوى شي. كل يوم الصبح 5 دقايق وأعرف وش بسوي بيومي كامل. إنتاجيتي ارتفعت بشكل ما توقعته أبداً.",
-    verified: true,
-    date: "يناير 2026",
-    avatar: "/avatars/faisal.png",
-  },
-  {
-    name: "نورة الحربي",
-    role: "مديرة مشاريع، الرياض",
-    text: "شريته عشان الشغل وصرت أستخدمه بكل شي: عاداتي ومهامي وأهدافي الشخصية. النقاط والرسوم البيانية تخليك تبي تكمل مو تبي توقف.",
-    verified: true,
-    date: "أبريل 2026",
-    avatar: "/avatars/noura.png",
-  },
-];
 
-const FEATURES = [
-  {
-    icon: Link2,
-    title: "سلاسل ما تبي تقطعها",
-    desc: "كل يوم تكمل فيه، السلسلة تطول قدامك. وكل ما طالت، صار أصعب عليك توقفها. مو مجرد عادة، صار تحدّي بينك وبين نفسك.",
-  },
-  {
-    icon: TrendingUp,
-    title: "لوحة تحكم تشتغل لحالها",
-    desc: "كل شي يتحدّث تلقائي: نقاط ورسوم بيانية ومؤشرات. تشوف تقدمك بعينك وتحس بالإنجاز. هالشي يخلّيك تبي تكمل من نفسك.",
-  },
-  {
-    icon: Brain,
-    title: "وداعاً للتشتت",
-    desc: "بدال ما تقعد كل صباح تفكر وش بتسوي، النظام يرتّب لك أولوياتك من البداية. طاقتك تروح على الإنجاز مو على التفكير.",
-  },
-  {
-    icon: Target,
-    title: "أهدافك تصير أرقام تشوفها",
-    desc: "الهدف اللي بس براسك ما يحفّزك. بس لما تشوفه رقم ونسبة ورسم بياني قدامك، تحس إنك فعلاً تتقدم كل يوم.",
-  },
-];
+const FEATURE_ICONS = [Link2, TrendingUp, Brain, Target];
+const HERO_BULLET_ICONS = [Link2, BarChart, Zap, Smartphone];
 
 export default function ProductPage() {
+  const { t, i18n } = useTranslation();
+  const bundle = useBundleProduct();
+  const { format, lowestPriceFor, priceFor } = usePricing();
+  const testimonials = useMemo(
+    () => getTestimonials(i18n.language?.split("-")[0] || "en"),
+    [i18n.language],
+  );
   const navigate = useNavigate();
   const pricingRef = useRef(null);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [showStickyBuy, setShowStickyBuy] = useState(false);
 
-  const productGallery = [
-    { src: "/products/hero.png", label: "نظرة سريعة" },
-    { src: "/products/box.png", label: "الباقة" },
-    { src: "/products/habits.png", label: "العادات" },
-    { src: "/products/tasks.png", label: "المهام" },
-  ];
+  const features = useMemo(() => {
+    const list = t("landing.features", { returnObjects: true });
+    if (!Array.isArray(list)) return [];
+    return list.map((feat, i) => ({ ...feat, icon: FEATURE_ICONS[i] ?? Link2 }));
+  }, [t]);
+
+  const heroBullets = useMemo(() => {
+    const list = t("landing.heroBullets", { returnObjects: true });
+    if (!Array.isArray(list)) return [];
+    return list.map((text, i) => ({ text, icon: HERO_BULLET_ICONS[i] ?? Zap }));
+  }, [t]);
+
+  const productGallery = useMemo(
+    () => [
+      { src: "/products/hero.png", label: t("hero.galleryQuick") },
+      { src: "/products/box.png", label: t("hero.galleryBundle") },
+      { src: "/products/habits.png", label: t("hero.galleryHabits") },
+      { src: "/products/tasks.png", label: t("hero.galleryTasks") },
+    ],
+    [t],
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -118,7 +75,7 @@ export default function ProductPage() {
 
   const handleSelectProduct = (product) => {
     if (window.self !== window.top) {
-      alert("الدفع يشتغل بس من التطبيق المنشور. افتح الرابط الأصلي للتطبيق.");
+      alert(t("common.publishedAppOnly"));
       return;
     }
     setIsCheckingOut(true);
@@ -129,41 +86,26 @@ export default function ProductPage() {
     pricingRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const startBundleTrial = () => {
+    if (bundle) handleSelectProduct(bundle);
+  };
+
   return (
-    <div className="min-h-screen bg-background font-cairo" dir="rtl">
+    <div className="min-h-screen bg-background font-cairo" >
       <UrgencyBar />
 
-      {/* Header / Nav */}
-      <header className="bg-black/50 backdrop-blur-md border-b border-yellow-400/10 py-4 px-4 sticky top-[44px] z-40">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <img
-              src="/logo.png"
-              alt="مسار · Massar"
-              className="w-10 h-10 rounded-xl object-cover ring-1 ring-yellow-400/30"
-            />
-            <div>
-              <p className="text-yellow-400 font-black text-sm leading-tight">مسار · Massar</p>
-              <p className="text-gray-500 text-xs">متتبع العادات والمهام</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Link
-              to="/login"
-              className="text-gray-400 hover:text-yellow-400 text-sm font-bold px-3 py-2 hidden sm:inline"
-            >
-              دخول الأعضاء
-            </Link>
-            <button
-              type="button"
-              onClick={scrollToPricing}
-              className="cta-button px-5 py-2 rounded-xl text-sm font-black"
-            >
-              اشتري الآن
-            </button>
-          </div>
-        </div>
-      </header>
+      <SiteHeader
+        className="top-[44px]"
+        rightSlot={
+          <button
+            type="button"
+            onClick={startBundleTrial}
+            className="cta-button px-5 py-2 rounded-xl text-sm font-black"
+          >
+            {t("nav.subscribeNow", { price: lowestPriceFor() })}
+          </button>
+        }
+      />
 
       <main className="pb-28 md:pb-16">
         {/* ─── HERO ─── */}
@@ -175,41 +117,34 @@ export default function ProductPage() {
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-4 py-2">
                   <Users className="w-4 h-4 text-yellow-400" />
-                  <span className="text-yellow-300 text-sm font-bold">+15,000 مستخدم نشط</span>
+                  <span className="text-yellow-300 text-sm font-bold">{t("social.users")}</span>
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-white">
-                  خلاص وقف الفوضى<br />
+                  {t("landing.heroLine1")}
+                  <br />
                   <span className="gold-gradient">
-                    رتّب يومك كامل<br />
-                    في 5 دقايق
+                    {t("landing.heroLine2")}
+                    <br />
+                    {t("landing.heroLine3")}
                   </span>
                 </h1>
 
                 <p className="text-gray-300 text-base md:text-lg leading-relaxed">
-                  النظام الوحيد اللي يخلّي عاداتك ومهامك{" "}
-                  <strong className="text-white">قدام عينك، ممتعة، ومستحيل تتجاهلها</strong>. مبني على أبحاث
-                  علم السلوك ويشتغل على Google Sheets و Excel.
+                  {t("hero.title")}{" "}
+                  <strong className="text-white">{t("hero.titleHighlight")}</strong>. {t("hero.subtitle")}
                 </p>
 
                 <div className="flex items-center gap-3">
                   <StarRating size="lg" />
                   <span className="text-gray-300 text-sm">
-                    <strong className="text-white">4.9/5</strong> من +2,544 تقييم حقيقي
+                    <strong className="text-white">{t("common.ratingValue")}</strong> {t("common.reviewsCount")}
                   </span>
                 </div>
-                <p className="text-gray-500 text-[11px] leading-relaxed -mt-2">
-                  * أرقام التقييمات والمستخدمين على الصفحة تسويقية وقد لا تعكس قاعدة كل المستخدمين الفعلية.
-                  النتائج الشخصية تختلف حسب الالتزام.
-                </p>
+                <p className="text-gray-500 text-[11px] leading-relaxed -mt-2">* {t("landing.disclaimer")}</p>
 
                 <ul className="space-y-2.5">
-                  {[
-                    { icon: Link2, text: "سلاسل يومية، كل ما طالت صعب توقفها" },
-                    { icon: BarChart, text: "لوحة تحكم تشتغل لحالها بدون أي خبرة" },
-                    { icon: Zap, text: "تحميل فوري، ابدأ اليوم خلال 60 ثانية" },
-                    { icon: Smartphone, text: "يشتغل على الجوال والتابلت واللابتوب" },
-                  ].map((item, i) => (
+                  {heroBullets.map((item, i) => (
                     <li key={i} className="flex items-center gap-3 text-gray-200 text-sm">
                       <span className="w-8 h-8 rounded-lg bg-yellow-400/10 flex items-center justify-center flex-shrink-0">
                         <item.icon className="w-4 h-4 text-yellow-400" />
@@ -219,10 +154,13 @@ export default function ProductPage() {
                   ))}
                 </ul>
 
-                <button onClick={scrollToPricing} className="cta-button w-full py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black pulse-gold flex justify-center items-center gap-2">
-                  <Rocket className="w-6 h-6" /> خذه الحين بس {BUNDLE_PRODUCT.salePrice} ر.س
+                <button onClick={startBundleTrial} className="cta-button w-full py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black pulse-gold flex justify-center items-center gap-2">
+                  <Rocket className="w-6 h-6" /> {t("landing.heroCta")}
                 </button>
-                <p className="text-center text-gray-500 text-xs">✅ ضمان استرداد 21 يوم • بدون أي أسئلة</p>
+                <p className="text-center text-yellow-300/90 text-sm font-bold">
+                  {t("landing.heroCtaSub", { lowest: lowestPriceFor(), bundle: priceFor("bundle") })}
+                </p>
+                <p className="text-center text-gray-500 text-xs">✅ {t("landing.heroGuarantee")}</p>
               </div>
 
               {/* Product image */}
@@ -230,11 +168,11 @@ export default function ProductPage() {
                 <div className="relative rounded-2xl overflow-hidden border border-yellow-400/20 glow-gold">
                   <img
                     src={productGallery[activeImage].src}
-                    alt={`مسار · Massar — ${productGallery[activeImage].label}`}
+                    alt={t("landing.productAlt", { label: productGallery[activeImage].label })}
                     className="w-full h-auto object-cover"
                   />
-                  <div className="absolute top-3 right-3 bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-full">
-                    خصم {BUNDLE_PRODUCT.discount}
+                  <div className="absolute top-3 end-3 bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-full">
+                    {t("common.discount")} {bundle.discount}
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -283,9 +221,10 @@ export default function ProductPage() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-black text-white mb-3">
-                هل هذا يصف <span className="gold-gradient">واقعك الآن؟</span>
+                {t("landing.beforeTitle")}{" "}
+                <span className="gold-gradient">{t("landing.beforeTitleHighlight")}</span>
               </h2>
-              <p className="text-gray-400 text-base">الفرق بين اللي يوصل واللي يتمنى هو النظام، مو الإرادة</p>
+              <p className="text-gray-400 text-base">{t("landing.beforeSubtitle")}</p>
             </div>
             <BeforeAfter />
           </div>
@@ -297,13 +236,14 @@ export default function ProductPage() {
         <section className="py-16 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-black text-white mb-3">
-              شاهد النظام في <span className="gold-gradient">العمل</span>
+              {t("landing.demoTitle")}{" "}
+              <span className="gold-gradient">{t("landing.demoTitleHighlight")}</span>
             </h2>
-            <p className="text-gray-400 mb-8">كل يوم تسجّل إنجازاتك وتشوف تقدمك يكبر قدام عينك</p>
+            <p className="text-gray-400 mb-8">{t("landing.demoSubtitle")}</p>
             <div className="rounded-2xl overflow-hidden border border-yellow-400/20 glow-gold max-w-2xl mx-auto">
               <img
                 src="https://cdn.shopify.com/s/files/1/0798/1675/3394/files/Video_3.gif?v=1765128020"
-                alt="نظام الانضباط في العمل"
+                alt={t("landing.demoAlt")}
                 className="w-full"
               />
             </div>
@@ -323,12 +263,13 @@ export default function ProductPage() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-2xl md:text-3xl font-black text-white mb-3">
-                لماذا <span className="gold-gradient">يعمل هذا النظام؟</span>
+                {t("landing.featuresTitle")}{" "}
+                <span className="gold-gradient">{t("landing.featuresTitleHighlight")}</span>
               </h2>
-              <p className="text-gray-400">مبني على دراسات علمية في السلوك والتحفيز</p>
+              <p className="text-gray-400">{t("landing.featuresSubtitle")}</p>
             </div>
             <div className="grid md:grid-cols-2 gap-5">
-              {FEATURES.map((feat, i) => (
+              {features.map((feat, i) => (
                 <div key={i} className="dark-card rounded-2xl p-6 flex gap-4">
                   <div className="w-12 h-12 bg-yellow-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
                     <feat.icon className="w-6 h-6 text-yellow-400" />
@@ -368,10 +309,10 @@ export default function ProductPage() {
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-4 py-2 mb-4">
                 <Award className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-300 text-sm font-bold">+2,544 تقييم حقيقي</span>
+                <span className="text-yellow-300 text-sm font-bold">{t("common.reviewsCount")}</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
-                ماذا يقول <span className="gold-gradient">المستخدمون؟</span>
+                {t("testimonials.sectionTitle")}
               </h2>
               <div className="flex justify-center items-center gap-2 mt-2">
                 <StarRating size="xl" />
@@ -380,44 +321,24 @@ export default function ProductPage() {
               </div>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {TESTIMONIALS.map((t, i) => (
-                <TestimonialCard key={i} {...t} />
+              {testimonials.map((item, i) => (
+                <TestimonialCard key={`${item.name}-${i}`} {...item} verified />
               ))}
             </div>
           </div>
         </section>
 
-        {/* ─── EXTRA REVIEWS ─── */}
+        {testimonials.length > 3 && (
         <section className="py-10 px-4 bg-black/20">
           <div className="max-w-5xl mx-auto">
             <div className="grid md:grid-cols-2 gap-4">
-              {[
-                {
-                  img: "/avatars/ahmed.png",
-                  name: "أحمد الغامدي",
-                  role: "مهندس برمجيات، جدة",
-                  text: "هالنظام يخلّيك تحاسب نفسك بطريقة ما سوّاها أي تطبيق ثاني. صار لي 7 شهور ما فوّتت أسبوع تمارين. السلاسل والأشرطة تحمّسك بزيادة.",
-                },
-                {
-                  img: "/avatars/omar.png",
-                  name: "عمر الحربي",
-                  role: "صاحب مشروع، الرياض",
-                  text: "أداة بسيطة بس والله غيّرت يومي كامل. لما تشوف السلاسل تطول تحس بحماس، صرت أتحمّس أسجّل إنجازاتي كل مسا.",
-                },
-              ].map((r, i) => (
-                <div key={i} className="testimonial-card rounded-2xl p-5 flex gap-4">
-                  <img src={r.img} alt={r.name} className="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
-                  <div>
-                    <StarRating size="sm" />
-                    <p className="text-gray-200 text-sm mt-2 leading-relaxed">{r.text}</p>
-                    <p className="text-white text-sm font-bold mt-2">{r.name}</p>
-                    <p className="text-gray-500 text-xs">{r.role}</p>
-                  </div>
-                </div>
+              {testimonials.slice(3, 5).map((r, i) => (
+                <TestimonialCard key={`extra-${i}`} {...r} verified />
               ))}
             </div>
           </div>
         </section>
+        )}
 
         <hr className="section-divider mx-8" />
 
@@ -426,9 +347,10 @@ export default function ProductPage() {
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-10 space-y-5">
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
-                ابدأ <span className="gold-gradient">نظامك اليوم</span>
+                {t("landing.pricingTitle")}{" "}
+                <span className="gold-gradient">{t("landing.pricingTitleHighlight")}</span>
               </h2>
-              <p className="text-gray-400">عرض محدود، السعر هذا ما بيستمر طويل</p>
+              <p className="text-gray-400">{t("landing.pricingSubtitle")}</p>
               <GiftBanner />
               <TrustPillars />
             </div>
@@ -446,7 +368,8 @@ export default function ProductPage() {
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
-                أسئلة <span className="gold-gradient">شائعة</span>
+                {t("landing.faqTitle")}{" "}
+                <span className="gold-gradient">{t("landing.faqTitleHighlight")}</span>
               </h2>
             </div>
             <FAQSection />
@@ -457,34 +380,27 @@ export default function ProductPage() {
         <section className="py-16 px-4 hero-gradient">
           <div className="max-w-2xl mx-auto text-center space-y-6">
             <h2 className="text-3xl md:text-4xl font-black text-white">
-              باقي عليك <span className="gold-gradient">قرار واحد</span><br />
-              وتتغير حياتك
+              {t("landing.finalTitle")}{" "}
+              <span className="gold-gradient">{t("landing.finalTitleHighlight")}</span>
+              <br />
+              {t("landing.finalTitle2")}
             </h2>
-            <p className="text-gray-300 text-base md:text-lg">
-              كل شخص ناجح عنده نظام. هذا نظامك، جاهز خلال 60 ثانية.
-            </p>
+            <p className="text-gray-300 text-base md:text-lg">{t("landing.finalSubtitle")}</p>
             <button onClick={scrollToPricing} className="cta-button w-full max-w-sm px-8 py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black flex justify-center items-center gap-2 mx-auto pulse-gold">
-              <Rocket className="w-6 h-6" /> ابدأ الحين بس {BUNDLE_PRODUCT.salePrice} ر.س
+              <Rocket className="w-6 h-6" /> {t("landing.finalCta", { price: bundle.salePrice })}
             </button>
-            <p className="text-gray-500 text-sm">✅ ضمان استرداد كامل 21 يوم • دفع آمن • تحميل فوري</p>
+            <p className="text-gray-500 text-sm">✅ {t("landing.finalNote")}</p>
           </div>
         </section>
       </main>
 
       {/* Footer */}
       <footer className="bg-black/50 border-t border-yellow-400/10 py-8 px-4 text-center">
-        <div className="flex items-center justify-center gap-2 mb-3">
-          <img
-            src="/logo.png"
-            alt="مسار · Massar"
-            className="w-8 h-8 rounded-lg object-cover ring-1 ring-yellow-400/30"
-          />
-          <span className="text-yellow-400 font-black text-sm">مسار · Massar</span>
+        <div className="flex items-center justify-center mb-3">
+          <BrandLogo size="footer" className="mx-auto object-center" />
         </div>
-        <p className="text-gray-600 text-xs">
-          © 2026 Massar (مسار). جميع الحقوق محفوظة.
-        </p>
-        <p className="text-gray-700 text-xs mt-1">السعودية • الإمارات • الكويت • البحرين • قطر • عُمان</p>
+        <p className="text-gray-600 text-xs">{t("footer.rights")}</p>
+        <p className="text-gray-700 text-xs mt-1">{t("footer.regions")}</p>
       </footer>
 
       {/* Sticky Buy CTA */}
@@ -493,32 +409,34 @@ export default function ProductPage() {
           <div className="max-w-lg mx-auto space-y-2.5">
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[10px] sm:text-xs text-gray-400">
               <span className="inline-flex items-center gap-1">
-                <span className="text-emerald-400">✓</span> ضمان 21 يوم
+                <span className="text-emerald-400">✓</span> {t("landing.stickyGuarantee")}
               </span>
               <span className="inline-flex items-center gap-1">
-                <span className="text-emerald-400">✓</span> دفع آمن
+                <span className="text-emerald-400">✓</span> {t("landing.stickySecure")}
               </span>
               <span className="inline-flex items-center gap-1">
-                <span className="text-emerald-400">✓</span> تحميل فوري
+                <span className="text-emerald-400">✓</span> {t("landing.stickyInstant")}
               </span>
             </div>
             <div className="flex items-center gap-3 pb-1">
               <div className="flex-1 min-w-0">
-                <p className="text-white font-black text-sm truncate">الباقة الكاملة</p>
+                <p className="text-white font-black text-sm truncate">{t("landing.stickyBundle")}</p>
+                <p className="text-emerald-400/90 text-[10px] font-bold">{t("landing.stickyTrial")}</p>
                 <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-gray-500 text-xs line-through">{BUNDLE_PRODUCT.originalPrice} ر.س</span>
-                <span className="text-yellow-400 font-black">{BUNDLE_PRODUCT.salePrice} ر.س</span>
+                <span className="text-gray-400 text-[10px]">{t("landing.stickyFrom", { price: lowestPriceFor() })}</span>
+                <span className="text-gray-500 text-xs line-through">{format(bundle.originalPrice)}</span>
+                <span className="text-yellow-400 font-black">{format(bundle.salePrice)}</span>
                 <span className="bg-red-500/20 text-red-400 text-xs px-1.5 py-0.5 rounded">
-                  -{BUNDLE_PRODUCT.discount}
+                  -{bundle.discount}
                 </span>
                 </div>
               </div>
               <button
                 type="button"
-                onClick={scrollToPricing}
+                onClick={startBundleTrial}
                 className="cta-button px-6 py-3 rounded-xl text-sm font-black flex-shrink-0"
               >
-                اشتري الآن
+                {t("landing.stickyCta")}
               </button>
             </div>
           </div>

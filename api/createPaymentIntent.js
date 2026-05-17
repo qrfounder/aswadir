@@ -37,7 +37,7 @@ export default async function createPaymentIntent(req, res) {
     const intent = await stripe.paymentIntents.create(
       {
         amount: product.amount,
-        currency: "sar",
+        currency: "usd",
         automatic_payment_methods: { enabled: true },
         description: product.name,
         receipt_email: cleanEmail,

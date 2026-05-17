@@ -1,5 +1,5 @@
 import { getCatalogProduct } from "./catalog.js";
-import { createDevSimulatedPurchase } from "./purchases.js";
+import { createDevSimulatedCheckout } from "./purchases.js";
 
 /** Local checkout simulation without Stripe — development only */
 export function handleDevSimulateOrder(req, res) {
@@ -21,7 +21,7 @@ export function handleDevSimulateOrder(req, res) {
   if (!cleanEmail) return res.status(400).json({ error: "invalid_email" });
   if (cleanPhone.length < 8) return res.status(400).json({ error: "invalid_phone" });
 
-  const paymentIntentId = createDevSimulatedPurchase({
+  const checkoutSessionId = createDevSimulatedCheckout({
     productId,
     productName: product.name,
     amount: product.amount,
@@ -31,7 +31,8 @@ export function handleDevSimulateOrder(req, res) {
   });
 
   return res.status(200).json({
-    paymentIntentId,
+    checkoutSessionId,
+    customerEmail: cleanEmail,
     simulated: true,
   });
 }

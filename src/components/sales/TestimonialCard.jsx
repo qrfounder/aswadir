@@ -1,6 +1,8 @@
+import { useTranslation } from "react-i18next";
 import StarRating from "./StarRating";
 
 export default function TestimonialCard({ name, role, text, avatar, verified = true, date }) {
+  const { t } = useTranslation();
   return (
     <div className="testimonial-card rounded-2xl p-5 flex flex-col gap-3 h-full">
       <div className="flex items-start justify-between gap-2">
@@ -18,7 +20,9 @@ export default function TestimonialCard({ name, role, text, avatar, verified = t
             <div className="flex items-center gap-1.5 flex-wrap">
               <p className="text-white font-bold text-sm">{name}</p>
               {verified && (
-                <span className="text-xs bg-green-500/15 text-green-400 px-1.5 py-0.5 rounded-full border border-green-500/25">✓ موثق</span>
+                <span className="text-xs bg-green-500/15 text-green-400 px-1.5 py-0.5 rounded-full border border-green-500/25">
+                  ✓ {t("testimonials.verified")}
+                </span>
               )}
             </div>
             {role && <p className="text-gray-400 text-xs mt-0.5">{role}</p>}

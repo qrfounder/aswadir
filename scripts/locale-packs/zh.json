@@ -1,0 +1,571 @@
+{
+  "meta": {
+    "title": "Massar | 习惯与任务追踪",
+    "description": "Massar — 为坚持而生的习惯与任务追踪。每天5分钟，在会员面板建立自律。"
+  },
+  "lang": {
+    "label": "语言",
+    "en": "English",
+    "ar": "العربية",
+    "th": "ไทย",
+    "zh": "中文",
+    "fr": "Français"
+  },
+  "nav": {
+    "memberLogin": "会员登录",
+    "subscribeNow": "立即订阅",
+    "securePay": "安全结账",
+    "monthlySub": "月度订阅",
+    "back": "返回",
+    "memberArea": "会员"
+  },
+  "urgency": {
+    "bar": "ข้อเสนอจำกัดสิ้นสุดใน:",
+    "discount": "ลด 67%",
+    "spots": "เหลือเพียง {{count}} ที่นั่งในราคานี้",
+    "viewers": "{{count}} คนกำลังดูอยู่"
+  },
+  "socialBar": {
+    "users": "ผู้ใช้งานที่ใช้งานอยู่",
+    "rating": "รีวิว",
+    "guarantee": "วันคืนเงิน"
+  },
+  "hero": {
+    "badge": "สมาชิกรายเดือน · ทดลองใช้ 1 วัน",
+    "title": "ระบบเดียวที่ทำให้นิสัยและงาน",
+    "titleHighlight": "อยู่ตรงหน้า — สนุกและหยุดยาก",
+    "subtitle": "ออกแบบจากพฤติกรรม — ติดตามทุกวันใน Massar",
+    "rating": "{{score}}/5 จากรีวิวจริง {{count}}+ รายการ",
+    "cta": "เริ่มสมาชิกรายเดือน",
+    "ctaSub": "ทดลอง 1 วัน · จากนั้น {{price}} SAR/เดือน · ยกเลิกได้ทุกเมื่อ",
+    "galleryQuick": "ดูอย่างรวดเร็ว",
+    "galleryBundle": "แพ็กเกจ",
+    "galleryHabits": "นิสัย",
+    "galleryTasks": "งาน"
+  },
+  "social": {
+    "users": "+15,000 ผู้ใช้งานที่ใช้งานอยู่",
+    "countries": "ซาอุดี · ยูเออี · โมร็อกโก · สหรัฐฯ · ไทย และอื่นๆ"
+  },
+  "pricing": {
+    "discountEnds": "ราคาพิเศษสิ้นสุดใน:",
+    "bestSeller": "ขายดีที่สุด",
+    "perMonth": "SAR / เดือน",
+    "subscribeBtn": "สมัครเลย — {{price}} SAR/เดือน",
+    "trialNote": "ทดลอง 1 วันฟรี · ยกเลิกได้จากแดชบอร์ด",
+    "infoTitle": "การเรียกเก็บเงินทำงานอย่างไร",
+    "infoBody": "สมาชิกรายเดือนต่ออายุอัตโนมัติ เข้าถึงแดชบอร์ดทันทีหลังชำระเงิน"
+  },
+  "products": {
+    "task": {
+      "name": "ตัวติดตามงาน",
+      "subtitle": "จัดระเบียบงานรายวันอย่างง่าย",
+      "badge": "",
+      "features": [
+        "บอร์ดงานรายวัน/รายสัปดาห์ทุกเช้า",
+        "ติดตามความคืบหน้าใน Massar",
+        "เตือนสิ่งสำคัญ",
+        "ยกเลิกได้ทุกเมื่อ"
+      ]
+    },
+    "habit": {
+      "name": "ตัวติดตามนิสัย",
+      "subtitle": "สร้างนิสัยที่ยั่งยืน",
+      "badge": "",
+      "features": [
+        "ตารางนิสัยรายเดือน + streak",
+        "อารมณ์และพลังงานรายวัน",
+        "คะแนนเมื่อทำสำเร็จ",
+        "ยกเลิกได้ทุกเมื่อ"
+      ]
+    },
+    "bundle": {
+      "name": "แพ็กเกจเต็ม ✦",
+      "subtitle": "นิสัย + งาน + แดชบอร์ดชีวิต",
+      "badge": "ขายดีที่สุด",
+      "features": [
+        "ครบทุกฟีเจอร์งานและนิสัย",
+        "ศูนย์บัญชาการรายวัน",
+        "วิเคราะห์แบบเรียลไทม์",
+        "เนื้อหาสมาชิกใหม่ทุกเดือน",
+        "ซัพพอร์ตพิเศษ · ยกเลิกได้"
+      ]
+    },
+    "billingLabel": "รายเดือน"
+  },
+  "performers": {
+    "eyebrow": "ออกแบบสำหรับคนทะเยอท",
+    "title": "ออกแบบสำหรับ",
+    "titleHighlight": "คนประสิทธิภาพสูง",
+    "subtitle": "ไม่ใช่แอปทั่วไป — ระบบนิสัยและงานพร้อมวิเคราะห์สด",
+    "pillars": [
+      {
+        "title": "สร้างเพื่อความต่อเนื่อง",
+        "desc": "วินัยง่ายขึ้นเมื่อระบบทำงานแทนคุณ",
+        "emoji": "✅"
+      },
+      {
+        "title": "ผลิตภาพเร็วขึ้น",
+        "desc": "วางแผนรายวันชัดเจน ลดการฟุ้งซ่าน",
+        "emoji": "⚡"
+      },
+      {
+        "title": "เห็นความก้าวหน้า",
+        "desc": "กราฟและ streak กระตุ้นสมองให้อยากทำต่อ",
+        "emoji": "📊"
+      },
+      {
+        "title": "แอปรายวัน",
+        "desc": "สมาชิกรายเดือน — นิสัย งาน วิเคราะห์ในที่เดียว",
+        "emoji": "🔒"
+      }
+    ]
+  },
+  "video": {
+    "eyebrow": "ดูบนหน้าจอ",
+    "title": "เรื่องราวสั้นจาก",
+    "titleHighlight": "สมาชิกจริง",
+    "subtitle": "ปัดบนมือถือ คลิปแสดงการใช้งานจริง"
+  },
+  "testimonials": {
+    "sectionTitle": "สมาชิกพูดว่าอย่างไร",
+    "verified": "ผู้ซื้อยืนยันแล้ว"
+  },
+  "faq": {
+    "title": "คำถามที่พบบ่อย",
+    "items": [
+      {
+        "q": "ทำเองได้ไหม?",
+        "a": "ได้ แต่ระบบนี้ใช้เวลาพัฒนา 50+ ชม."
+      },
+      {
+        "q": "เคยลองแอปอื่นแล้วเลิก — ต่างอย่างไร?",
+        "a": "แอปส่วนใหญ่ซับซ้อนหรือน่าเบื่อ — ของเราเน้น 5 นาที/วัน"
+      },
+      {
+        "q": "ต้องมีทักษะเทคนิคไหม?",
+        "a": "ไม่ต้องเลย สมัครแล้วเข้าแดชบอร์ดได้ทันที"
+      },
+      {
+        "q": "ใช้บนมือถือได้ไหม?",
+        "a": "ได้ มือถือ แท็บเล็ต แล็ปท็อป"
+      },
+      {
+        "q": "รายเดือนหรือจ่ายครั้งเดียว?",
+        "a": "รายเดือน ทดลอง 1 วัน ยกเลิกได้ทุกเมื่อ"
+      },
+      {
+        "q": "ถ้าไม่ชอบล่ะ?",
+        "a": "ทดลอง 21 วัน คืนเงินเต็ม"
+      },
+      {
+        "q": "หลังซื้อเข้าใช้งานอย่างไร?",
+        "a": "ชำระเงินแล้วสร้างบัญชีจากหน้าขอบคุณ"
+      }
+    ]
+  },
+  "landing": {
+    "heroLine1": "หยุดความวุ่นวาย",
+    "heroLine2": "จัดวันทั้งวัน",
+    "heroLine3": "ใน 5 นาที",
+    "heroBullets": [
+      "streak รายวัน — ยิ่งยาวยิ่งหยุดยาก",
+      "แดชบอร์ดอัปเดตเอง",
+      "เริ่มใน 60 วินาที",
+      "ใช้ได้ทุกอุปกรณ์"
+    ],
+    "heroCta": "เริ่มเลย {{price}} SAR",
+    "heroGuarantee": "คืนเงิน 21 วัน · ไม่มีคำถาม",
+    "disclaimer": "ตัวเลขบนหน้านี้เพื่อการตลาด ผลลัพธ์ขึ้นกับความมุ่งมั่น",
+    "features": [
+      {
+        "title": "Streaks you won't want to break",
+        "desc": "Every day you complete, the chain grows in front of you. The longer it gets, the harder it is to stop — a challenge with yourself."
+      },
+      {
+        "title": "A dashboard that runs itself",
+        "desc": "Everything updates automatically: points, charts, indicators. You see progress and feel the win — so you keep coming back."
+      },
+      {
+        "title": "Goodbye to distraction",
+        "desc": "Instead of wondering what to do each morning, the system sets your priorities. Your energy goes to doing, not deciding."
+      },
+      {
+        "title": "Goals you can see as numbers",
+        "desc": "A goal only in your head doesn't motivate. When you see the number, percentage, and chart in front of you, you feel real daily progress."
+      }
+    ],
+    "stickyCta": "สมัครเลย",
+    "comparisonTitle": "Massar เทียบแอปอื่น",
+    "comparisonMassar": "Massar",
+    "comparisonApps": "แอปอื่น",
+    "comparisonNotes": "โน้ตเท่านั้น",
+    "comparisonRows": [
+      {
+        "feature": "streak รายวัน",
+        "massar": "full",
+        "apps": "partial",
+        "notes": "none"
+      },
+      {
+        "feature": "แดชบอร์ดอัตโนมัติ",
+        "massar": "full",
+        "apps": "partial",
+        "notes": "none"
+      },
+      {
+        "feature": "5 นาที/วัน ไม่ซับซ้อน",
+        "massar": "full",
+        "apps": "partial",
+        "notes": "partial"
+      },
+      {
+        "feature": "สมาชิกรายเดือน ยกเลิกได้",
+        "massar": "full",
+        "apps": "none",
+        "notes": "full"
+      },
+      {
+        "feature": "เว็บแอปในพื้นที่สมาชิก",
+        "massar": "full",
+        "apps": "none",
+        "notes": "partial"
+      }
+    ],
+    "beforeTitle": "ฟังดูเหมือน",
+    "beforeTitleHighlight": "ชีวิตคุณตอนนี้ไหม?",
+    "beforeSubtitle": "ช่องว่างระหว่างอยากทำกับทำได้คือระบบ ไม่ใช่แรงใจ",
+    "beforeCardTitle": "ก่อน Massar",
+    "afterCardTitle": "หลัง Massar",
+    "beforeItems": [
+      "ตื่นมาไม่รู้จะทำอะไร",
+      "งานค้างสะสม",
+      "เริ่มนิสัยแล้วเลิก",
+      "ฟุ้งซ่านทุกวัน",
+      "เสียเวลาแค่คิดว่าจะทำอะไร"
+    ],
+    "afterItems": [
+      "ตื่นมารู้ลำดับงานชัด",
+      "จัดงานทีละวัน",
+      "นิสัยสะสมต่อเนื่อง",
+      "โฟกัสชัดทั้งวัน",
+      "5 นาทีวางแผนทั้งวัน"
+    ],
+    "demoTitle": "ดูระบบ",
+    "demoTitleHighlight": "ทำงานจริง",
+    "demoSubtitle": "บันทึกทุกวัน เห็นความก้าวหน้า",
+    "demoAlt": "ระบบ Massar",
+    "featuresTitle": "ทำไม",
+    "featuresTitleHighlight": "ระบบนี้ได้ผล?",
+    "featuresSubtitle": "จากงานวิจัยพฤติกรรม",
+    "pricingTitle": "เริ่ม",
+    "pricingTitleHighlight": "ระบบวันนี้",
+    "pricingSubtitle": "ราคาพิเศษจำกัดเวลา",
+    "faqTitle": "คำถาม",
+    "faqTitleHighlight": "ที่พบบ่อย",
+    "finalTitle": "เหลือ",
+    "finalTitleHighlight": "การตัดสินใจเดียว",
+    "finalTitle2": "ที่เปลี่ยนชีวิตรายวัน",
+    "finalSubtitle": "คนสำเร็จมีระบบ — ของคุณพร้อมใน 60 วินาที",
+    "finalCta": "เริ่มเลย {{price}} SAR",
+    "finalNote": "คืนเงิน 21 วัน · ชำระปลอดภัย · เข้าใช้ทันที",
+    "stickyGuarantee": "รับประกัน 21 วัน",
+    "stickySecure": "ชำระปลอดภัย",
+    "stickyInstant": "เข้าใช้ทันที",
+    "stickyBundle": "แพ็กเกจเต็ม",
+    "productAlt": "Massar — {{label}}"
+  },
+  "footer": {
+    "rights": "© 2026 Massar สงวนลิขสิทธิ์",
+    "regions": "ซาอุดี · ยูเออี · โมร็อกโก · สหรัฐฯ · ไทย · ทั่วโลก"
+  },
+  "checkout": {
+    "title": "เริ่มสมาชิกรายเดือน",
+    "subtitle": "แอปนิสัยและงาน — {{price}} SAR / เดือน",
+    "stepInfo": "ข้อมูลของคุณ",
+    "stepPay": "ชำระเงิน",
+    "fullName": "ชื่อ-นามสกุล",
+    "email": "อีเมล (สำหรับบัญชี Massar)",
+    "whatsapp": "เบอร์ WhatsApp",
+    "continuePay": "ดำเนินการชำระเงิน",
+    "edit": "แก้ไข",
+    "paySecure": "ชำระเงินอย่างปลอดภัย",
+    "payStripeLead": "You'll go to Stripe's official checkout page to enter your card (Visa, Mastercard, Apple Pay, and more). After payment you'll return to create your Massar account.",
+    "payStripeBtn": "ไปหน้าชำระเงินที่ปลอดภัย",
+    "payStripeLoading": "กำลังเปิดหน้าชำระเงิน…",
+    "payAgree": "ต่อไปถือว่ายอมรับการเรียกเก็บรายเดือน — ยกเลิกได้ทุกเมื่อ",
+    "trialDev": "โหมดทดสอบ — ไม่ใช้บัตร",
+    "trialDevHint": "Add Stripe keys to .env and run npm run dev:all to enable card checkout.",
+    "trialDevBtn": "ทดสอบชำระเงิน (ไม่ใช้บัตร)",
+    "renewMonthly": "ต่ออายุรายเดือน — {{price}} SAR",
+    "trialDay": "ทดลอง 1 วัน — จากนั้น {{price}} SAR/เดือน",
+    "refund": "รับประกันคืนเงิน 21 วัน",
+    "summary": "สรุปการสมัคร",
+    "errors": {
+      "name": "กรุณากรอกชื่อ-นามสกุล",
+      "email": "กรุณากรอกอีเมลที่ถูกต้อง",
+      "phone": "WhatsApp ต้องเป็นตัวเลข 8–12 หลัก",
+      "generic": "เกิดข้อผิดพลาด ลองอีกครั้ง",
+      "payments_not_configured": "ยังไม่เปิดใช้งานการชำระเงินบนเซิร์ฟเวอร์",
+      "stripe_price_invalid": "Price ID ไม่ถูกต้อง",
+      "stripe_auth_invalid": "คีย์ Stripe ไม่ถูกต้อง",
+      "stripe_checkout_failed": "เปิดหน้าชำระเงินไม่ได้"
+    },
+    "personalInfo": "ข้อมูลส่วนตัว",
+    "checkingPayments": "กำลังตรวจสอบการชำระเงิน…",
+    "whatsappPrefix": "+966"
+  },
+  "thankYou": {
+    "confirmed": "ยืนยันคำสั่งซื้อแล้ว — ขอบคุณ!",
+    "congrats": "ยินดีด้วย!",
+    "accessReady": "พร้อมใช้งาน — สร้างบัญชี",
+    "purchased": "คุณซื้อ {{name}} สร้างบัญชีเพื่อเข้าพื้นที่สมาชิก",
+    "paid": "ยอดชำระ:",
+    "createAccount": "สร้างบัญชีและเข้าแดชบอร์ด",
+    "trialNote": "สมาชิกรายเดือน · ยกเลิกได้ทุกเมื่อ",
+    "nextSteps": "ขั้นตอนถัดไป",
+    "steps": [
+      {
+        "title": "สร้างบัญชีตอนนี้",
+        "desc": "อีเมลและรหัสผ่าน — เข้าแดชบอร์ด"
+      },
+      {
+        "title": "เริ่มบันทึกนิสัย",
+        "desc": "ทุกอย่างในที่เดียว"
+      }
+    ],
+    "guaranteeTitle": "รับประกันคืนเงิน 21 วัน",
+    "guaranteeBody": "ไม่เหมาะ? คืนเงินเต็ม",
+    "shareWhatsapp": "แชร์บน WhatsApp",
+    "orderConfirmedBanner": "ยืนยันคำสั่งซื้อแล้ว — ขอบคุณ!"
+  },
+  "auth": {
+    "loginTitle": "เข้าสู่ระบบ",
+    "loginSub": "เข้าพื้นที่สมาชิก Massar",
+    "setupTitle": "สร้างบัญชี Massar",
+    "setupSub": "อีกขั้นเดียวสู่แดชบอร์ด",
+    "email": "อีเมล",
+    "password": "รหัสผ่าน",
+    "confirmPassword": "ยืนยันรหัสผ่าน",
+    "name": "ชื่อ-นามสกุล",
+    "loginBtn": "เข้าสู่ระบบ",
+    "setupBtn": "สร้างบัญชี",
+    "noAccount": "ยังไม่มีบัญชี?",
+    "hasAccount": "มีบัญชีแล้ว?",
+    "createLink": "สร้างบัญชีหลังซื้อ",
+    "loginLink": "เข้าสู่ระบบ",
+    "claimPrompt": "ชำระแล้วแต่ยังไม่มีบัญชี?",
+    "claimLabel": "รหัสการชำระเงิน",
+    "invalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+    "genericError": "เกิดข้อผิดพลาด",
+    "backHome": "กลับหน้าหลัก"
+  },
+  "dashboard": {
+    "memberArea": "พื้นที่สมาชิก",
+    "hello": "สวัสดี,",
+    "welcome": "ติดตามนิสัยและงานในที่เดียว {{bundle}}",
+    "welcomeBundle": "แพ็กเกจเต็มเปิดใช้งานแล้ว",
+    "welcomeUpgrade": "อัปเกรดเป็นแพ็กเกจเต็มได้ทุกเมื่อ",
+    "trustSecure": "เข้าถึงบัญชีคุณเท่านั้น",
+    "trustLocal": "บันทึกบนอุปกรณ์ — ความเป็นส่วนตัว",
+    "loading": "กำลังโหลด…",
+    "loadError": "โหลดแดชบอร์ดไม่ได้",
+    "yourProducts": "แผนที่ใช้งาน",
+    "inDashboard": "ใช้ได้ในแดชบอร์ด้านล่าง",
+    "updates": "อัปเดตและเนื้อหาใหม่",
+    "noUpdates": "ยังไม่มีอัปเดต",
+    "comingTitle": "เร็วๆ นี้สำหรับสมาชิก",
+    "comingBody": "คอร์สสั้นและเทมเพลต — รวมในแผน",
+    "backHome": "กลับหน้าหลัก",
+    "logout": "ออกจากระบบ",
+    "products": {
+      "habit": "ตัวติดตามนิสัย",
+      "task": "ตัวติดตามงาน",
+      "bundle": "แพ็กเกจเต็ม"
+    },
+    "noProducts": "ยังไม่มีผลิตภัณฑ์ที่เปิดใช้",
+    "defaultName": "คุณ"
+  },
+  "currency": {
+    "sar": "SAR"
+  },
+  "common": {
+    "back": "กลับ",
+    "edit": "แก้ไข",
+    "loading": "กำลังโหลด…",
+    "guest": "คุณ",
+    "home": "กลับหน้าหลัก",
+    "discount": "ลด",
+    "ssl": "เข้ารหัส SSL",
+    "freeTrialBadge": "ทดลองฟรี 1 วัน",
+    "exampleName": "เช่น สมชาย ใจดี",
+    "paymentChecking": "กำลังตรวจสอบการชำระเงิน…",
+    "publishedAppOnly": "ชำระเงินได้จากไซต์ที่เผยแพร่เท่านั้น",
+    "feature": "ฟีเจอร์",
+    "reviewsCount": "+2,544 รีวิว",
+    "ratingValue": "4.9/5",
+    "full": "ครบ",
+    "partial": "บางส่วน",
+    "none": "ไม่มี",
+    "comparisonLegend": "✓ = ครบ · − = ต่างกัน · ✕ = มักไม่มี"
+  },
+  "stats": {
+    "eyebrow": "ผลลัพธ์ชุมชน Massar",
+    "title": "ระบบง่าย +",
+    "titleHighlight": "ลงมือทุกวัน",
+    "titleEnd": "= ความก้าวหน้าจริง",
+    "subtitle": "ความสม่ำเสมอคือระบบ ไม่ใช่โชค",
+    "items": [
+      {
+        "value": "92%",
+        "label": "โฟกัสชัดขึ้นใน 3 วัน"
+      },
+      {
+        "value": "89%",
+        "label": "นิสัยแข็งแรงใน 14 วัน"
+      },
+      {
+        "value": "95%",
+        "label": "รู้สึกมีความรับผิดชอบมากขึ้น"
+      }
+    ]
+  },
+  "research": {
+    "eyebrow": "ทำไมได้ผล",
+    "title": "คุณทำได้ —",
+    "titleHighlight": "ด้วยระบบที่พิสูจน์แล้ว",
+    "p1": "งานวิจัย Duke บอกว่า 45% ของพฤติกรรมรายวันเป็นนิสัย",
+    "p2": "งานวิจัยยุโรปเน้นการทำซ้ำที่มองเห็นและ feedback ทันที",
+    "p3": "Massar ใช้แรงจูงใจเดียวกันเพื่อให้ทำต่อได้ง่ายขึ้น"
+  },
+  "trustPillars": {
+    "items": [
+      {
+        "title": "5 นาที/วัน",
+        "desc": "ไม่ต้องใช้เวลานาน"
+      },
+      {
+        "title": "วิทยาศาสตร์พฤติกรรม",
+        "desc": "streak + feedback"
+      },
+      {
+        "title": "รับประกัน 21 วัน",
+        "desc": "ไม่เหมาะคืนเงินเต็ม"
+      }
+    ]
+  },
+  "gift": {
+    "text": "วันละ 100 ท่านแรกได้เทมเพลตโบนัส 10 ชิ้น"
+  },
+  "trustBadges": {
+    "items": [
+      {
+        "text": "คืนเงิน 21 วัน",
+        "sub": "ไม่มีคำถาม"
+      },
+      {
+        "text": "เข้าใช้ทันที",
+        "sub": "60 วินาที"
+      },
+      {
+        "text": "ชำระปลอดภัย",
+        "sub": "SSL"
+      },
+      {
+        "text": "รายเดือน",
+        "sub": "ยกเลิกได้"
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "เส้นทางจริง",
+    "title": "เดือนแรก",
+    "titleHighlight": "เป็นอย่างไร?",
+    "subtitle": "สิ่งที่สมาชิกส่วนใหญ่เจอเมื่อบันทึกทุกวัน",
+    "weeks": [
+      {
+        "w": "สัปดาห์ 1",
+        "title": "สร้างกิจวัตร",
+        "desc": "5 นาที/วัน streak แรก"
+      },
+      {
+        "w": "สัปดาห์ 2",
+        "title": "streak ช่วยคุณ",
+        "desc": "สมองเชื่อมความสำเร็จกับภาพ"
+      },
+      {
+        "w": "สัปดาห์ 3–4",
+        "title": "สม่ำเสมอขึ้น",
+        "desc": "กราฟแสดงโมเมนตัม"
+      }
+    ]
+  },
+  "tracker": {
+    "overviewTab": "ศูนย์ความก้าวหน้า",
+    "hubLabel": "Massar · ติดตามรายวัน",
+    "hubBundle": "แพ็กเกจเต็ม — นิสัย งาน วิเคราะห์",
+    "hubTabs": "สลับแท็บระหว่างศูนย์กลางและตัวติดตาม",
+    "noSystem": "ยังไม่มีระบบ — ซื้อจากหน้าหลัก",
+    "ariaLabel": "ตัวติดตาม Massar",
+    "tabsAria": "ส่วนติดตาม",
+    "habits": {
+      "wake": "ตื่นเช้า",
+      "gym": "ออกกำลังกาย",
+      "read": "อ่านหนังสือ",
+      "plan": "วางแผนวัน",
+      "project": "ทำโปรเจกต์",
+      "no-alcohol": "ไม่ดื่มแอลกอฮอล์",
+      "social": "โซเชียลจำกัด",
+      "journal": "บันทึกความดีใจ",
+      "shower": "อาบน้ำเย็น",
+      "quran": "อ่านคัมภีร์"
+    },
+    "weekDays": [
+      "อาทิตย์",
+      "จันทร์",
+      "อังคาร",
+      "พุธ",
+      "พฤหัส",
+      "ศุกร์",
+      "เสาร์"
+    ],
+    "metrics": {
+      "energy": "พลังงาน",
+      "mood": "อารมณ์",
+      "drive": "แรงจูงใจ"
+    },
+    "priorities": {
+      "high": "ด่วน",
+      "med": "ปานกลาง",
+      "low": "ต่ำ"
+    },
+    "packs": {
+      "habit": {
+        "name": "ตัวติดตามนิสัย",
+        "tagline": "ตารางรายเดือน · streak",
+        "sheet": "บอร์ดนิสัย"
+      },
+      "task": {
+        "name": "ตัวติดตามงาน",
+        "tagline": "รายสัปดาห์ · ลำดับความสำคัญ",
+        "sheet": "งานรายสัปดาห์"
+      },
+      "bundle": {
+        "name": "แพ็กเกจเต็ม",
+        "tagline": "นิสัย + งาน",
+        "sheet": "Massar เต็ม"
+      }
+    }
+  },
+  "member": {
+    "upgradeTitle": "ปลดล็อกแพ็กเกจเต็ม",
+    "upgradeBody": "นิสัย + งาน + วิเคราะห์",
+    "upgradeCta": "อัปเกรด",
+    "subscriptionActive": "สมาชิกใช้งาน",
+    "subscriptionTrial": "ทดลองใช้",
+    "subscriptionPastDue": "ปัญหาการชำระ",
+    "subscriptionCanceled": "ยกเลิกแล้ว",
+    "manageBilling": "จัดการบิล",
+    "resubscribe": "สมัครใหม่"
+  }
+}

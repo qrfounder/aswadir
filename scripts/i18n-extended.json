@@ -1,0 +1,188 @@
+{
+  "common": {
+    "back": "Back",
+    "edit": "Edit",
+    "loading": "Loading…",
+    "guest": "there",
+    "home": "Back to homepage",
+    "discount": "Off",
+    "ssl": "SSL encryption",
+    "freeTrialBadge": "Free trial day",
+    "exampleName": "e.g. James Mitchell",
+    "paymentChecking": "Checking payment settings…",
+    "publishedAppOnly": "Checkout works on the published app only. Open the live site URL.",
+    "feature": "Feature",
+    "reviewsCount": "+2,544 real reviews",
+    "ratingValue": "4.9/5",
+    "full": "Full",
+    "partial": "Partial",
+    "none": "Not available",
+    "comparisonLegend": "✓ = strong support · − = varies · ✕ = usually not available the same way."
+  },
+  "landing": {
+    "beforeTitle": "Does this sound like",
+    "beforeTitleHighlight": "your life right now?",
+    "beforeSubtitle": "The gap between wishing and doing is the system — not willpower.",
+    "beforeCardTitle": "Before Massar",
+    "afterCardTitle": "After Massar",
+    "beforeItems": [
+      "You start the day unsure what to do",
+      "Tasks pile up and slip through",
+      "You start habits then quit after a week",
+      "Constant distraction and daily fatigue",
+      "Hours lost just deciding priorities"
+    ],
+    "afterItems": [
+      "You wake up knowing exactly what's next",
+      "Tasks organized and done day by day",
+      "Habits stack and become part of life",
+      "Clear focus all day long",
+      "Five minutes to plan your whole day"
+    ],
+    "demoTitle": "See the system in",
+    "demoTitleHighlight": "action",
+    "demoSubtitle": "Log wins daily and watch progress grow in front of you.",
+    "demoAlt": "Massar discipline system in action",
+    "featuresTitle": "Why does this",
+    "featuresTitleHighlight": "system work?",
+    "featuresSubtitle": "Built on behavioral science and motivation research.",
+    "pricingTitle": "Start your",
+    "pricingTitleHighlight": "system today",
+    "pricingSubtitle": "Limited-time pricing — won't last long.",
+    "faqTitle": "Frequently asked",
+    "faqTitleHighlight": "questions",
+    "finalTitle": "One",
+    "finalTitleHighlight": "decision",
+    "finalTitle2": "can change your daily life",
+    "finalSubtitle": "Successful people run systems. Yours is ready in 60 seconds.",
+    "finalCta": "Start now for {{price}} SAR",
+    "finalNote": "21-day full refund · secure payment · instant access",
+    "stickyGuarantee": "21-day guarantee",
+    "stickySecure": "Secure pay",
+    "stickyInstant": "Instant access",
+    "stickyBundle": "Full bundle",
+    "productAlt": "Massar — {{label}}"
+  },
+  "stats": {
+    "eyebrow": "Massar community results",
+    "title": "Simple system +",
+    "titleHighlight": "daily action",
+    "titleEnd": "= real progress",
+    "subtitle": "Consistency isn't luck — it's a system. Survey data from active members.",
+    "items": [
+      { "value": "92%", "label": "Reported clearer focus in 3 days" },
+      { "value": "89%", "label": "Built stronger daily habits in 14 days" },
+      { "value": "95%", "label": "Felt more accountable than any past tool" }
+    ]
+  },
+  "research": {
+    "eyebrow": "Why it works",
+    "title": "You can do it —",
+    "titleHighlight": "with a proven system",
+    "p1": "Duke University research suggests up to 45% of daily behavior is habitual, not conscious choice.",
+    "p2": "Studies in the European Journal of Social Psychology show habits depend on visible repetition and immediate feedback — not motivation alone.",
+    "p3": "Massar uses the same psychological levers so consistency feels easier and wins feel obvious."
+  },
+  "trustPillars": {
+    "items": [
+      { "title": "5 minutes a day", "desc": "No hours required — check habits and watch progress update." },
+      { "title": "Behavioral science", "desc": "Visible streaks + instant feedback = habits that stick." },
+      { "title": "21-day guarantee", "desc": "Try it calmly. Not for you? Full refund, no hassle." }
+    ]
+  },
+  "gift": {
+    "text": "Daily: first 100 customers get 10 bonus templates with their order"
+  },
+  "trustBadges": {
+    "items": [
+      { "text": "21-day refund", "sub": "No questions asked" },
+      { "text": "Instant access", "sub": "Within 60 seconds" },
+      { "text": "100% secure pay", "sub": "SSL encrypted" },
+      { "text": "Monthly plan", "sub": "Cancel anytime" }
+    ]
+  },
+  "journey": {
+    "eyebrow": "A realistic path",
+    "title": "What happens in your",
+    "titleHighlight": "first month?",
+    "subtitle": "Not magic — what most members experience when they log daily.",
+    "weeks": [
+      { "w": "Week 1", "title": "Lock in the routine", "desc": "Five minutes daily. First streak appears. Focus on simple, not perfect." },
+      { "w": "Week 2", "title": "The streak works for you", "desc": "Your brain links progress to visual wins. Planning gets easier." },
+      { "w": "Weeks 3–4", "title": "Higher consistency", "desc": "Charts show momentum. Breaking the chain feels harder than skipping a day." }
+    ]
+  },
+  "checkout": {
+    "personalInfo": "Your details",
+    "checkingPayments": "Checking payment settings…",
+    "whatsappPrefix": "+966"
+  },
+  "auth": {
+    "password": "Password",
+    "claimPrompt": "Paid but no account? Link your order",
+    "claimLabel": "Payment reference (pi_ or dev_)",
+    "invalidCredentials": "Incorrect email or password.",
+    "genericError": "Something went wrong. Try again.",
+    "backHome": "Back to homepage"
+  },
+  "thankYou": {
+    "orderConfirmedBanner": "Order confirmed — thank you!"
+  },
+  "dashboard": {
+    "products": {
+      "habit": "Habit Tracker",
+      "task": "Task Tracker",
+      "bundle": "Full Bundle"
+    },
+    "noProducts": "No active products yet.",
+    "defaultName": "there"
+  },
+  "tracker": {
+    "overviewTab": "Progress hub",
+    "hubLabel": "Massar · daily tracking",
+    "hubBundle": "Full bundle — habits, tasks, and live analytics in one place.",
+    "hubTabs": "Switch tabs between progress hub and trackers.",
+    "noSystem": "No active system yet. Complete purchase from the homepage.",
+    "ariaLabel": "Massar trackers",
+    "tabsAria": "Tracker sections",
+    "habits": {
+      "wake": "Wake up early",
+      "gym": "Workout",
+      "read": "Reading",
+      "plan": "Day planning (Massar)",
+      "project": "Deep work on project",
+      "no-alcohol": "No alcohol",
+      "social": "One hour social only",
+      "journal": "Gratitude journal",
+      "shower": "Cold shower",
+      "quran": "Quran reading"
+    },
+    "weekDays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "metrics": {
+      "energy": "Energy",
+      "mood": "Mood",
+      "drive": "Motivation"
+    },
+    "priorities": {
+      "high": "Urgent",
+      "med": "Medium",
+      "low": "Low"
+    },
+    "packs": {
+      "habit": { "name": "Habit Tracker", "tagline": "Monthly grid · streaks · progress points", "sheet": "Habits board" },
+      "task": { "name": "Task Tracker", "tagline": "Weekly planner · priorities · daily wins", "sheet": "Weekly tasks" },
+      "bundle": { "name": "Full Bundle", "tagline": "Habits + tasks · unified dashboard", "sheet": "Full Massar" }
+    }
+  },
+  "member": {
+    "upgradeTitle": "Unlock the full bundle",
+    "upgradeBody": "Get habits + tasks + unified analytics in one dashboard.",
+    "upgradeCta": "Upgrade to full bundle",
+    "subscriptionActive": "Subscription active",
+    "subscriptionTrial": "Free trial",
+    "subscriptionPastDue": "Payment issue",
+    "subscriptionCanceled": "Canceled",
+    "manageBilling": "Manage billing",
+    "resubscribe": "Resubscribe"
+  }
+}

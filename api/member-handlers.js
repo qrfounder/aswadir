@@ -1,6 +1,10 @@
 import { getSessionCookieName, getUserIdFromSession } from "./session.js";
 import { getDb } from "./db.js";
 import { getUserEntitlements, getUserPurchases } from "./purchases.js";
+import {
+  getActiveSubscriptionForUser,
+  subscriptionForClient,
+} from "./subscriptions.js";
 
 /** Placeholder member updates — replace with CMS or DB later */
 const MEMBER_UPDATES = [
@@ -37,6 +41,8 @@ export function handleDashboard(req, res) {
   const db = getDb();
   const user = db.prepare(`SELECT id, email, name, whatsapp, created_at FROM users WHERE id = ?`).get(userId);
 
+  const sub = getActiveSubscriptionForUser(userId);
+
   return res.status(200).json({
     user: {
       id: user.id,
@@ -47,6 +53,7 @@ export function handleDashboard(req, res) {
     },
     entitlements: getUserEntitlements(userId),
     purchases: getUserPurchases(userId),
+    subscription: subscriptionForClient(sub),
     updates: MEMBER_UPDATES,
   });
 }

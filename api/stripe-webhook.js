@@ -1,5 +1,12 @@
 import Stripe from "stripe";
+import { syncStripeSubscription } from "./checkout-fulfillment.js";
 import { markPurchasePaid } from "./purchases.js";
+import {
+  syncEntitlementsFromSubscription,
+  linkSubscriptionToUser,
+  getSubscriptionByStripeId,
+} from "./subscriptions.js";
+import { getDb } from "./db.js";
 
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -32,6 +39,8 @@ export default async function stripeWebhook(req, res) {
   }
 
   try {
+    const stripe = getStripe();
+
     switch (event.type) {
       case "payment_intent.succeeded": {
         const intent = event.data.object;
@@ -44,6 +53,51 @@ export default async function stripeWebhook(req, res) {
           whatsapp: meta.whatsapp,
           amount: intent.amount,
         });
+        break;
+      }
+      case "checkout.session.completed": {
+        const session = event.data.object;
+        if (session.mode === "subscription" && session.subscription) {
+          const subscription = await stripe.subscriptions.retrieve(session.subscription);
+          await syncStripeSubscription(subscription, session.id);
+
+          const purchaseUserId = session.metadata?.userId;
+          if (purchaseUserId) {
+            linkSubscriptionToUser(subscription.id, purchaseUserId);
+            const row = getSubscriptionByStripeId(subscription.id);
+            syncEntitlementsFromSubscription({ ...row, user_id: purchaseUserId });
+          }
+
+          const db = getDb();
+          if (subscription.customer) {
+            db.prepare(
+              `UPDATE purchases SET subscription_id = ? WHERE checkout_session_id = ?`,
+            ).run(subscription.id, session.id);
+          }
+        }
+        break;
+      }
+      case "customer.subscription.updated":
+      case "customer.subscription.deleted": {
+        const subscription = event.data.object;
+        await syncStripeSubscription(subscription);
+        break;
+      }
+      case "invoice.paid": {
+        const invoice = event.data.object;
+        if (invoice.subscription) {
+          const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
+          await syncStripeSubscription(subscription);
+        }
+        break;
+      }
+      case "invoice.payment_failed": {
+        const invoice = event.data.object;
+        if (invoice.subscription) {
+          const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
+          await syncStripeSubscription(subscription);
+        }
+        console.warn("[webhook] Invoice payment failed:", invoice.id);
         break;
       }
       case "payment_intent.payment_failed": {

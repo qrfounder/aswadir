@@ -24,9 +24,43 @@ async function request(path, options = {}) {
   return res.json();
 }
 
-function isLocalHostname() {
-  const h = window.location.hostname;
-  return h === "localhost" || h === "127.0.0.1" || h === "[::1]";
+async function devSimulateCheckout(payload) {
+  return request("/api/dev/simulate-order", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+async function invokeWithDevFallback(name, payload) {
+  const isDev = import.meta.env.DEV;
+
+  if (name === "createCheckoutSession") {
+    return request("/api/createCheckoutSession", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  if (isDev && name === "createPaymentIntent") {
+    try {
+      return await request("/api/createPaymentIntent", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+    } catch (firstErr) {
+      const sim = await devSimulateCheckout(payload);
+      return {
+        simulated: true,
+        paymentIntentId: sim.checkoutSessionId || sim.paymentIntentId,
+        checkoutSessionId: sim.checkoutSessionId,
+      };
+    }
+  }
+
+  return request(`/api/${name}`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export const client = {
@@ -49,15 +83,26 @@ export const client = {
     async logout() {
       return request("/api/auth/logout", { method: "POST" });
     },
-    async claimPurchase(paymentIntentId) {
+    async claimPurchase({ paymentIntentId, checkoutSessionId }) {
       return request("/api/auth/claim-purchase", {
         method: "POST",
-        body: JSON.stringify({ paymentIntentId }),
+        body: JSON.stringify({ paymentIntentId, checkoutSessionId }),
       });
     },
     redirectToLogin(returnUrl) {
       const next = encodeURIComponent(returnUrl || window.location.href);
       window.location.href = `/login?next=${next}`;
+    },
+  },
+  checkout: {
+    async complete(sessionId) {
+      const q = new URLSearchParams({ session_id: sessionId });
+      return request(`/api/checkout/complete?${q.toString()}`);
+    },
+  },
+  billing: {
+    async openPortal() {
+      return request("/api/billingPortal", { method: "POST" });
     },
   },
   member: {
@@ -67,38 +112,7 @@ export const client = {
   },
   functions: {
     async invoke(name, payload = {}) {
-      if (isLocalHostname() && name === "createPaymentIntent") {
-        try {
-          const data = await request("/api/createPaymentIntent", {
-            method: "POST",
-            body: JSON.stringify(payload),
-          });
-          return { data };
-        } catch (firstErr) {
-          try {
-            console.warn(
-              "[Massar] Stripe API unavailable — using dev simulate-order. Run: npm run dev:all",
-            );
-            const sim = await request("/api/dev/simulate-order", {
-              method: "POST",
-              body: JSON.stringify(payload),
-            });
-            return {
-              data: {
-                simulated: true,
-                paymentIntentId: sim.paymentIntentId,
-              },
-            };
-          } catch {
-            throw firstErr;
-          }
-        }
-      }
-
-      const data = await request(`/api/${name}`, {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
+      const data = await invokeWithDevFallback(name, payload);
       return { data };
     },
   },

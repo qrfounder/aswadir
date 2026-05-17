@@ -43,9 +43,9 @@ async function main() {
       whatsapp: "512345678",
     }),
   });
-  const pi = sim.json.paymentIntentId;
-  const email = `smoke_${Date.now()}@test.local`;
-  console.log("✓ simulate-order", pi);
+  const checkoutSessionId = sim.json.checkoutSessionId;
+  const email = sim.json.customerEmail || `smoke_${Date.now()}@test.local`;
+  console.log("✓ simulate-order", checkoutSessionId);
 
   const cookieJar = [];
   const registerRes = await fetch(`${base}/api/auth/register`, {
@@ -55,7 +55,7 @@ async function main() {
       email,
       password: "testpass1234",
       name: "Smoke Test",
-      paymentIntentId: pi,
+      checkoutSessionId,
     }),
   });
   const setCookie = registerRes.headers.getSetCookie?.() || [];

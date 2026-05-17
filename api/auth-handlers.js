@@ -2,10 +2,15 @@ import bcrypt from "bcryptjs";
 import { randomUUID } from "node:crypto";
 import { getDb } from "./db.js";
 import {
+  claimCheckoutSessionForUser,
   claimPurchaseForUser,
   getUserEntitlements,
   getUserPurchases,
 } from "./purchases.js";
+import {
+  getActiveSubscriptionForUser,
+  subscriptionForClient,
+} from "./subscriptions.js";
 import {
   createSession,
   destroySession,
@@ -37,7 +42,7 @@ export function attachSession(res, sessionId, expiresAt) {
 }
 
 export async function handleRegister(req, res) {
-  const { email, password, name, paymentIntentId, whatsapp } = req.body || {};
+  const { email, password, name, paymentIntentId, checkoutSessionId, whatsapp } = req.body || {};
   const cleanEmail = normalizeEmail(email);
   const cleanName = String(name || "").trim();
   const cleanPassword = String(password || "");
@@ -51,7 +56,7 @@ export async function handleRegister(req, res) {
   if (cleanName.length < 2) {
     return res.status(400).json({ error: "invalid_name" });
   }
-  if (!paymentIntentId) {
+  if (!paymentIntentId && !checkoutSessionId) {
     return res.status(400).json({ error: "payment_intent_required" });
   }
 
@@ -72,7 +77,9 @@ export async function handleRegister(req, res) {
     return res.status(409).json({ error: "email_in_use" });
   }
 
-  const claim = claimPurchaseForUser(paymentIntentId, userId);
+  const claim = checkoutSessionId
+    ? claimCheckoutSessionForUser(checkoutSessionId, userId)
+    : claimPurchaseForUser(paymentIntentId, userId);
   if (!claim.ok) {
     db.prepare(`DELETE FROM users WHERE id = ?`).run(userId);
     return res.status(400).json({ error: claim.error });
@@ -81,9 +88,12 @@ export async function handleRegister(req, res) {
   const { sessionId, expiresAt } = createSession(userId);
   attachSession(res, sessionId, expiresAt);
 
+  const sub = getActiveSubscriptionForUser(userId);
+
   return res.status(201).json({
     user: publicUser(db.prepare(`SELECT * FROM users WHERE id = ?`).get(userId)),
     entitlements: getUserEntitlements(userId),
+    subscription: subscriptionForClient(sub),
   });
 }
 
@@ -110,10 +120,13 @@ export async function handleLogin(req, res) {
   const { sessionId, expiresAt } = createSession(user.id);
   attachSession(res, sessionId, expiresAt);
 
+  const sub = getActiveSubscriptionForUser(user.id);
+
   return res.status(200).json({
     user: publicUser(user),
     entitlements: getUserEntitlements(user.id),
     purchases: getUserPurchases(user.id),
+    subscription: subscriptionForClient(sub),
   });
 }
 
@@ -137,10 +150,13 @@ export function handleMe(req, res) {
     return res.status(401).json({ error: "unauthenticated" });
   }
 
+  const sub = getActiveSubscriptionForUser(userId);
+
   return res.status(200).json({
     user: publicUser(user),
     entitlements: getUserEntitlements(userId),
     purchases: getUserPurchases(userId),
+    subscription: subscriptionForClient(sub),
   });
 }
 
@@ -151,18 +167,23 @@ export async function handleClaimPurchase(req, res) {
     return res.status(401).json({ error: "unauthenticated" });
   }
 
-  const { paymentIntentId } = req.body || {};
-  if (!paymentIntentId) {
+  const { paymentIntentId, checkoutSessionId } = req.body || {};
+  if (!paymentIntentId && !checkoutSessionId) {
     return res.status(400).json({ error: "payment_intent_required" });
   }
 
-  const claim = claimPurchaseForUser(paymentIntentId, userId);
+  const claim = checkoutSessionId
+    ? claimCheckoutSessionForUser(checkoutSessionId, userId)
+    : claimPurchaseForUser(paymentIntentId, userId);
   if (!claim.ok) {
     return res.status(400).json({ error: claim.error });
   }
 
+  const sub = getActiveSubscriptionForUser(userId);
+
   return res.status(200).json({
     entitlements: getUserEntitlements(userId),
     purchases: getUserPurchases(userId),
+    subscription: subscriptionForClient(sub),
   });
 }

@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [entitlements, setEntitlements] = useState([]);
   const [purchases, setPurchases] = useState([]);
+  const [subscription, setSubscription] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [authChecked, setAuthChecked] = useState(false);
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
     setUser(data.user);
     setEntitlements(data.entitlements || []);
     setPurchases(data.purchases || []);
+    setSubscription(data.subscription || null);
     setIsAuthenticated(true);
     setAuthError(null);
   };
@@ -29,6 +31,7 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       setEntitlements([]);
       setPurchases([]);
+      setSubscription(null);
       setIsAuthenticated(false);
       if (error.status === 401) {
         setAuthError(null);
@@ -66,16 +69,18 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setEntitlements([]);
     setPurchases([]);
+    setSubscription(null);
     setIsAuthenticated(false);
     if (shouldRedirect && typeof window !== "undefined") {
       window.location.href = "/";
     }
   };
 
-  const claimPurchase = async (paymentIntentId) => {
-    const data = await client.auth.claimPurchase(paymentIntentId);
+  const claimPurchase = async ({ paymentIntentId, checkoutSessionId }) => {
+    const data = await client.auth.claimPurchase({ paymentIntentId, checkoutSessionId });
     setEntitlements(data.entitlements || []);
     setPurchases(data.purchases || []);
+    setSubscription(data.subscription || null);
     return data;
   };
 
@@ -87,6 +92,7 @@ export const AuthProvider = ({ children }) => {
         user,
         entitlements,
         purchases,
+        subscription,
         isAuthenticated,
         isLoadingAuth,
         authError,

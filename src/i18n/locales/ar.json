@@ -1,0 +1,710 @@
+{
+  "meta": {
+    "title": "مسار | متتبع العادات والمهام",
+    "description": "مسار — متتبع العادات والمهام للاستمرارية. ابنِ الانضباط في 5 دقائق يومياً داخل لوحة الأعضاء."
+  },
+  "lang": {
+    "label": "اللغة",
+    "en": "English",
+    "ar": "العربية",
+    "th": "ไทย"
+  },
+  "nav": {
+    "memberLogin": "دخول الأعضاء",
+    "subscribeNow": "تجربة مجانية · من {{price}}/شهر",
+    "securePay": "دفع آمن",
+    "monthlySub": "اشتراك شهري",
+    "back": "رجوع",
+    "memberArea": "الأعضاء"
+  },
+  "urgency": {
+    "bar": "عرض محدود، يخلص خلال:",
+    "discount": "خصم 67%",
+    "spots": "بقي {{count}} مقاعد فقط بهذا السعر",
+    "viewers": "{{count}} شخص يشاهدون الآن"
+  },
+  "socialBar": {
+    "users": "مستخدم نشط",
+    "rating": "تقييم",
+    "guarantee": "يوم ضمان استرداد"
+  },
+  "hero": {
+    "badge": "اشتراك شهري · يوم تجربة مجاني",
+    "title": "النظام الوحيد اللي يخلي عاداتك ومهامك",
+    "titleHighlight": "قدامك — ممتع ومستحيل تتجاهله",
+    "subtitle": "مبني على علم السلوك — تتبّع يومياً داخل مسار.",
+    "rating": "{{score}}/5 من {{count}}+ تقييم حقيقي",
+    "cta": "ابدأ الاشتراك الشهري",
+    "ctaSub": "يوم تجربة · ثم {{price}} ر.س/شهر · إلغاء في أي وقت",
+    "galleryQuick": "نظرة سريعة",
+    "galleryBundle": "الباقة",
+    "galleryHabits": "العادات",
+    "galleryTasks": "المهام"
+  },
+  "social": {
+    "users": "+15,000 مستخدم نشط",
+    "countries": "السعودية · الإمارات · المغرب · أمريكا · تايلاند والعالم"
+  },
+  "pricing": {
+    "discountEnds": "سعر الخصم يخلص خلال:",
+    "bestSeller": "الأكثر مبيعاً",
+    "perMonth": "$ / شهر",
+    "subscribeBtn": "ابدأ التجربة المجانية — من {{price}}/شهر",
+    "singlesFrom": "الفردي من {{price}}/شهر",
+    "trialNote": "يوم تجربة مجاني · إلغاء في أي وقت من لوحة التحكم",
+    "infoTitle": "كيف يعمل الاشتراك",
+    "infoBody": "اشتراك شهري مع تجديد تلقائي. بعد الدفع تدخل لوحة التحكم فوراً."
+  },
+  "products": {
+    "task": {
+      "name": "متتبع المهام",
+      "subtitle": "نظّم مهامك اليومية بسهولة",
+      "badge": "",
+      "features": [
+        "لوحة مهام يومية وأسبوعية كل صباح",
+        "تتبّع التقدم من مكان واحد داخل مسار",
+        "تنبيهات لإنجاز المهام المهمة",
+        "إلغاء الاشتراك في أي وقت"
+      ]
+    },
+    "habit": {
+      "name": "متتبع العادات",
+      "subtitle": "ابنِ عادات تستمر",
+      "badge": "",
+      "features": [
+        "شبكة عادات شهرية + سلاسل تحفّزك",
+        "مؤشرات مزاج وطاقة يومية",
+        "نقاط ومكافآت عند الالتزام",
+        "إلغاء الاشتراك في أي وقت"
+      ]
+    },
+    "bundle": {
+      "name": "الباقة الكاملة ✦",
+      "subtitle": "عادات + مهام + لوحة حياة موحّدة",
+      "badge": "الأكثر مبيعاً",
+      "features": [
+        "كل مميزات المهام والعادات",
+        "لوحة تحكم يومية لحياتك",
+        "تحليلات تقدّم فورية وتحفيز",
+        "محتوى أعضاء جديد كل شهر",
+        "دعم أولوية · إلغاء في أي وقت"
+      ]
+    },
+    "billingLabel": "شهرياً"
+  },
+  "performers": {
+    "eyebrow": "مصمّم لطموحين",
+    "title": "مصمّم لـ",
+    "titleHighlight": "أصحاب الأداء العالي",
+    "subtitle": "مو تطبيق عادي — نظام عادات ومهام جاهز مع تحليلات فورية.",
+    "pillars": [
+      {
+        "title": "مبني للاستمرارية",
+        "desc": "الانضباط يصير أسهل لما النظام يشتغل عنك."
+      },
+      {
+        "title": "إنتاجية أسرع",
+        "desc": "تخطيط يومي واضح يقلّل التشتت."
+      },
+      {
+        "title": "تقدم تشوفه بعينك",
+        "desc": "رسوم وسلاسل تفعّل دائرة المكافأة."
+      },
+      {
+        "title": "تطبيق يومي",
+        "desc": "اشتراك شهري — عادات ومهام وتحليلات في مكان واحد."
+      }
+    ]
+  },
+  "video": {
+    "eyebrow": "شاهد من الشاشة",
+    "title": "تجارب سريعة من",
+    "titleHighlight": "أعضاء حقيقيين",
+    "subtitle": "اسحب على الجوال. مقاطع من الاستخدام اليومي."
+  },
+  "testimonials": {
+    "sectionTitle": "ماذا يقول الأعضاء",
+    "verified": "مشتري موثّق"
+  },
+  "faq": {
+    "title": "الأسئلة الشائعة",
+    "items": [
+      {
+        "q": "أقدر أبني نفس الشي بنفسي؟",
+        "a": "تقنياً إي، بس النظام فيه +50 ساعة عمل."
+      },
+      {
+        "q": "جربت متتبعات كثير وتركتها، وش يفرق؟",
+        "a": "أغلب المتتبعات معقدة أو مملة. نظامنا بسيط وممتع."
+      },
+      {
+        "q": "أحتاج خبرة تقنية؟",
+        "a": "أبداً. بعد الاشتراك تدخل لوحة التحكم وتبدأ."
+      },
+      {
+        "q": "يشتغل على الجوال؟",
+        "a": "إي، جوال أو لابتوب من المتصفح."
+      },
+      {
+        "q": "اشتراك شهري ولا دفعة واحدة؟",
+        "a": "شهري مع يوم تجربة. إلغاء في أي وقت."
+      },
+      {
+        "q": "وش لو ما عجبني؟",
+        "a": "21 يوم ضمان استرداد كامل."
+      },
+      {
+        "q": "كيف أحصل على المنتج بعد الشراء؟",
+        "a": "أنشئ حسابك من صفحة الشكر وادخل لوحتك فوراً."
+      }
+    ]
+  },
+  "landing": {
+    "heroLine1": "خلاص وقف الفوضى",
+    "heroLine2": "رتّب يومك كامل",
+    "heroLine3": "في 5 دقائق",
+    "heroBullets": [
+      "سلاسل يومية، كل ما طالت صعب توقفها",
+      "لوحة تحكم تشتغل لحالها بدون أي خبرة",
+      "تحميل فوري، ابدأ اليوم خلال 60 ثانية",
+      "يشتغل على الجوال والتابلت واللابتوب"
+    ],
+    "heroCta": "ابدأ تجربة مجانية يوم",
+    "heroCtaSub": "يوم مجاني · الفردي من {{lowest}}/شهر · الباقة {{bundle}}/شهر",
+    "stickyTrial": "تجربة مجانية يوم",
+    "stickyFrom": "من {{price}}/شهر",
+    "heroGuarantee": "ضمان استرداد 21 يوم • بدون أي أسئلة",
+    "disclaimer": "أرقام التقييمات تسويقية. النتائج تختلف.",
+    "features": [
+      {
+        "title": "سلاسل ما تبي تقطعها",
+        "desc": "كل يوم تكمل السلسلة تطول."
+      },
+      {
+        "title": "لوحة تحكم تشتغل لحالها",
+        "desc": "كل شي يتحدّث تلقائياً."
+      },
+      {
+        "title": "وداعاً للتشتت",
+        "desc": "النظام يرتّب أولوياتك."
+      },
+      {
+        "title": "أهدافك تصير أرقام تشوفها",
+        "desc": "تشوف الهدف رقم ونسبة أمامك."
+      }
+    ],
+    "stickyCta": "ابدأ تجربة مجانية يوم",
+    "comparisonTitle": "مسار مقابل التطبيقات",
+    "comparisonMassar": "مسار",
+    "comparisonApps": "تطبيقات أخرى",
+    "comparisonNotes": "ملاحظات فقط",
+    "comparisonRows": [
+      {
+        "feature": "سلاسل يومية مرئية",
+        "massar": "full",
+        "apps": "partial",
+        "notes": "none"
+      },
+      {
+        "feature": "لوحة تحكم ورسوم تلقائية",
+        "massar": "full",
+        "apps": "partial",
+        "notes": "none"
+      },
+      {
+        "feature": "5 دقايق يومياً بدون تعقيد",
+        "massar": "full",
+        "apps": "partial",
+        "notes": "partial"
+      },
+      {
+        "feature": "اشتراك شهري مرن + إلغاء",
+        "massar": "full",
+        "apps": "none",
+        "notes": "full"
+      },
+      {
+        "feature": "تطبيق ويب داخل الموقع",
+        "massar": "full",
+        "apps": "none",
+        "notes": "partial"
+      }
+    ],
+    "beforeTitle": "هل هذا يصف",
+    "beforeTitleHighlight": "واقعك الآن؟",
+    "beforeSubtitle": "الفرق بين اللي يوصل واللي يتمنى هو النظام، مو الإرادة",
+    "beforeCardTitle": "قبل نظام الانضباط",
+    "afterCardTitle": "بعد نظام الانضباط",
+    "beforeItems": [
+      "تبدأ يومك وما تدري وش بتسوي",
+      "تنسى مهامك وتتكدّس عليك الأشغال",
+      "تبدأ عادة وتتركها بعد أسبوع",
+      "تحس بتشتت وإرهاق كل يوم",
+      "تضيّع وقت طويل بس تفكر وش تسوي"
+    ],
+    "afterItems": [
+      "تصحى وأنت عارف بالضبط وش بتسوي",
+      "مهامك مرتبة وتخلّصها يوم بيوم",
+      "عاداتك تتراكم وتصير جزء من حياتك",
+      "وضوح تام وتركيز عالي طول اليوم",
+      "5 دقايق بس وتنظّم يومك كامل"
+    ],
+    "demoTitle": "شاهد النظام في",
+    "demoTitleHighlight": "العمل",
+    "demoSubtitle": "كل يوم تسجّل إنجازاتك وتشوف تقدمك يكبر قدام عينك",
+    "demoAlt": "نظام الانضباط في العمل",
+    "featuresTitle": "لماذا",
+    "featuresTitleHighlight": "يعمل هذا النظام؟",
+    "featuresSubtitle": "مبني على دراسات علمية في السلوك والتحفيز",
+    "pricingTitle": "ابدأ",
+    "pricingTitleHighlight": "نظامك اليوم",
+    "pricingSubtitle": "عرض محدود، السعر هذا ما بيستمر طويل",
+    "faqTitle": "أسئلة",
+    "faqTitleHighlight": "شائعة",
+    "finalTitle": "باقي عليك",
+    "finalTitleHighlight": "قرار واحد",
+    "finalTitle2": "وتتغير حياتك",
+    "finalSubtitle": "كل شخص ناجح عنده نظام. هذا نظامك، جاهز خلال 60 ثانية.",
+    "finalCta": "ابدأ تجربة مجانية يوم",
+    "finalNote": "ضمان استرداد كامل 21 يوم • دفع آمن • تحميل فوري",
+    "stickyGuarantee": "ضمان 21 يوم",
+    "stickySecure": "دفع آمن",
+    "stickyInstant": "تحميل فوري",
+    "stickyBundle": "الباقة الكاملة",
+    "productAlt": "مسار · Massar — {{label}}"
+  },
+  "footer": {
+    "rights": "© 2026 مسار. جميع الحقوق محفوظة.",
+    "regions": "السعودية · الإمارات · المغرب · أمريكا · تايلاند · العالم"
+  },
+  "checkout": {
+    "title": "ابدأ تجربة مجانية يوم",
+    "subtitle": "تطبيق عادات ومهام — {{price}} / شهر",
+    "stepInfo": "بياناتك",
+    "stepPay": "الدفع",
+    "fullName": "الاسم الكامل",
+    "email": "البريد (لحساب مسار)",
+    "whatsapp": "رقم واتساب",
+    "continuePay": "متابعة للدفع",
+    "edit": "تعديل",
+    "paySecure": "إتمام الدفع الآمن",
+    "payStripeLead": "ستنتقل لصفحة Stripe الرسمية لإدخال البطاقة. بعد الدفع تعود لإنشاء حسابك.",
+    "payStripeBtn": "الانتقال لصفحة الدفع الآمنة",
+    "payStripeLoading": "جاري فتح الدفع…",
+    "payAgree": "بالمتابعة توافق على الفوترة الشهرية — إلغاء في أي وقت",
+    "trialDev": "وضع التطوير — بدون بطاقة",
+    "trialDevHint": "أضف مفاتيح Stripe إلى .env وشغّل npm run dev:all",
+    "trialDevBtn": "إتمام تجريبي (بدون بطاقة)",
+    "renewMonthly": "تجديد شهري — {{price}} ر.س",
+    "trialDay": "يوم تجربة مجاني — ثم {{price}} / شهر",
+    "refund": "ضمان استرداد 21 يوماً على أول اشتراك",
+    "summary": "ملخص الاشتراك",
+    "errors": {
+      "name": "اكتب اسمك الكامل.",
+      "email": "اكتب إيميلاً صحيحاً.",
+      "phone": "واتساب 8–12 رقم فقط.",
+      "generic": "حدث خطأ. حاول مرة أخرى.",
+      "payments_not_configured": "الدفع غير مفعّل على الخادم.",
+      "stripe_price_invalid": "معرّف سعر غير صالح",
+      "stripe_auth_invalid": "مفتاح Stripe غير صالح",
+      "stripe_checkout_failed": "تعذّر فتح الدفع"
+    },
+    "personalInfo": "بياناتك الشخصية",
+    "checkingPayments": "جاري التحقق من إعدادات الدفع…",
+    "whatsappPrefix": "+966"
+  },
+  "thankYou": {
+    "redirecting": "تم تأكيد الدفع — جاري فتح إعداد حسابك…",
+    "confirmed": "تم تأكيد طلبك — شكراً!",
+    "congrats": "مبروك!",
+    "accessReady": "وصولك جاهز — أنشئ حسابك",
+    "purchased": "اشتريت {{name}}. أنشئ حسابك لفتح منطقة الأعضاء.",
+    "paid": "المبلغ المدفوع:",
+    "createAccount": "إنشاء حساب والدخول للوحة",
+    "trialNote": "اشتراك شهري · إلغاء في أي وقت",
+    "nextSteps": "الخطوات التالية",
+    "steps": [
+      {
+        "title": "أنشئ حسابك الآن",
+        "desc": "دقيقة واحدة: بريد وكلمة مرور."
+      },
+      {
+        "title": "ابدأ تسجيل العادات",
+        "desc": "من لوحة التحكم — كل شيء في مكان واحد."
+      }
+    ],
+    "guaranteeTitle": "ضمان استرداد 21 يوماً",
+    "guaranteeBody": "مو مناسب؟ استرداد كامل.",
+    "shareWhatsapp": "مشاركة على واتساب",
+    "orderConfirmedBanner": "تم تأكيد طلبك بنجاح، يعطيك العافية!",
+    "shareMessage": "I joined Massar — habits & tasks with a member dashboard!"
+  },
+  "auth": {
+    "loginTitle": "تسجيل الدخول",
+    "loginSub": "ادخل منطقة أعضاء مسار",
+    "setupTitle": "إنشاء حساب مسار",
+    "setupSub": "خطوة واحدة للوحة — عادات وتحديثات في مكان واحد.",
+    "setupVerifying": "جاري تأكيد الدفع…",
+    "email": "البريد",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "name": "الاسم الكامل",
+    "loginBtn": "دخول",
+    "setupBtn": "إنشاء حساب",
+    "noAccount": "ما عندك حساب؟",
+    "hasAccount": "عندك حساب؟",
+    "createLink": "إنشاء حساب بعد الشراء",
+    "loginLink": "تسجيل الدخول",
+    "claimPrompt": "دفعت وما أنشأت حساب؟ اربط طلبك",
+    "claimLabel": "رقم عملية الدفع (pi_ أو dev_)",
+    "invalidCredentials": "الإيميل أو كلمة المرور غير صحيحة.",
+    "genericError": "صار خطأ. حاول مرة ثانية.",
+    "backHome": "العودة للرئيسية",
+    "passwordMismatch": "Passwords do not match.",
+    "setupCreating": "Creating account…",
+    "setupEnterDashboard": "Enter your dashboard",
+    "setupNoPaymentRef": "Open this page from the create-account link after payment. If you already paid, sign in and link your order.",
+    "errors": {
+      "email_in_use": "This email is already registered. Sign in or use another email.",
+      "payment_not_confirmed": "Payment not confirmed yet. Wait a minute and try again.",
+      "purchase_not_found": "We could not find your payment. Contact support with your order ID.",
+      "purchase_already_claimed": "This order is linked to another account.",
+      "payment_intent_required": "Incomplete link. Open it from the thank-you page after payment.",
+      "weak_password": "Password must be at least 8 characters.",
+      "invalid_email": "Enter a valid email."
+    }
+  },
+  "dashboard": {
+    "memberArea": "منطقة الأعضاء",
+    "hello": "مرحباً،",
+    "welcome": "تتبّع العادات والمهام في مكان واحد. {{bundle}}",
+    "welcomeBundle": "الباقة الكاملة مفعّلة.",
+    "welcomeUpgrade": "يمكنك الترقية للباقة الكاملة.",
+    "trustSecure": "وصول آمن لحسابك فقط",
+    "trustLocal": "تقدمك محفوظ على جهازك",
+    "loading": "جاري تحميل بياناتك…",
+    "loadError": "تعذّر تحميل اللوحة. حدّث الصفحة أو سجّل دخولك.",
+    "yourProducts": "خططك النشطة",
+    "inDashboard": "متاح في لوحتك أدناه",
+    "updates": "تحديثات ومحتوى جديد",
+    "noUpdates": "لا تحديثات جديدة بعد.",
+    "comingTitle": "المزيد قريباً لأعضاء مسار",
+    "comingBody": "دورات قصيرة وقوالب — ضمن خطتك عند الإطلاق.",
+    "backHome": "العودة للرئيسية",
+    "logout": "خروج",
+    "products": {
+      "habit": "متتبع العادات",
+      "task": "متتبع المهام",
+      "bundle": "الباقة الكاملة"
+    },
+    "noProducts": "لا توجد منتجات مفعّلة بعد.",
+    "defaultName": "بك"
+  },
+  "currency": {
+    "label": "العملة",
+    "sar": "ر.س",
+    "chargeNote": "الأسعار بـ {{display}}. يُخصم من البطاقة بـ {{charge}} عند الدفع.",
+    "pricesNote": "تسعير عالمي بالدولار",
+    "names": {
+      "SAR": "ريال سعودي",
+      "AED": "درهم إماراتي",
+      "USD": "دولار أمريكي",
+      "THB": "بات تايلندي",
+      "MAD": "درهم مغربي",
+      "KWD": "دينار كويتي",
+      "QAR": "ريال قطري",
+      "EGP": "جنيه مصري"
+    }
+  },
+  "common": {
+    "back": "رجوع",
+    "edit": "تعديل",
+    "loading": "جاري التحميل…",
+    "guest": "بك",
+    "home": "العودة للرئيسية",
+    "discount": "خصم",
+    "ssl": "تشفير SSL",
+    "freeTrialBadge": "يوم تجربة مجاني",
+    "exampleName": "مثال: محمد العمري",
+    "paymentChecking": "جاري التحقق من إعدادات الدفع…",
+    "publishedAppOnly": "الدفع يشتغل من التطبيق المنشور فقط. افتح رابط الموقع الأصلي.",
+    "feature": "الميزة",
+    "reviewsCount": "+2,544 تقييم حقيقي",
+    "ratingValue": "4.9/5",
+    "full": "متوفر",
+    "partial": "جزئي",
+    "none": "غير متوفر",
+    "comparisonLegend": "✓ = متوفر بقوة · − = يختلف · ✕ = غير متوفر عادة بنفس الشكل."
+  },
+  "stats": {
+    "eyebrow": "نتائج مجتمع مسار",
+    "title": "نظام بسيط +",
+    "titleHighlight": "إجراء يومي",
+    "titleEnd": "= تقدم حقيقي",
+    "subtitle": "الاستمرارية مو حظ — هي نظام. استطلاعات من مستخدمينا النشطين.",
+    "items": [
+      {
+        "value": "92%",
+        "label": "أبلغوا عن تركيز أوضح خلال 3 أيام"
+      },
+      {
+        "value": "89%",
+        "label": "بنوا عادات يومية أقوى خلال 14 يوم"
+      },
+      {
+        "value": "95%",
+        "label": "حسّوا بمساءلة أعلى من أي نظام سابق"
+      }
+    ]
+  },
+  "research": {
+    "eyebrow": "ليش يشتغل؟",
+    "title": "تقدر تسوّيه —",
+    "titleHighlight": "بنظام مثبت",
+    "p1": "أبحاث جامعة دوك تشير إلى أن حتى 45% من سلوكنا اليومي عادات تلقائية.",
+    "p2": "دراسات في European Journal of Social Psychology تؤكد أن العادات تعتمد على التكرار المرئي والتغذية الراجعة الفورية.",
+    "p3": "مسار يستخدم نفس المحفّزات النفسية عشان الاستمرارية تصير أسهل والنجاح أوضح."
+  },
+  "trustPillars": {
+    "items": [
+      {
+        "title": "تسجيل يومي بـ 5 دقايق",
+        "desc": "ما تحتاج ساعات — علّم على عاداتك وشوف تقدمك."
+      },
+      {
+        "title": "مبني على علم السلوك",
+        "desc": "سلاسل مرئية + تغذية راجعة فورية = عادات تلتصق."
+      },
+      {
+        "title": "ضمان استرداد 21 يوم",
+        "desc": "جرّبه براحتك. مو مناسب؟ نرجع فلوسك كاملة."
+      }
+    ]
+  },
+  "gift": {
+    "text": "يومياً: أول 100 عميل يحصلون على 10 قوالب إضافية هدية مع الطلب"
+  },
+  "trustBadges": {
+    "items": [
+      {
+        "text": "ضمان استرداد 21 يوم",
+        "sub": "بدون أي أسئلة"
+      },
+      {
+        "text": "توصلك فوري",
+        "sub": "خلال 60 ثانية"
+      },
+      {
+        "text": "دفع آمن 100%",
+        "sub": "تشفير SSL"
+      },
+      {
+        "text": "اشتراك شهري",
+        "sub": "إلغاء في أي وقت"
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "رحلة واقعية",
+    "title": "وش يصير خلال",
+    "titleHighlight": "أول شهر؟",
+    "subtitle": "مو وعد سحري: مسار غالب المستخدمين لما يلتزمون بالتسجيل اليومي.",
+    "weeks": [
+      {
+        "w": "الأسبوع 1",
+        "title": "تثبيت الروتين",
+        "desc": "5 دقايق يومياً، أول سلسلة تظهر. البساطة مو الكمال."
+      },
+      {
+        "w": "الأسبوع 2",
+        "title": "السلسلة تشتغل لك",
+        "desc": "الدماغ يربط الإنجاز بالشكل واللون. التخطيط يصير أسهل."
+      },
+      {
+        "w": "الأسبوع 3–4",
+        "title": "ثبات أعلى",
+        "desc": "الرسم البياني يوريك التقدّم. أصعب تكسر السلسلة من تخطّي يوم."
+      }
+    ]
+  },
+  "tracker": {
+    "overviewTab": "لوحة التقدم",
+    "hubLabel": "مسار · التتبّع اليومي",
+    "hubBundle": "الباقة الكاملة — عادات ومهام وتحليل حيّ في لوحة واحدة.",
+    "hubTabs": "اختر التبويب للتبديل بين لوحة التقدم والمتتبعات.",
+    "noSystem": "لا يوجد نظام مفعّل بعد. أكمل الشراء من الصفحة الرئيسية.",
+    "ariaLabel": "متتبعات مسار",
+    "tabsAria": "أقسام التتبع",
+    "habits": {
+      "wake": "الاستيقاظ مبكراً",
+      "gym": "النادي الرياضي",
+      "read": "القراءة",
+      "plan": "تخطيط اليوم (مسار)",
+      "project": "عمل على المشروع",
+      "no-alcohol": "بدون كحول",
+      "social": "ساعة سوشيال فقط",
+      "journal": "يومية الامتنان",
+      "shower": "شاور بارد",
+      "quran": "ورد قرآن"
+    },
+    "weekDays": [
+      "الأحد",
+      "الإثنين",
+      "الثلاثاء",
+      "الأربعاء",
+      "الخميس",
+      "الجمعة",
+      "السبت"
+    ],
+    "metrics": {
+      "energy": "الطاقة",
+      "mood": "المزاج",
+      "drive": "التحفيز"
+    },
+    "priorities": {
+      "high": "عاجل",
+      "med": "متوسط",
+      "low": "منخفض"
+    },
+    "packs": {
+      "habit": {
+        "name": "متتبع العادات",
+        "tagline": "شبكة شهرية · سلاسل · نقاط",
+        "sheet": "لوحة العادات"
+      },
+      "task": {
+        "name": "متتبع المهام",
+        "tagline": "مخطط أسبوعي · أولويات",
+        "sheet": "المهام الأسبوعية"
+      },
+      "bundle": {
+        "name": "الباقة الكاملة",
+        "tagline": "عادات + مهام · لوحة موحّدة",
+        "sheet": "مسار الكامل"
+      }
+    }
+  },
+  "member": {
+    "upgradeTitle": "افتح الباقة الكاملة",
+    "upgradeBody": "عادات + مهام + تحليلات موحّدة في لوحة واحدة.",
+    "upgradeCta": "الترقية للباقة الكاملة",
+    "subscriptionActive": "نشط",
+    "subscriptionTrial": "تجريبي",
+    "subscriptionPastDue": "متأخر — حدّث طريقة الدفع",
+    "subscriptionCanceled": "ملغى",
+    "manageBilling": "إدارة الاشتراك والفواتير",
+    "resubscribe": "إعادة الاشتراك",
+    "tabHintOverview": "Your progress summary — updates instantly when you log a habit or task.",
+    "tabHintHabit": "Monthly grid — tap a day to log completion.",
+    "tabHintTask": "Weekly tasks — organized by day and priority.",
+    "habitTracker": "Habit tracker",
+    "today": "Today",
+    "monthCol": "Month",
+    "scrollHint": "Swipe to see all days",
+    "habitColumn": "Habit",
+    "newHabitPlaceholder": "New habit name…",
+    "addHabit": "Add",
+    "mentalTitle": "Mental state & mood",
+    "mentalHint": "Day {{day}} — adjust each slider (energy · mood · drive); changes appear instantly on your progress hub.",
+    "deleteHabitAria": "Delete {{name}}",
+    "toggleDayAria": "{{name}} — day {{day}}{{done}}",
+    "toggleDayDone": " (done)",
+    "upgradeAria": "Upgrade to full bundle",
+    "upgradeBadge": "Smart upgrade",
+    "upgradeTitleBoth": "Save more — merge everything in the Full Bundle ✦",
+    "upgradeTitleMissing": "Complete your path: {{items}}",
+    "upgradeBodyHabitOnly": "You have the Habit Tracker — add weekly tasks and the unified Massar hub.",
+    "upgradeBodyTaskOnly": "You have the Task Tracker — add the monthly habit grid, points, and streaks.",
+    "upgradeBodyBoth": "You have both trackers separately — the Full Bundle unlocks one hub, priority updates, and upcoming content.",
+    "upgradePriceCompare": "بدل {{singles}} منفصلين → {{bundle}} للباقة الكاملة",
+    "taskMarkDone": "Mark complete",
+    "taskMarkUndone": "Mark incomplete",
+    "taskDelete": "Delete task",
+    "subYourPlan": "اشتراكك: {{name}}",
+    "subStatus": "Status: {{status}}",
+    "subRenews": "التجديد: {{date}}",
+    "subManage": "Manage billing",
+    "subNoSubscription": "لا يوجد اشتراك مربوط بحسابك.",
+    "subPortalError": "تعذّر فتح بوابة الفوترة.",
+    "taskTracker": "Task tracker",
+    "taskWeekTitle": "Weekly tasks",
+    "taskDoneCol": "Done",
+    "taskRateCol": "Rate",
+    "taskScrollHint": "Swipe to see weekdays →",
+    "taskDayProgress": "{{done}}/{{total}} done",
+    "taskNoTasksDay": "No tasks this day",
+    "taskAddBelow": "Add below",
+    "taskNew": "New task",
+    "taskPlaceholder": "What will you accomplish?",
+    "taskDayAria": "Day",
+    "taskPriorityAria": "Priority",
+    "taskAddBtn": "Add task",
+    "subCancelAtPeriodEnd": "ينتهي بنهاية الفترة الحالية",
+    "subStatusUnpaid": "غير مدفوع",
+    "analytics": {
+      "chartHabits": "العادات %",
+      "chartMental": "الحالة الذهنية %",
+      "chartTaskDay": "إنجاز اليوم",
+      "legendHabits": "نسبة العادات",
+      "legendMental": "الحالة الذهنية",
+      "lifeScore": "مؤشر الحياة",
+      "lifeSublabel": "عادات · ذهني · مهام",
+      "progressBoard": "لوحة التقدم",
+      "progressHeadline": "تقدّمك يتحدّث مع كل إنجاز",
+      "progressToday": "اليوم أنجزت {{done}} من {{total}} عادات",
+      "progressStreak": " · أطول سلسلة {{count}} يوم",
+      "progressStartHabits": "ابدأ بتسجيل عاداتك اليوم.",
+      "progressWeekTasks": "أنجزت {{count}} مهمة هذا الأسبوع",
+      "metricToday": "عادات اليوم",
+      "metricMonth": "عادات الشهر",
+      "metricMental": "الطاقة الذهنية",
+      "metricStreak": "أطول سلسلة",
+      "metricWeekTasks": "مهام الأسبوع",
+      "ringToday": "اليوم",
+      "ringMonth": "الشهر",
+      "ringTasks": "المهام",
+      "trendTitle": "اتجاه آخر {{count}} أيام",
+      "habitMonthTitle": "إنجاز كل عادة — هذا الشهر",
+      "habitMonthSub": "نسبة الأيام المنجزة لكل عادة",
+      "taskDayTitle": "إنجاز المهام — حسب اليوم",
+      "taskRemaining_one": "متبقي {{count}} مهمة — حدّث الحالة لرؤية التغيير فوراً",
+      "taskRemaining_other": "متبقي {{count}} مهام — حدّث الحالة لرؤية التغيير فوراً",
+      "noHabitsYet": "لا توجد عادات بعد.",
+      "streakDays_one": "سلسلة {{count}} يوم",
+      "streakDays_other": "سلسلة {{count}} أيام",
+      "mentalToday": "مؤشرك الذهني اليوم",
+      "mentalLiveHint": "يتحدّث فوراً عند تحريك المؤشرات بالأسفل",
+      "mentalTitle": "الحالة الذهنية اليوم",
+      "mentalNotRecorded": "لم تُسجّل بعد",
+      "mentalEditHint": "لتعديل التقييم: تبويب <1>متتبع العادات</1> → قسم الحالة الذهنية"
+    },
+    "insight": {
+      "dismiss": "إغلاق التنبيه",
+      "legendaryTitle": "يوم أسطوري!",
+      "legendaryBody": "أنجزت كل عاداتك اليوم — استمر!",
+      "streakTitle": "سلسلة {{count}} أيام",
+      "streakBody": "{{icon}} {{name}} — زخم قوي!",
+      "habitLoggedTitle": "عادة مسجّلة",
+      "habitLoggedBody": "{{name}} — إنجاز اليوم {{pct}}%",
+      "habitOffTitle": "لا بأس",
+      "habitOffBody": "غداً فرصة جديدة — ركّز على عادة واحدة",
+      "mentalHighTitle": "طاقة عالية",
+      "mentalHighBody": "مؤشرك الذهني {{score}}% — يوم مثالي للإنجاز",
+      "mentalMidTitle": "توازن جيد",
+      "mentalMidBody": "مؤشرك الذهني {{score}}% — حافظ على الوتيرة",
+      "mentalLowTitle": "اعتنِ بنفسك",
+      "mentalLowBody": "خفّف المهام وركّز على الراحة اليوم",
+      "taskDoneTitle": "مهمة أنجزت",
+      "taskDoneBody": "إنجاز الأسبوع {{pct}}% ({{done}}/{{total}})",
+      "taskAddTitle": "مهمة جديدة",
+      "taskAddBody": "خطّطها ونفّذها — كل إنجاز يقربك من هدفك"
+    }
+  },
+  "checkoutDev": {
+    "title": "السيرفر غير متصل — لا يمكن معاينة الدفع",
+    "hint": "افتح الموقع من",
+    "run": "بعد تشغيل:",
+    "alt": "أو معاينة كاملة على منفذ واحد:",
+    "then": "ثم"
+  }
+}

@@ -38,7 +38,10 @@ export function getDbError() {
 export function getDb() {
   if (db) return db;
   if (initError) throw initError;
-  const dbPath = process.env.DATABASE_PATH || defaultPath;
+  const rawPath = process.env.DATABASE_PATH || defaultPath;
+  const dbPath = path.isAbsolute(rawPath)
+    ? rawPath
+    : path.resolve(__dirname, "..", rawPath.replace(/^\.\//, ""));
   try {
     fs.mkdirSync(path.dirname(dbPath), { recursive: true });
     const Database = loadSqliteDriver();
@@ -99,5 +102,32 @@ function migrate(database) {
     CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
     CREATE INDEX IF NOT EXISTS idx_purchases_user ON purchases(user_id);
     CREATE INDEX IF NOT EXISTS idx_entitlements_user ON entitlements(user_id);
+
+    CREATE TABLE IF NOT EXISTS subscriptions (
+      stripe_subscription_id TEXT PRIMARY KEY,
+      stripe_customer_id TEXT NOT NULL,
+      user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+      product_id TEXT NOT NULL,
+      status TEXT NOT NULL,
+      current_period_end TEXT,
+      cancel_at_period_end INTEGER NOT NULL DEFAULT 0,
+      checkout_session_id TEXT UNIQUE,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_subscriptions_user ON subscriptions(user_id);
+    CREATE INDEX IF NOT EXISTS idx_subscriptions_customer ON subscriptions(stripe_customer_id);
   `);
+
+  ensureColumn(database, "users", "stripe_customer_id", "TEXT");
+  ensureColumn(database, "purchases", "checkout_session_id", "TEXT");
+  ensureColumn(database, "purchases", "subscription_id", "TEXT");
+}
+
+function ensureColumn(database, table, column, typeSql) {
+  const cols = database.prepare(`PRAGMA table_info(${table})`).all();
+  if (!cols.some((c) => c.name === column)) {
+    database.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${typeSql}`);
+  }
 }

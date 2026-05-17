@@ -1,58 +1,109 @@
 import { useMemo, useState } from "react";
-import { PACK_META } from "@/lib/tracker-catalog";
+import { useTranslation } from "react-i18next";
+import { useTrackerCatalog } from "@/lib/useTrackerCatalog";
+import { TrackerProvider } from "@/lib/TrackerContext";
 import DailyHabitsPanel from "@/components/member/DailyHabitsPanel";
 import TaskWeeklyBoard from "@/components/member/TaskWeeklyBoard";
+import InsightFlash from "@/components/member/analytics/InsightFlash";
+import ProgressCommandCenter from "@/components/member/analytics/ProgressCommandCenter";
+
+function tabButtonClass(active, tabId) {
+  if (!active) {
+    return "text-gray-400 border border-gray-800/80 bg-black/20 hover:border-gray-600 hover:text-gray-200";
+  }
+  if (tabId === "task") {
+    return "bg-emerald-400/15 text-emerald-100 border border-emerald-400/35 shadow-sm shadow-emerald-400/10";
+  }
+  if (tabId === "habit") {
+    return "bg-yellow-400/15 text-yellow-100 border border-yellow-400/35 shadow-sm shadow-yellow-400/10";
+  }
+  return "bg-yellow-400/20 text-yellow-50 border border-yellow-400/40 shadow-sm shadow-yellow-400/10";
+}
 
 export default function MemberTrackerHub({ userId, hasHabit, hasTask, hasBundle }) {
+  const { t } = useTranslation();
+  const { packMeta } = useTrackerCatalog();
+
+  const overviewTab = useMemo(
+    () => ({
+      id: "overview",
+      icon: "📊",
+      name: t("tracker.overviewTab"),
+    }),
+    [t],
+  );
+
   const tabs = useMemo(() => {
-    const list = [];
-    if (hasHabit) list.push({ id: "habit", ...PACK_META.habit });
-    if (hasTask) list.push({ id: "task", ...PACK_META.task });
+    const list = [overviewTab];
+    if (hasHabit) list.push({ id: "habit", ...packMeta.habit });
+    if (hasTask) list.push({ id: "task", ...packMeta.task });
     return list;
-  }, [hasHabit, hasTask]);
+  }, [hasHabit, hasTask, overviewTab, packMeta]);
 
-  const [active, setActive] = useState(tabs[0]?.id || "habit");
+  const [active, setActive] = useState("overview");
 
-  if (!tabs.length) {
+  if (!hasHabit && !hasTask) {
     return (
-      <p className="text-gray-500 text-sm text-center py-8">
-        لا يوجد نظام مفعّل بعد. أكمل الشراء من الصفحة الرئيسية.
-      </p>
+      <p className="text-gray-500 text-sm text-center py-8 px-4">{t("tracker.noSystem")}</p>
     );
   }
 
-  return (
-    <section className="dark-card rounded-2xl border border-yellow-400/15 overflow-hidden">
-      <div className="px-4 pt-4 pb-2 border-b border-gray-800/80 bg-black/30">
-        <p className="text-gray-400 text-xs mb-3">
-          {hasBundle
-            ? "✦ الباقة الكاملة — لوحة موحّدة بنفس هيكل Google Sheets"
-            : "أنظمتك المفعّلة — تبديل بين المتتبعات"}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActive(tab.id)}
-              className={`px-4 py-2 rounded-xl text-sm font-black transition-colors ${
-                active === tab.id
-                  ? tab.id === "task"
-                    ? "bg-emerald-400/20 text-emerald-200 border border-emerald-400/40"
-                    : "bg-yellow-400/20 text-yellow-200 border border-yellow-400/40"
-                  : "text-gray-500 border border-transparent hover:border-gray-700"
-              }`}
-            >
-              {tab.icon} {tab.name}
-            </button>
-          ))}
-        </div>
-      </div>
+  const activeMeta = tabs.find((tab) => tab.id === active);
 
-      <div className="p-4 md:p-5">
-        {active === "habit" && hasHabit && <DailyHabitsPanel userId={userId} />}
-        {active === "task" && hasTask && <TaskWeeklyBoard userId={userId} />}
-      </div>
-    </section>
+  return (
+    <TrackerProvider userId={userId} hasHabit={hasHabit} hasTask={hasTask}>
+      <section
+        className="dark-card rounded-2xl border border-yellow-400/15 overflow-hidden"
+        aria-label={t("tracker.ariaLabel")}
+      >
+        <div className="px-4 sm:px-5 pt-4 pb-3 border-b border-gray-800/80 bg-black/40 space-y-3">
+          <div className="space-y-1">
+            <p className="text-yellow-400/90 text-xs font-bold">{t("tracker.hubLabel")}</p>
+            <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
+              {hasBundle ? t("tracker.hubBundle") : t("tracker.hubTabs")}
+            </p>
+          </div>
+
+          <InsightFlash />
+
+          <div
+            className="member-tabs-scroll flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory"
+            role="tablist"
+            aria-label={t("tracker.tabsAria")}
+          >
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={active === tab.id}
+                onClick={() => setActive(tab.id)}
+                className={`flex-shrink-0 snap-start px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all min-h-[44px] ${tabButtonClass(active === tab.id, tab.id)}`}
+              >
+                <span className="whitespace-nowrap">
+                  {tab.icon} {tab.name}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="px-4 sm:px-5 py-1 bg-black/20 border-b border-gray-800/60">
+          <p className="text-gray-500 text-[11px] sm:text-xs py-2">
+            {active === "overview" && t("member.tabHintOverview")}
+            {active === "habit" && t("member.tabHintHabit")}
+            {active === "task" && t("member.tabHintTask")}
+          </p>
+        </div>
+
+        <div className="p-4 sm:p-5 md:p-6" role="tabpanel" aria-label={activeMeta?.name}>
+          {active === "overview" && (
+            <ProgressCommandCenter hasHabit={hasHabit} hasTask={hasTask} />
+          )}
+          {active === "habit" && hasHabit && <DailyHabitsPanel userId={userId} />}
+          {active === "task" && hasTask && <TaskWeeklyBoard userId={userId} />}
+        </div>
+      </section>
+    </TrackerProvider>
   );
 }
