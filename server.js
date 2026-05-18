@@ -21,7 +21,7 @@ import {
 } from "./api/auth-handlers.js";
 import { handleDashboard } from "./api/member-handlers.js";
 import { getDb, getDbError } from "./api/db.js";
-import { isStripeConfigured } from "./api/stripe-config.js";
+import { isStripeConfigured, validateStripeEnvironment } from "./api/stripe-config.js";
 import { handleLocaleDetect } from "./api/locale-detect.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -78,6 +78,7 @@ app.get("/api/locale/detect", handleLocaleDetect);
 
 app.get("/api/health", (_req, res) => {
   const dbError = getDbError();
+  const stripeCheck = validateStripeEnvironment();
   res.status(200).json({
     ok: true,
     server: "up",
@@ -86,6 +87,9 @@ app.get("/api/health", (_req, res) => {
     dbError: dbError || undefined,
     dist: fs.existsSync(path.join(distPath, "index.html")),
     payments: isStripeConfigured(),
+    stripeMode: stripeCheck.mode,
+    stripeReady: stripeCheck.ok,
+    stripeWarnings: stripeCheck.warnings.length ? stripeCheck.warnings : undefined,
     time: new Date().toISOString(),
   });
 });
@@ -148,4 +152,10 @@ try {
 
 app.listen(PORT, HOST, () => {
   console.log(`Massar server listening on http://${HOST}:${PORT} (PORT=${PORT})`);
+  const stripe = validateStripeEnvironment();
+  if (stripe.mode) {
+    console.log(`[massar] Stripe mode: ${stripe.mode}${isStripeConfigured() ? " (payments on)" : " (payments off)"}`);
+  }
+  for (const w of stripe.warnings) console.warn(`[massar] Stripe warning: ${w}`);
+  for (const e of stripe.errors) console.error(`[massar] Stripe error: ${e}`);
 });

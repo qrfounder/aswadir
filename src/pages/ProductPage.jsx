@@ -6,7 +6,7 @@ import { Users, Award, Link2, TrendingUp, Brain, Target, BarChart, Zap, Smartpho
 import UrgencyBar from "@/components/sales/UrgencyBar";
 import PricingSection from "@/components/sales/PricingSection";
 import BeforeAfter from "@/components/sales/BeforeAfter";
-import TestimonialCard from "@/components/sales/TestimonialCard";
+import ReviewsCarousel from "@/components/sales/ReviewsCarousel";
 import FAQSection from "@/components/sales/FAQSection";
 import TrustBadges from "@/components/sales/TrustBadges";
 import BrandLogo from "@/components/BrandLogo";
@@ -33,7 +33,6 @@ export default function ProductPage() {
   );
   const navigate = useNavigate();
   const pricingRef = useRef(null);
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [showStickyBuy, setShowStickyBuy] = useState(false);
 
@@ -72,7 +71,6 @@ export default function ProductPage() {
       alert(t("common.publishedAppOnly"));
       return;
     }
-    setIsCheckingOut(true);
     navigate(`/checkout?product=${encodeURIComponent(product.id)}`);
   };
 
@@ -299,36 +297,21 @@ export default function ProductPage() {
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-4 py-2 mb-4">
                 <Award className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-300 text-sm font-bold">{t("common.reviewsCount")}</span>
+                <span className="text-yellow-300 text-sm font-bold">{t("testimonials.pillBadge")}</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
                 {t("testimonials.sectionTitle")}
               </h2>
+              <p className="text-gray-500 text-sm max-w-xl mx-auto mb-2">{t("testimonials.sectionSubtitle")}</p>
               <div className="flex justify-center items-center gap-2 mt-2">
                 <StarRating size="xl" />
                 <span className="text-white font-black text-2xl">4.9</span>
                 <span className="text-gray-400">/ 5</span>
               </div>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {testimonials.map((item, i) => (
-                <TestimonialCard key={`${item.name}-${i}`} {...item} verified />
-              ))}
-            </div>
+            <ReviewsCarousel testimonials={testimonials} />
           </div>
         </section>
-
-        {testimonials.length > 3 && (
-        <section className="py-10 px-4 bg-black/20">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-4">
-              {testimonials.slice(3, 5).map((r, i) => (
-                <TestimonialCard key={`extra-${i}`} {...r} verified />
-              ))}
-            </div>
-          </div>
-        </section>
-        )}
 
         <hr className="section-divider mx-8" />
 

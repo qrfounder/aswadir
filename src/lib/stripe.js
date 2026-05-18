@@ -32,6 +32,8 @@ async function resolveKey() {
   if (cachedKey) return cachedKey;
   const cfg = await fetchStripeConfig();
   if (cfg.publishableKey) return cfg.publishableKey;
+  // Never fall back to Stripe's public demo key in production builds
+  if (import.meta.env.PROD) return "";
   return DEMO_PUBLISHABLE_KEY;
 }
 

@@ -54,10 +54,13 @@ Copy `.env.example` to `.env.local` for local dev. In Easypanel, set these in th
 
 | Variable | Where | Notes |
 |---|---|---|
-| `VITE_STRIPE_PUBLISHABLE_KEY` | Build-time (frontend) | `pk_test_...` or `pk_live_...` |
-| `VITE_API_BASE_URL` | Build-time (frontend) | Leave empty when frontend and API share a domain |
-| `STRIPE_SECRET_KEY` | Runtime (server) | Never expose to browser |
+| `STRIPE_PUBLISHABLE_KEY` | Runtime (server → `/api/config`) | `pk_test_...` or `pk_live_...` — **required** |
+| `STRIPE_SECRET_KEY` | Runtime (server) | `sk_test_...` or `sk_live_...` — never expose to browser |
 | `STRIPE_WEBHOOK_SECRET` | Runtime (server) | `whsec_...` from your Stripe webhook endpoint |
+| `STRIPE_PRICE_TASK` / `HABIT` / `BUNDLE` | Runtime (server) | Live Price IDs from `npm run stripe:setup` |
+| `SITE_URL` | Runtime (server) | `https://aswadir.store` in production |
+| `VITE_STRIPE_PUBLISHABLE_KEY` | Build-time (optional) | Legacy; frontend uses `/api/config` at runtime |
+| `VITE_API_BASE_URL` | Build-time (frontend) | Leave empty when frontend and API share a domain |
 | `PORT` | Runtime (server) | Defaults to 3000, Easypanel sets this automatically |
 | `HOST` | Runtime (server) | Defaults to 0.0.0.0 |
 | `DATABASE_PATH` | Runtime (server) | SQLite file, e.g. `/app/data/massar.db` — **use a persistent volume** |
@@ -116,14 +119,7 @@ Mount a volume in Easypanel:
 
 Without this, **all user accounts are lost** on every deploy.
 
-If using the Dockerfile, also add build-time args under **Build args**:
-
-```
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxx
-VITE_API_BASE_URL=
-```
-
-These are needed because Vite bakes `VITE_*` vars into the static bundle during `npm run build`.
+Publishable keys are served at runtime from `/api/config` — set `STRIPE_PUBLISHABLE_KEY` in Environment and redeploy (no rebuild required for key rotation).
 
 ### 4. Configure the service
 
@@ -169,7 +165,7 @@ After your domain is live with SSL:
 
 1. Stripe Dashboard > Developers > Webhooks > Add endpoint.
 2. URL: `https://aswadir.store/api/stripe-webhook`
-3. Events: `payment_intent.succeeded`, `payment_intent.payment_failed`, `charge.refunded`.
+3. Events (subscriptions): `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`.
 4. Copy the signing secret (starts with `whsec_...`) into Easypanel Environment as `STRIPE_WEBHOOK_SECRET`.
 5. Click **Redeploy** in Easypanel.
 6. Back in Stripe, click **Send test webhook** to confirm 200 OK.
@@ -196,12 +192,32 @@ Any future expiry, any 3-digit CVC.
 
 ## Going live (real money)
 
-1. Activate your Stripe account fully.
-2. Toggle Stripe Dashboard to Live mode.
-3. Replace `pk_test_` / `sk_test_` with `pk_live_` / `sk_live_` in Easypanel.
-4. Recreate the webhook endpoint in Live mode, update `STRIPE_WEBHOOK_SECRET`.
-5. Enable Radar rules (block high-risk score, require CVC).
-6. Redeploy.
+1. **Activate** your Stripe account (business details, bank account).
+2. In [Stripe Dashboard → API keys](https://dashboard.stripe.com/apikeys), switch to **Live** and copy `pk_live_` + `sk_live_`.
+3. Put live keys in `.env` locally, then create **live** products/prices:
+   ```bash
+   npm run stripe:setup    # uses sk_live_ from .env → writes STRIPE_PRICE_* to .env
+   npm run stripe:verify   # must pass before deploy
+   ```
+4. **Live webhook** (Dashboard → Developers → Webhooks, Live mode):
+   - URL: `https://aswadir.store/api/stripe-webhook`
+   - Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`
+   - Copy signing secret → `STRIPE_WEBHOOK_SECRET` in Easypanel
+5. Easypanel Environment (all **live** values):
+   ```
+   STRIPE_PUBLISHABLE_KEY=pk_live_...
+   STRIPE_SECRET_KEY=sk_live_...
+   STRIPE_WEBHOOK_SECRET=whsec_...
+   STRIPE_PRICE_TASK=price_...
+   STRIPE_PRICE_HABIT=price_...
+   STRIPE_PRICE_BUNDLE=price_...
+   SITE_URL=https://aswadir.store
+   NODE_ENV=production
+   DATABASE_PATH=/app/data/massar.db
+   ```
+6. **Redeploy**. Confirm `GET https://aswadir.store/api/health` shows `"stripeMode":"live"` and `"stripeReady":true`.
+7. Run one real $0 trial checkout yourself, then refund in Dashboard if needed.
+8. Enable **Radar** rules (block high-risk, require CVC) in Live mode.
 
 ## AI agent tooling (Claude Code, Cursor, etc.)
 

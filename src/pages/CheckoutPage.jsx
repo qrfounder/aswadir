@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Check,
@@ -26,14 +26,20 @@ import { client } from "@/api/client";
 import { fetchStripeConfig } from "@/lib/stripe";
 import TrustBadges from "@/components/sales/TrustBadges";
 import DevApiBanner from "@/components/checkout/DevApiBanner";
+import PhoneDialSelect, { formatDialPrefix } from "@/components/checkout/PhoneDialSelect";
 import BrandLogo from "@/components/BrandLogo";
 import { BackChevron, ForwardChevron } from "@/lib/locale-ui";
+import {
+  getDefaultDialIso,
+  getDialCountry,
+  validateNationalNumber,
+} from "@/lib/phoneDialCodes";
 
 function StepDot({ active, done, num, label }) {
   return (
-    <div className="flex items-center gap-2 flex-shrink-0">
+    <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0 min-w-0">
       <div
-        className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-sm transition-all ${
+        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-black text-sm transition-all flex-shrink-0 ${
           done
             ? "bg-yellow-400 text-black"
             : active
@@ -43,7 +49,9 @@ function StepDot({ active, done, num, label }) {
       >
         {done ? <Check className="w-4 h-4" strokeWidth={3} /> : num}
       </div>
-      <span className={`text-sm font-bold ${active ? "text-white" : "text-gray-500"}`}>
+      <span
+        className={`checkout-step-label text-xs sm:text-sm font-bold ${active ? "text-white" : "text-gray-500"}`}
+      >
         {label}
       </span>
     </div>
@@ -52,7 +60,7 @@ function StepDot({ active, done, num, label }) {
 
 export default function CheckoutPage() {
   const { t } = useTranslation();
-  const { locale, currency } = useLocale();
+  const { locale, currency, detectedCountry } = useLocale();
   const { format, priceFor, perDayPriceFor, originalPriceFor, checkoutNoteNeeded, chargeCurrency } = usePricing();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -61,10 +69,28 @@ export default function CheckoutPage() {
   const product = useLocalizedProduct(productId);
 
   const [step, setStep] = useState(1);
-  const [customer, setCustomer] = useState({ name: "", email: "", whatsapp: "" });
+  const [customer, setCustomer] = useState({
+    name: "",
+    email: "",
+    whatsapp: "",
+    dialIso: getDefaultDialIso(locale, null),
+  });
   const [formError, setFormError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [paymentsEnabled, setPaymentsEnabled] = useState(null);
+  const dialInitialized = useRef(false);
+
+  const dialCountry = getDialCountry(customer.dialIso);
+
+  useEffect(() => {
+    if (detectedCountry && !dialInitialized.current) {
+      dialInitialized.current = true;
+      setCustomer((c) => ({
+        ...c,
+        dialIso: getDefaultDialIso(locale, detectedCountry),
+      }));
+    }
+  }, [detectedCountry, locale]);
 
   useEffect(() => {
     fetchStripeConfig().then((cfg) => setPaymentsEnabled(cfg.paymentsEnabled));
@@ -88,7 +114,7 @@ export default function CheckoutPage() {
       setFormError(t("checkout.errors.email"));
       return;
     }
-    if (!/^[0-9]{8,12}$/.test(phone)) {
+    if (!validateNationalNumber(customer.dialIso, phone)) {
       setFormError(t("checkout.errors.phone"));
       return;
     }
@@ -104,7 +130,7 @@ export default function CheckoutPage() {
         customerName: customer.name.trim(),
         customerEmail: customer.email.trim().toLowerCase(),
         whatsapp: customer.whatsapp.trim(),
-        whatsappDialCode: t("checkout.whatsappPrefix"),
+        whatsappDialCode: dialCountry.dial,
         locale: LOCALE_META[locale]?.stripe || locale,
         returnOrigin: window.location.origin,
       });
@@ -145,9 +171,9 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="bg-black/60 backdrop-blur-md border-b border-yellow-400/10 py-4 px-4 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+    <div className="checkout-page min-h-screen bg-background">
+      <header className="bg-black/60 backdrop-blur-md border-b border-yellow-400/10 py-3 sm:py-4 sticky top-0 z-40">
+        <div className="checkout-header-inner flex items-center justify-between gap-2 sm:gap-3 min-w-0">
           <button
             type="button"
             onClick={() => navigate("/")}
@@ -155,41 +181,48 @@ export default function CheckoutPage() {
           >
             <BrandLogo size="header" className="group-hover:opacity-90 transition-opacity" />
           </button>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             <CurrencySwitcher />
             <LanguageSwitcher />
-            <div className="flex items-center gap-1.5 text-xs text-gray-400 bg-green-900/20 border border-green-500/30 px-3 py-1.5 rounded-full">
-              <Lock className="w-3.5 h-3.5 text-green-400" />
-              <span className="text-green-300 font-bold">{t("nav.securePay")}</span>
+            <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 bg-green-900/20 border border-green-500/30 px-2.5 sm:px-3 py-1.5 rounded-full">
+              <Lock className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+              <span className="text-green-300 font-bold whitespace-nowrap">{t("nav.securePay")}</span>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8 md:py-12">
+      <main className="checkout-main py-6 sm:py-8 md:py-10 lg:py-12">
         <button
+          type="button"
           onClick={() => navigate(-1)}
-          className="text-gray-400 hover:text-yellow-400 text-sm flex items-center gap-1.5 mb-6 transition-colors"
+          className="text-gray-400 hover:text-yellow-400 text-sm sm:text-base flex items-center gap-1.5 mb-5 sm:mb-6 transition-colors"
         >
           <BackChevron className="w-4 h-4" /> {t("nav.back")}
         </button>
 
-        <div className={step === 2 ? "space-y-8" : "grid lg:grid-cols-[1fr_400px] gap-8"}>
+        <div
+          className={
+            step === 2
+              ? "space-y-6 sm:space-y-8 max-w-3xl mx-auto w-full"
+              : "grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_min(100%,24rem)] gap-6 lg:gap-10"
+          }
+        >
           <div
-            className={`space-y-6 order-2 lg:order-1 min-w-0 ${
-              step === 2 ? "w-full max-w-3xl mx-auto" : ""
+            className={`space-y-5 sm:space-y-6 order-2 lg:order-1 min-w-0 w-full ${
+              step === 2 ? "" : ""
             }`}
           >
-            <div>
-              <h1 className="text-3xl md:text-4xl font-black text-white mb-2">
+            <div className="space-y-2 sm:space-y-3">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">
                 <span className="gold-gradient">{t("checkout.title")}</span>
               </h1>
-              <p className="text-gray-400 text-sm md:text-base">
+              <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-2xl">
                 {step === 1 ? t("checkout.subtitleBlind") : t("checkout.subtitle", { price: priceFor(product.id) })}
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <StepDot active={step >= 1} done={step > 1} num={1} label={t("checkout.stepInfo")} />
               <div
                 className={`h-0.5 flex-1 rounded-full transition-colors ${
@@ -202,7 +235,7 @@ export default function CheckoutPage() {
             {step === 1 && (
               <form
                 onSubmit={proceedToPayment}
-                className="dark-card rounded-2xl p-5 md:p-6 space-y-5"
+                className="checkout-card dark-card p-5 sm:p-6 md:p-7 space-y-5 sm:space-y-6"
               >
                 <h3 className="text-white font-black text-lg flex items-center gap-2">
                   <User className="w-5 h-5 text-yellow-400" />
@@ -219,12 +252,12 @@ export default function CheckoutPage() {
                     value={customer.name}
                     onChange={(e) => setCustomer((c) => ({ ...c, name: e.target.value }))}
                     placeholder={t("common.exampleName")}
-                    className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 outline-none transition-colors"
+                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white placeholder:text-gray-500 outline-none transition-colors"
                   />
                 </label>
 
                 <label className="block">
-                  <span className="text-gray-300 text-sm font-bold mb-2 flex items-center gap-2">
+                  <span className="text-gray-300 text-sm sm:text-[15px] font-bold mb-2 flex items-center gap-2">
                     <Mail className="w-4 h-4 text-yellow-400" />
                     {t("checkout.email")}
                   </span>
@@ -236,16 +269,17 @@ export default function CheckoutPage() {
                     value={customer.email}
                     onChange={(e) => setCustomer((c) => ({ ...c, email: e.target.value }))}
                     placeholder="you@example.com"
-                    className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 outline-none transition-colors text-left"
+                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white placeholder:text-gray-500 outline-none transition-colors text-left"
                   />
                 </label>
 
                 <label className="block">
-                  <span className="text-gray-300 text-sm font-bold mb-2 block">{t("checkout.whatsapp")}</span>
-                  <div className="flex gap-2" dir="ltr">
-                    <span className="bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-gray-300 text-sm font-mono flex items-center">
-                      {t("checkout.whatsappFlag")} {t("checkout.whatsappPrefix")}
-                    </span>
+                  <span className="text-gray-300 text-sm sm:text-[15px] font-bold mb-2 block">{t("checkout.whatsapp")}</span>
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-2.5" dir="ltr">
+                    <PhoneDialSelect
+                      value={customer.dialIso}
+                      onChange={(iso) => setCustomer((c) => ({ ...c, dialIso: iso }))}
+                    />
                     <input
                       type="tel"
                       required
@@ -258,8 +292,8 @@ export default function CheckoutPage() {
                         }))
                       }
                       placeholder={t("checkout.whatsappPlaceholder")}
-                      maxLength={12}
-                      className="flex-1 bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-3 text-white outline-none text-left"
+                      maxLength={dialCountry.max}
+                      className="checkout-field flex-1 min-w-0 bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white outline-none text-left"
                     />
                   </div>
                 </label>
@@ -272,7 +306,7 @@ export default function CheckoutPage() {
 
                 <button
                   type="submit"
-                  className="cta-button w-full py-4 rounded-2xl text-base font-black flex items-center justify-center gap-2"
+                  className="cta-button checkout-cta w-full rounded-2xl font-black flex items-center justify-center gap-2 pulse-gold"
                 >
                   {t("checkout.continuePay")}
                   <ForwardChevron />
@@ -299,7 +333,7 @@ export default function CheckoutPage() {
                       {customer.email}
                     </p>
                     <p className="text-gray-500 text-xs mt-0.5" dir="ltr">
-                      {t("checkout.whatsappPrefix")} {customer.whatsapp}
+                      {formatDialPrefix(customer.dialIso)} {customer.whatsapp}
                     </p>
                   </div>
                   <button
@@ -322,7 +356,7 @@ export default function CheckoutPage() {
                       type="button"
                       onClick={startSubscription}
                       disabled={submitting}
-                      className="cta-button w-full py-4 rounded-2xl text-base font-black flex items-center justify-center gap-2 disabled:opacity-60"
+                      className="cta-button checkout-cta w-full rounded-2xl font-black flex items-center justify-center gap-2 disabled:opacity-60"
                     >
                       {submitting ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
@@ -362,7 +396,7 @@ export default function CheckoutPage() {
                       type="button"
                       onClick={startSubscription}
                       disabled={submitting}
-                      className="cta-button w-full py-4 md:py-5 rounded-2xl text-base md:text-lg font-black flex items-center justify-center gap-2 disabled:opacity-60"
+                      className="cta-button checkout-cta w-full rounded-2xl font-black flex items-center justify-center gap-2 disabled:opacity-60 pulse-gold"
                     >
                       {submitting ? (
                         <>
@@ -442,7 +476,7 @@ export default function CheckoutPage() {
 
           {step !== 2 && (
           <aside className="order-1 lg:order-2">
-            <div className="lg:sticky lg:top-24 space-y-4">
+            <div className="lg:sticky lg:top-[5.5rem] space-y-4 sm:space-y-5">
               <div className="dark-card rounded-2xl p-5 space-y-4 border border-yellow-400/20 glow-gold-sm">
                 <h3 className="text-white font-black text-base flex items-center gap-2">
                   <Tag className="w-5 h-5 text-yellow-400" />

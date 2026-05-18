@@ -3,6 +3,7 @@ import { Loader2, CreditCard } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { stripePromise } from "@/lib/stripe";
 import { client } from "@/api/client";
+import { getDialCountry } from "@/lib/phoneDialCodes";
 
 const STRIPE_LOCALE = { ar: "ar", en: "en", th: "th" };
 
@@ -30,7 +31,7 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
           customerName: customer.name.trim(),
           customerEmail: customer.email.trim().toLowerCase(),
           whatsapp: customer.whatsapp.trim(),
-          whatsappDialCode: t("checkout.whatsappPrefix"),
+          whatsappDialCode: getDialCountry(customer.dialIso || "SA").dial,
           embedded: true,
           locale: stripeLocale,
           returnOrigin: window.location.origin,
@@ -87,6 +88,7 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
     customer.name,
     customer.email,
     customer.whatsapp,
+    customer.dialIso,
     onError,
     stripeLocale,
   ]);

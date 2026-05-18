@@ -175,6 +175,78 @@
   box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
 }
 
+/* Checkout funnel — consistent rhythm + conversion-sized CTAs */
+.checkout-page {
+  min-height: 100dvh;
+}
+
+.checkout-header-inner {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: max(1rem, env(safe-area-inset-left, 0px)) max(1rem, env(safe-area-inset-right, 0px));
+}
+
+.checkout-main {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: max(1rem, env(safe-area-inset-left, 0px)) max(1rem, env(safe-area-inset-right, 0px));
+  padding-bottom: max(2rem, env(safe-area-inset-bottom, 0px));
+}
+
+.checkout-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 1rem;
+}
+
+@media (min-width: 640px) {
+  .checkout-card {
+    border-radius: 1.25rem;
+  }
+}
+
+.checkout-field {
+  width: 100%;
+  min-height: 3rem;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+@media (min-width: 640px) {
+  .checkout-field {
+    min-height: 3.125rem;
+    font-size: 0.9375rem;
+  }
+}
+
+.checkout-cta {
+  min-height: 3.25rem;
+  font-size: 1.125rem;
+  line-height: 1.25;
+  padding-block: 1rem;
+}
+
+@media (min-width: 640px) {
+  .checkout-cta {
+    min-height: 3.5rem;
+    font-size: 1.25rem;
+    padding-block: 1.125rem;
+  }
+}
+
+.checkout-step-label {
+  max-width: 6.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 400px) {
+  .checkout-step-label {
+    max-width: none;
+  }
+}
+
 .testimonial-card {
   background: linear-gradient(145deg, rgba(212, 175, 55, 0.05) 0%, rgba(255,255,255,0.03) 100%);
   border: 1px solid rgba(212, 175, 55, 0.2);

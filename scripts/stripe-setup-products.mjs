@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 /**
- * Create Massar subscription products + monthly USD prices in Stripe (test mode).
+ * Create Massar subscription products + monthly USD prices in Stripe.
+ * Uses whatever mode your STRIPE_SECRET_KEY is in (sk_test_ → test, sk_live_ → live).
  * Idempotent: re-run safe — reuses products by metadata.massar_product_id.
  *
- * Usage: npm run stripe:setup
+ * Usage:
+ *   npm run stripe:setup          # with sk_test_ in .env
+ *   npm run stripe:setup        # with sk_live_ in .env (creates LIVE products)
  */
 import dotenv from "dotenv";
 import Stripe from "stripe";
@@ -118,7 +121,11 @@ async function ensureMonthlyPrice(product, plan) {
   return price;
 }
 
-console.log("\nMassar Stripe setup — global USD pricing (test mode)\n");
+const mode = key.startsWith("sk_live_") ? "LIVE" : "TEST";
+console.log(`\nMassar Stripe setup — global USD pricing (${mode} mode)\n`);
+if (mode === "LIVE") {
+  console.warn("⚠  LIVE mode: products/prices will accept real money after deploy.\n");
+}
 
 const priceIds = {};
 for (const plan of PLANS) {
