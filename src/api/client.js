@@ -89,6 +89,12 @@ export const client = {
         body: JSON.stringify({ paymentIntentId, checkoutSessionId }),
       });
     },
+    async changePassword(currentPassword, newPassword) {
+      return request("/api/auth/change-password", {
+        method: "POST",
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+    },
     redirectToLogin(returnUrl) {
       const next = encodeURIComponent(returnUrl || window.location.href);
       window.location.href = `/login?next=${next}`;
@@ -98,6 +104,12 @@ export const client = {
     async complete(sessionId) {
       const q = new URLSearchParams({ session_id: sessionId });
       return request(`/api/checkout/complete?${q.toString()}`);
+    },
+    async activate(checkoutSessionId) {
+      return request("/api/checkout/activate", {
+        method: "POST",
+        body: JSON.stringify({ checkoutSessionId }),
+      });
     },
   },
   billing: {

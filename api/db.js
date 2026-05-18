@@ -123,6 +123,7 @@ function migrate(database) {
   ensureColumn(database, "users", "stripe_customer_id", "TEXT");
   ensureColumn(database, "purchases", "checkout_session_id", "TEXT");
   ensureColumn(database, "purchases", "subscription_id", "TEXT");
+  ensureColumn(database, "purchases", "pending_password_hash", "TEXT");
 }
 
 function ensureColumn(database, table, column, typeSql) {

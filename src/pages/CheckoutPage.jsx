@@ -71,6 +71,8 @@ export default function CheckoutPage() {
   const [customer, setCustomer] = useState({
     name: "",
     email: "",
+    password: "",
+    confirmPassword: "",
     whatsapp: "",
     dialIso: getDefaultDialIso(locale, null),
   });
@@ -117,6 +119,14 @@ export default function CheckoutPage() {
       setFormError(t("checkout.errors.phone"));
       return;
     }
+    if (customer.password.length < 8) {
+      setFormError(t("auth.errors.weak_password"));
+      return;
+    }
+    if (customer.password !== customer.confirmPassword) {
+      setFormError(t("auth.passwordMismatch"));
+      return;
+    }
     setStep(2);
   };
 
@@ -128,6 +138,7 @@ export default function CheckoutPage() {
         productId: product.id,
         customerName: customer.name.trim(),
         customerEmail: customer.email.trim().toLowerCase(),
+        password: customer.password,
         whatsapp: customer.whatsapp.trim(),
         whatsappDialCode: dialCountry.dial,
         locale,
@@ -144,7 +155,7 @@ export default function CheckoutPage() {
           product: product.name,
           price: String(product.salePrice),
         });
-        navigate(`/setup-account?${q.toString()}`);
+        navigate(`/checkout/success?${q.toString()}`);
         return;
       }
 
@@ -224,7 +235,7 @@ export default function CheckoutPage() {
                   step > 1 ? "bg-yellow-400" : "bg-gray-700"
                 }`}
               />
-              <StepDot active={step >= 2} num={2} label={t("checkout.stepPay")} />
+              <StepDot active={step >= 2} done={false} num={2} label={t("checkout.stepPay")} />
             </div>
 
             {step === 1 && (
@@ -265,6 +276,37 @@ export default function CheckoutPage() {
                     onChange={(e) => setCustomer((c) => ({ ...c, email: e.target.value }))}
                     placeholder="you@example.com"
                     className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white placeholder:text-gray-500 outline-none transition-colors text-left"
+                  />
+                </label>
+
+                <label className="block">
+                  <span className="text-gray-300 text-sm sm:text-[15px] font-bold mb-2 flex items-center gap-2">
+                    <Lock className="w-4 h-4 text-yellow-400" />
+                    {t("checkout.accountPassword")}
+                  </span>
+                  <input
+                    type="password"
+                    required
+                    minLength={8}
+                    autoComplete="new-password"
+                    value={customer.password}
+                    onChange={(e) => setCustomer((c) => ({ ...c, password: e.target.value }))}
+                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white outline-none transition-colors"
+                  />
+                  <p className="text-gray-500 text-xs mt-1.5">{t("checkout.accountPasswordHint")}</p>
+                </label>
+
+                <label className="block">
+                  <span className="text-gray-300 text-sm font-bold mb-2 block">{t("auth.confirmPassword")}</span>
+                  <input
+                    type="password"
+                    required
+                    autoComplete="new-password"
+                    value={customer.confirmPassword}
+                    onChange={(e) =>
+                      setCustomer((c) => ({ ...c, confirmPassword: e.target.value }))
+                    }
+                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white outline-none transition-colors"
                   />
                 </label>
 
@@ -376,6 +418,7 @@ export default function CheckoutPage() {
                     <EmbeddedStripeCheckout
                       product={product}
                       customer={customer}
+                      password={customer.password}
                       locale={locale}
                       onError={(err) => {
                         console.error(err);

@@ -15,6 +15,7 @@ import { client } from "@/api/client";
 import { useTrackerCatalog } from "@/lib/useTrackerCatalog";
 import MemberTrackerHub from "@/components/member/MemberTrackerHub";
 import MemberProductivitySuite from "@/components/member/MemberProductivitySuite";
+import MemberAccountSettings from "@/components/member/MemberAccountSettings";
 import BundleUpgradeBanner from "@/components/member/BundleUpgradeBanner";
 import SubscriptionBanner from "@/components/member/SubscriptionBanner";
 import BrandLogo from "@/components/BrandLogo";
@@ -131,6 +132,8 @@ export default function DashboardPage() {
         </section>
 
         <TrustStrip />
+
+        <MemberAccountSettings />
 
         {(data?.subscription || authSubscription) && (
           <SubscriptionBanner subscription={data?.subscription || authSubscription} />

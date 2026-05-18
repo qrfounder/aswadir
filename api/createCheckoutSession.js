@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import Stripe from "stripe";
 import { getCatalogProduct } from "./catalog.js";
 import { createPendingCheckout, createDevSimulatedCheckout } from "./purchases.js";
@@ -7,6 +8,8 @@ import {
   normalizeAppLocale,
   stripeCheckoutSessionLocale,
 } from "./stripe-locale.js";
+
+const SALT_ROUNDS = 12;
 
 function mapStripeError(err) {
   const msg = String(err?.message || "");
@@ -31,7 +34,7 @@ function formatWhatsApp(digits, dialCode) {
   return `${normalized}${digits}`;
 }
 
-function simulateCheckout(res, { product, productId, cleanName, cleanEmail, whatsappE164 }) {
+function simulateCheckout(res, { product, productId, cleanName, cleanEmail, whatsappE164, pendingPasswordHash }) {
   const checkoutSessionId = createDevSimulatedCheckout({
     productId,
     productName: product.name,
@@ -39,6 +42,7 @@ function simulateCheckout(res, { product, productId, cleanName, cleanEmail, what
     customerName: cleanName,
     customerEmail: cleanEmail,
     whatsapp: whatsappE164,
+    pendingPasswordHash,
   });
   return res.status(200).json({
     simulated: true,
@@ -80,6 +84,7 @@ export default async function createCheckoutSession(req, res) {
       whatsappDialCode,
       embedded = false,
       locale: preferredLocale,
+      password,
     } = body;
     const preferredReturnOrigin = body.returnOrigin ?? body.return_origin;
     const product = getCatalogProduct(productId);
@@ -104,6 +109,12 @@ export default async function createCheckoutSession(req, res) {
       return res.status(400).json({ error: "invalid_email" });
     }
 
+    const cleanPassword = String(password || "");
+    if (cleanPassword.length < 8) {
+      return res.status(400).json({ error: "weak_password" });
+    }
+    const pendingPasswordHash = await bcrypt.hash(cleanPassword, SALT_ROUNDS);
+
     if (!isStripeConfigured()) {
       if (process.env.NODE_ENV === "production") {
         return res.status(503).json({ error: "payments_not_configured" });
@@ -114,6 +125,7 @@ export default async function createCheckoutSession(req, res) {
         cleanName,
         cleanEmail,
         whatsappE164,
+        pendingPasswordHash,
       });
     }
 
@@ -149,7 +161,7 @@ export default async function createCheckoutSession(req, res) {
       allow_promotion_codes: true,
     };
 
-    const postCheckoutPath = `/setup-account?${returnParams}`;
+    const postCheckoutPath = `/checkout/success?${returnParams}`;
 
     if (useEmbedded) {
       sessionParams.return_url = `${base}${postCheckoutPath}`;
@@ -180,6 +192,7 @@ export default async function createCheckoutSession(req, res) {
       customerName: cleanName,
       customerEmail: cleanEmail,
       whatsapp: whatsappE164,
+      pendingPasswordHash,
     });
 
     if (useEmbedded) {

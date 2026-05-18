@@ -4,10 +4,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider } from "@/lib/AuthContext";
 import { LocaleProvider } from "@/lib/LocaleContext";
+import { ThemeProvider } from "@/lib/ThemeContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PageNotFound from "@/lib/PageNotFound";
 import ProductPage from "./pages/ProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import ThankYouPage from "./pages/ThankYouPage";
 import SetupAccountPage from "./pages/SetupAccountPage";
 import LoginPage from "./pages/LoginPage";
@@ -16,12 +18,14 @@ import DashboardPage from "./pages/DashboardPage";
 function App() {
   return (
     <LocaleProvider>
-      <AuthProvider>
-        <QueryClientProvider client={queryClientInstance}>
-          <Router>
-            <Routes>
-              <Route path="/" element={<ProductPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
+      <ThemeProvider>
+        <AuthProvider>
+          <QueryClientProvider client={queryClientInstance}>
+            <Router>
+              <Routes>
+                <Route path="/" element={<ProductPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
               <Route path="/thank-you" element={<ThankYouPage />} />
               <Route path="/setup-account" element={<SetupAccountPage />} />
               <Route path="/login" element={<LoginPage />} />
@@ -36,10 +40,11 @@ function App() {
               </Route>
               <Route path="*" element={<PageNotFound />} />
             </Routes>
-          </Router>
-          <Toaster />
-        </QueryClientProvider>
-      </AuthProvider>
+            </Router>
+            <Toaster />
+          </QueryClientProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </LocaleProvider>
   );
 }

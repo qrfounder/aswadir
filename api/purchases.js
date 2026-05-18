@@ -43,14 +43,15 @@ export function createPendingCheckout({
   customerName,
   customerEmail,
   whatsapp,
+  pendingPasswordHash = null,
 }) {
   const db = getDb();
   const ref = checkoutSessionId;
   db.prepare(
     `INSERT INTO purchases (
       payment_intent_id, checkout_session_id, product_id, product_name, amount,
-      customer_name, customer_email, whatsapp, status
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')
+      customer_name, customer_email, whatsapp, status, pending_password_hash
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
     ON CONFLICT(payment_intent_id) DO NOTHING`,
   ).run(
     ref,
@@ -61,7 +62,13 @@ export function createPendingCheckout({
     customerName,
     customerEmail || null,
     whatsapp || null,
+    pendingPasswordHash,
   );
+  if (pendingPasswordHash) {
+    db.prepare(
+      `UPDATE purchases SET pending_password_hash = ? WHERE checkout_session_id = ?`,
+    ).run(pendingPasswordHash, checkoutSessionId);
+  }
 }
 
 export function markPurchasePaid(paymentIntentId) {
@@ -226,14 +233,22 @@ export function getUserPurchases(userId) {
 }
 
 /** Dev: simulate subscription checkout without Stripe */
-export function createDevSimulatedCheckout({ productId, productName, amount, customerName, customerEmail, whatsapp }) {
+export function createDevSimulatedCheckout({
+  productId,
+  productName,
+  amount,
+  customerName,
+  customerEmail,
+  whatsapp,
+  pendingPasswordHash = null,
+}) {
   const checkoutSessionId = `dev_cs_${randomUUID()}`;
   const db = getDb();
   db.prepare(
     `INSERT INTO purchases (
       payment_intent_id, checkout_session_id, product_id, product_name, amount,
-      customer_name, customer_email, whatsapp, status, paid_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'paid', datetime('now'))`,
+      customer_name, customer_email, whatsapp, status, paid_at, pending_password_hash
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'paid', datetime('now'), ?)`,
   ).run(
     checkoutSessionId,
     checkoutSessionId,
@@ -243,6 +258,7 @@ export function createDevSimulatedCheckout({ productId, productName, amount, cus
     customerName,
     customerEmail,
     whatsapp || null,
+    pendingPasswordHash,
   );
 
   createDevSimulatedSubscription({

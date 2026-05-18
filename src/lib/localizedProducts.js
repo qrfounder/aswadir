@@ -3,18 +3,10 @@ import { useTranslation } from "react-i18next";
 import { PRODUCTS as BASE_PRODUCTS } from "@/lib/products";
 import { getProductPrices } from "@/lib/currency";
 import { useLocale } from "@/lib/LocaleContext";
-
-/** Future: locale-specific product hero images (user will supply assets). */
-const PRODUCT_IMAGE_BY_LOCALE = {
-  task: { en: "/products/tasks.png", ar: "/products/tasks.png", th: "/products/tasks.png" },
-  habit: { en: "/products/habits.png", ar: "/products/habits.png", th: "/products/habits.png" },
-  bundle: { en: "/products/box.png", ar: "/products/box.png", th: "/products/box.png" },
-};
+import { getProductCardImage } from "@/lib/productGallery";
 
 function productImage(id, locale) {
-  const map = PRODUCT_IMAGE_BY_LOCALE[id];
-  if (!map) return BASE_PRODUCTS.find((p) => p.id === id)?.image;
-  return map[locale] || map.en;
+  return getProductCardImage(id, locale) || BASE_PRODUCTS.find((p) => p.id === id)?.image;
 }
 
 /**

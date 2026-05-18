@@ -5,7 +5,8 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root,
+  html.dark {
     --background: 222 47% 5%;
     --foreground: 45 100% 92%;
     --card: 222 40% 8%;
@@ -30,6 +31,39 @@
     --gold-light: 45 90% 65%;
     --gold-dark: 38 65% 38%;
   }
+
+  html.light {
+    --background: 45 40% 97%;
+    --foreground: 222 47% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 12%;
+    --primary: 43 74% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 45 25% 92%;
+    --secondary-foreground: 222 40% 25%;
+    --muted: 45 20% 92%;
+    --muted-foreground: 215 16% 40%;
+    --accent: 43 74% 42%;
+    --accent-foreground: 0 0% 100%;
+    --border: 45 15% 85%;
+    --input: 45 20% 90%;
+    --ring: 43 74% 42%;
+  }
+}
+
+html.light .dark-card {
+  background: hsl(var(--card));
+  border-color: hsl(var(--border));
+}
+
+html.light .hero-gradient {
+  background: linear-gradient(180deg, hsl(45 40% 96%) 0%, hsl(45 30% 92%) 100%);
+}
+
+html.light .checkout-stripe-frame {
+  background: hsl(var(--card)) !important;
 }
 
 @layer base {

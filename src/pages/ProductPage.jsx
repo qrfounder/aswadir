@@ -17,6 +17,8 @@ import GiftBanner from "@/components/sales/GiftBanner";
 import TrustPillars from "@/components/sales/TrustPillars";
 import VideoTestimonialsStrip from "@/components/sales/VideoTestimonialsStrip";
 import { useBundleProduct } from "@/lib/localizedProducts";
+import { getProductGallery } from "@/lib/productGallery";
+import { useLocale } from "@/lib/LocaleContext";
 import SiteHeader from "@/components/layout/SiteHeader";
 import { getTestimonials } from "@/i18n/testimonials";
 
@@ -26,6 +28,7 @@ const HERO_BULLET_ICONS = [Link2, BarChart, Zap, Smartphone];
 
 export default function ProductPage() {
   const { t, i18n } = useTranslation();
+  const { locale } = useLocale();
   const bundle = useBundleProduct();
   const testimonials = useMemo(
     () => getTestimonials(i18n.language?.split("-")[0] || "en"),
@@ -49,14 +52,13 @@ export default function ProductPage() {
   }, [t]);
 
   const productGallery = useMemo(
-    () => [
-      { src: "/products/hero.png", label: t("hero.galleryQuick") },
-      { src: "/products/box.png", label: t("hero.galleryBundle") },
-      { src: "/products/habits.png", label: t("hero.galleryHabits") },
-      { src: "/products/tasks.png", label: t("hero.galleryTasks") },
-    ],
-    [t],
+    () => getProductGallery(locale, t),
+    [locale, t, i18n.language],
   );
+
+  useEffect(() => {
+    setActiveImage(0);
+  }, [locale, i18n.language]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,18 +84,7 @@ export default function ProductPage() {
     <div className="min-h-screen bg-background">
       <UrgencyBar />
 
-      <SiteHeader
-        className="top-[44px]"
-        rightSlot={
-          <button
-            type="button"
-            onClick={startBundleTrial}
-            className="cta-button px-5 py-2 rounded-xl text-sm font-black"
-          >
-            {t("nav.subscribeNow")}
-          </button>
-        }
-      />
+      <SiteHeader className="top-[44px]" />
 
       <main className="pb-28 md:pb-16">
         {/* ─── HERO ─── */}
@@ -166,7 +157,7 @@ export default function ProductPage() {
                 <div className="flex gap-2">
                   {productGallery.map((item, i) => (
                     <button
-                      key={item.src}
+                      key={item.key}
                       type="button"
                       onClick={() => setActiveImage(i)}
                       className={`flex-1 flex flex-col gap-1 min-w-0 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400/80 ${

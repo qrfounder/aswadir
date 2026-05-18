@@ -28,7 +28,7 @@ function normalizeEmail(email) {
     .toLowerCase();
 }
 
-function publicUser(row) {
+export function publicUser(row) {
   return {
     id: row.id,
     email: row.email,
@@ -36,6 +36,41 @@ function publicUser(row) {
     whatsapp: row.whatsapp,
     createdAt: row.created_at,
   };
+}
+
+export async function handleChangePassword(req, res) {
+  const sessionId = req.cookies?.[getSessionCookieName()];
+  const userId = getUserIdFromSession(sessionId);
+  if (!userId) {
+    return res.status(401).json({ error: "unauthenticated" });
+  }
+
+  const { currentPassword, newPassword } = req.body || {};
+  const current = String(currentPassword || "");
+  const next = String(newPassword || "");
+
+  if (next.length < 8) {
+    return res.status(400).json({ error: "weak_password" });
+  }
+  if (!current) {
+    return res.status(400).json({ error: "invalid_credentials" });
+  }
+
+  const db = getDb();
+  const user = db.prepare(`SELECT * FROM users WHERE id = ?`).get(userId);
+  if (!user) {
+    return res.status(401).json({ error: "unauthenticated" });
+  }
+
+  const match = await bcrypt.compare(current, user.password_hash);
+  if (!match) {
+    return res.status(401).json({ error: "invalid_credentials" });
+  }
+
+  const passwordHash = await bcrypt.hash(next, SALT_ROUNDS);
+  db.prepare(`UPDATE users SET password_hash = ? WHERE id = ?`).run(passwordHash, userId);
+
+  return res.status(200).json({ ok: true });
 }
 
 export function attachSession(res, sessionId, expiresAt) {

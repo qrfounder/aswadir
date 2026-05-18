@@ -1,13 +1,16 @@
+import bcrypt from "bcryptjs";
 import { getCatalogProduct } from "./catalog.js";
 import { createDevSimulatedCheckout } from "./purchases.js";
 
+const SALT_ROUNDS = 12;
+
 /** Local checkout simulation without Stripe — development only */
-export function handleDevSimulateOrder(req, res) {
+export async function handleDevSimulateOrder(req, res) {
   if (process.env.NODE_ENV === "production") {
     return res.status(404).json({ error: "not_found" });
   }
 
-  const { productId, customerName, customerEmail, whatsapp } = req.body || {};
+  const { productId, customerName, customerEmail, whatsapp, password } = req.body || {};
   const product = getCatalogProduct(productId);
   if (!product) {
     return res.status(400).json({ error: "invalid_product" });
@@ -21,6 +24,15 @@ export function handleDevSimulateOrder(req, res) {
   if (!cleanEmail) return res.status(400).json({ error: "invalid_email" });
   if (cleanPhone.length < 8) return res.status(400).json({ error: "invalid_phone" });
 
+  let pendingPasswordHash = null;
+  const cleanPassword = String(password || "");
+  if (cleanPassword) {
+    if (cleanPassword.length < 8) {
+      return res.status(400).json({ error: "weak_password" });
+    }
+    pendingPasswordHash = await bcrypt.hash(cleanPassword, SALT_ROUNDS);
+  }
+
   const checkoutSessionId = createDevSimulatedCheckout({
     productId,
     productName: product.name,
@@ -28,6 +40,7 @@ export function handleDevSimulateOrder(req, res) {
     customerName: cleanName,
     customerEmail: cleanEmail,
     whatsapp: `+966${cleanPhone}`,
+    pendingPasswordHash,
   });
 
   return res.status(200).json({

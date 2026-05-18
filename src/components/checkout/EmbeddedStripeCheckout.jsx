@@ -10,7 +10,7 @@ import { getDialCountry } from "@/lib/phoneDialCodes";
  * Stripe Embedded Checkout — Apple Pay + cards on-page (no redirect).
  * Locale: session `th`/`en`/`auto` + Stripe.js `th`/`en`/`ar` for UI strings.
  */
-export default function EmbeddedStripeCheckout({ product, customer, locale, onError }) {
+export default function EmbeddedStripeCheckout({ product, customer, password, locale, onError }) {
   const { t } = useTranslation();
   const mountRef = useRef(null);
   const checkoutRef = useRef(null);
@@ -30,6 +30,7 @@ export default function EmbeddedStripeCheckout({ product, customer, locale, onEr
           productId: product.id,
           customerName: customer.name.trim(),
           customerEmail: customer.email.trim().toLowerCase(),
+          password: String(password || ""),
           whatsapp: customer.whatsapp.trim(),
           whatsappDialCode: getDialCountry(customer.dialIso || "SA").dial,
           embedded: true,
@@ -48,7 +49,7 @@ export default function EmbeddedStripeCheckout({ product, customer, locale, onEr
             product: product.name,
             price: String(product.salePrice),
           });
-          window.location.href = `/setup-account?${q.toString()}`;
+          window.location.href = `/checkout/success?${q.toString()}`;
           return;
         }
 
@@ -89,6 +90,7 @@ export default function EmbeddedStripeCheckout({ product, customer, locale, onEr
     customer.email,
     customer.whatsapp,
     customer.dialIso,
+    password,
     onError,
     appLocale,
   ]);

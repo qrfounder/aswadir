@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import createPaymentIntent from "./api/createPaymentIntent.js";
 import createCheckoutSession from "./api/createCheckoutSession.js";
 import completeCheckout from "./api/complete-checkout.js";
+import activateCheckoutAccount from "./api/checkout-activate.js";
 import createBillingPortal from "./api/billingPortal.js";
 import stripeWebhook from "./api/stripe-webhook.js";
 import { handleDevSimulateOrder } from "./api/dev-handlers.js";
@@ -18,6 +19,7 @@ import {
   handleLogout,
   handleMe,
   handleClaimPurchase,
+  handleChangePassword,
 } from "./api/auth-handlers.js";
 import { handleDashboard } from "./api/member-handlers.js";
 import { getDb, getDbError } from "./api/db.js";
@@ -69,6 +71,7 @@ app.post("/api/createPaymentIntent", createPaymentIntent);
 app.post("/api/createCheckoutSession", createCheckoutSession);
 app.get("/api/checkout/complete", completeCheckout);
 app.post("/api/checkout/complete", completeCheckout);
+app.post("/api/checkout/activate", activateCheckoutAccount);
 app.post("/api/billingPortal", createBillingPortal);
 app.post("/api/dev/simulate-order", handleDevSimulateOrder);
 
@@ -77,6 +80,7 @@ app.post("/api/auth/login", handleLogin);
 app.post("/api/auth/logout", handleLogout);
 app.get("/api/auth/me", handleMe);
 app.post("/api/auth/claim-purchase", handleClaimPurchase);
+app.post("/api/auth/change-password", handleChangePassword);
 
 app.get("/api/member/dashboard", handleDashboard);
 app.get("/api/locale/detect", handleLocaleDetect);
