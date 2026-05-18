@@ -3,7 +3,10 @@ import { getCatalogProduct } from "./catalog.js";
 import { createPendingCheckout, createDevSimulatedCheckout } from "./purchases.js";
 import { isStripeConfigured } from "./stripe-config.js";
 import { getTrialPeriodDays } from "./stripe-trial.js";
-import { stripeCheckoutLocale } from "./stripe-locale.js";
+import {
+  normalizeAppLocale,
+  stripeCheckoutSessionLocale,
+} from "./stripe-locale.js";
 
 function mapStripeError(err) {
   const msg = String(err?.message || "");
@@ -125,13 +128,14 @@ export default async function createCheckoutSession(req, res) {
       ui_mode: useEmbedded ? "embedded" : "hosted",
       customer_email: cleanEmail,
       line_items: [{ price: product.priceId, quantity: 1 }],
-      locale: stripeCheckoutLocale(preferredLocale),
+      locale: stripeCheckoutSessionLocale(preferredLocale),
       metadata: {
         productId,
         productName: product.name,
         customerName: cleanName,
         customerEmail: cleanEmail,
         whatsapp: whatsappE164,
+        appLocale: normalizeAppLocale(preferredLocale),
       },
       subscription_data: {
         ...(trialDays > 0 ? { trial_period_days: trialDays } : {}),

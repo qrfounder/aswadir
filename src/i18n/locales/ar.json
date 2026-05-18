@@ -333,7 +333,9 @@
     "edit": "تعديل",
     "paySecure": "إتمام الدفع الآمن",
     "payStripeLead": "ستنتقل لصفحة Stripe الرسمية لإدخال البطاقة. بعد الدفع تعود لإنشاء حسابك.",
+    "payEmbeddedLead": "ادفع هنا بـ Apple Pay أو البطاقة — عبر Stripe بأمان. بدون مغادرة الصفحة.",
     "payStripeBtn": "الانتقال لصفحة الدفع الآمنة",
+    "stripeWalletHint": "يظهر Apple Pay أولاً عند دعم جهازك (آيفون، ماك، سفاري).",
     "payStripeLoading": "جاري فتح الدفع…",
     "payAgree": "بالمتابعة توافق على الفوترة الشهرية — إلغاء في أي وقت",
     "trialDev": "وضع التطوير — بدون بطاقة",
@@ -359,7 +361,7 @@
     "whatsappPrefix": "+966",
     "whatsappFlag": "🇸🇦",
     "whatsappPlaceholder": "5XXXXXXXX",
-    "stripeCardTitle": "معلومات البطاقة",
+    "stripeCardTitle": "Apple Pay والبطاقة",
     "stripeLoading": "جاري تحميل نموذج الدفع الآمن…",
     "stripeFormAria": "نموذج دفع Stripe"
   },

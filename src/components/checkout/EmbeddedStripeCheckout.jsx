@@ -1,23 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { Loader2, CreditCard } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { stripePromise } from "@/lib/stripe";
+import { getStripeForLocale } from "@/lib/stripe";
+import { normalizeAppLocale } from "@/lib/stripeLocale";
 import { client } from "@/api/client";
 import { getDialCountry } from "@/lib/phoneDialCodes";
 
-const STRIPE_LOCALE = { ar: "ar", en: "en", th: "th" };
-
 /**
- * Stripe Embedded Checkout — mount in LTR full-width host (avoids RTL clip).
+ * Stripe Embedded Checkout — Apple Pay + cards on-page (no redirect).
+ * Locale: session `th`/`en`/`auto` + Stripe.js `th`/`en`/`ar` for UI strings.
  */
-export default function EmbeddedStripeCheckout({ product, customer, onError }) {
-  const { t, i18n } = useTranslation();
+export default function EmbeddedStripeCheckout({ product, customer, locale, onError }) {
+  const { t } = useTranslation();
   const mountRef = useRef(null);
   const checkoutRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
-  const lang = i18n.language?.split("-")[0] || "en";
-  const stripeLocale = STRIPE_LOCALE[lang] || "auto";
+  const appLocale = normalizeAppLocale(locale);
+  const htmlLang = appLocale === "ar" ? "ar" : appLocale === "th" ? "th" : "en";
 
   useEffect(() => {
     let cancelled = false;
@@ -33,7 +33,7 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
           whatsapp: customer.whatsapp.trim(),
           whatsappDialCode: getDialCountry(customer.dialIso || "SA").dial,
           embedded: true,
-          locale: stripeLocale,
+          locale: appLocale,
           returnOrigin: window.location.origin,
         });
 
@@ -56,7 +56,7 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
           throw new Error("no_client_secret");
         }
 
-        const stripe = await stripePromise;
+        const stripe = await getStripeForLocale(appLocale);
         if (!stripe) throw new Error("stripe_not_loaded");
 
         checkoutRef.current?.destroy?.();
@@ -90,18 +90,20 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
     customer.whatsapp,
     customer.dialIso,
     onError,
-    stripeLocale,
+    appLocale,
   ]);
 
   return (
     <section className="checkout-stripe-section w-full min-w-0" aria-labelledby="stripe-checkout-heading">
       <h3
         id="stripe-checkout-heading"
-        className="text-white font-black text-base flex items-center gap-2 mb-4"
+        className="text-white font-black text-base flex items-center gap-2 mb-2"
       >
         <CreditCard className="w-5 h-5 text-yellow-400" />
         {t("checkout.stripeCardTitle")}
       </h3>
+      <p className="text-gray-400 text-sm mb-4 leading-relaxed">{t("checkout.payEmbeddedLead")}</p>
+      <p className="text-gray-500 text-xs mb-4">{t("checkout.stripeWalletHint")}</p>
 
       <div className="checkout-stripe-frame rounded-2xl border border-yellow-400/15 bg-[#0a0e1a]/80 p-1 sm:p-2">
         {loading && (
@@ -113,7 +115,7 @@ export default function EmbeddedStripeCheckout({ product, customer, onError }) {
         <div
           ref={mountRef}
           dir="ltr"
-          lang="en"
+          lang={htmlLang}
           className={`embedded-checkout-host w-full min-w-0 ${loading && !mounted ? "min-h-0 h-0 overflow-hidden" : "min-h-[480px]"}`}
           aria-label={t("checkout.stripeFormAria")}
         />

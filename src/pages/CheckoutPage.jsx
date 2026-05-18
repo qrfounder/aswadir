@@ -3,8 +3,6 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Check,
   CheckCircle,
-  CreditCard,
-  ExternalLink,
   Loader2,
   Lock,
   Mail,
@@ -21,8 +19,8 @@ import CurrencySwitcher from "@/components/CurrencySwitcher";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { usePricing } from "@/lib/usePricing";
 import { useTranslation } from "react-i18next";
-import { LOCALE_META } from "@/i18n/constants";
 import { client } from "@/api/client";
+import EmbeddedStripeCheckout from "@/components/checkout/EmbeddedStripeCheckout";
 import { fetchStripeConfig } from "@/lib/stripe";
 import TrustBadges from "@/components/sales/TrustBadges";
 import DevApiBanner from "@/components/checkout/DevApiBanner";
@@ -132,7 +130,8 @@ export default function CheckoutPage() {
         customerEmail: customer.email.trim().toLowerCase(),
         whatsapp: customer.whatsapp.trim(),
         whatsappDialCode: dialCountry.dial,
-        locale: LOCALE_META[locale]?.stripe || locale,
+        locale,
+        embedded: true,
         returnOrigin: window.location.origin,
       });
 
@@ -146,11 +145,6 @@ export default function CheckoutPage() {
           price: String(product.salePrice),
         });
         navigate(`/setup-account?${q.toString()}`);
-        return;
-      }
-
-      if (url) {
-        window.location.href = url;
         return;
       }
 
@@ -378,44 +372,26 @@ export default function CheckoutPage() {
                 )}
 
                 {paymentsEnabled === true && (
-                  <div className="dark-card rounded-2xl p-5 md:p-6 space-y-5 border border-yellow-400/25">
-                    <h3 className="text-white font-black text-lg flex items-center gap-2">
-                      <CreditCard className="w-5 h-5 text-yellow-400" />
-                      {t("checkout.paySecure")}
-                    </h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">{t("checkout.payStripeLead")}</p>
-                    <div className="flex flex-wrap gap-2 text-[11px] text-gray-500">
-                      <span className="inline-flex items-center gap-1 bg-black/30 border border-gray-700 rounded-lg px-2.5 py-1">
-                        <Lock className="w-3 h-3 text-green-400" />
-                        {t("common.ssl")}
-                      </span>
-                      <span className="inline-flex items-center gap-1 bg-black/30 border border-gray-700 rounded-lg px-2.5 py-1">
-                        <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                        {t("common.freeTrialBadge")}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={startSubscription}
-                      disabled={submitting}
-                      className="cta-button checkout-cta w-full rounded-2xl font-black flex items-center justify-center gap-2 disabled:opacity-60 pulse-gold"
-                    >
-                      {submitting ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          {t("checkout.payStripeLoading")}
-                        </>
-                      ) : (
-                        <>
-                          <ExternalLink className="w-5 h-5" />
-                          {t("checkout.payStripeBtn")}
-                        </>
-                      )}
-                    </button>
-                    <p className="text-center text-gray-600 text-[11px]">
-                      {t("checkout.payAgree")}
-                    </p>
-                  </div>
+                  <>
+                    <EmbeddedStripeCheckout
+                      product={product}
+                      customer={customer}
+                      locale={locale}
+                      onError={(err) => {
+                        console.error(err);
+                        const code = err?.data?.error;
+                        const rawDetail = err?.data?.detail || "";
+                        const showDetail =
+                          import.meta.env.DEV && rawDetail && !/is not defined/i.test(rawDetail);
+                        setFormError(
+                          t(`checkout.errors.${code}`, { defaultValue: "" }) ||
+                            (showDetail ? rawDetail : "") ||
+                            t("checkout.errors.generic"),
+                        );
+                      }}
+                    />
+                    <p className="text-center text-gray-600 text-[11px]">{t("checkout.payAgree")}</p>
+                  </>
                 )}
 
                 <div className="dark-card rounded-2xl p-5 space-y-3">

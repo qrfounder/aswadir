@@ -338,7 +338,9 @@
     "edit": "แก้ไข",
     "paySecure": "ชำระเงินอย่างปลอดภัย",
     "payStripeLead": "You'll go to Stripe's official checkout page to enter your card (Visa, Mastercard, Apple Pay, and more). After payment you'll return to create your Massar account.",
+    "payEmbeddedLead": "ชำระที่นี่ด้วย Apple Pay หรือบัตร — ปลอดภัยผ่าน Stripe ไม่ต้องออกจากหน้านี้",
     "payStripeBtn": "ไปหน้าชำระเงินที่ปลอดภัย",
+    "stripeWalletHint": "Apple Pay จะแสดงก่อนเมื่ออุปกรณ์รองรับ (iPhone, Mac, Safari)",
     "payStripeLoading": "กำลังเปิดหน้าชำระเงิน…",
     "payAgree": "ต่อไปถือว่ายอมรับการเรียกเก็บรายเดือน — ยกเลิกได้ทุกเมื่อ",
     "trialDev": "โหมดทดสอบ — ไม่ใช้บัตร",
@@ -364,7 +366,7 @@
     "whatsappPrefix": "+66",
     "whatsappFlag": "🇹🇭",
     "whatsappPlaceholder": "812345678",
-    "stripeCardTitle": "ข้อมูลบัตร",
+    "stripeCardTitle": "Apple Pay และบัตร",
     "stripeLoading": "กำลังโหลดฟอร์มชำระเงินที่ปลอดภัย…",
     "stripeFormAria": "ฟอร์มชำระเงิน Stripe"
   },
