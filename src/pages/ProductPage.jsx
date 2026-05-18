@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Users, Award, Link2, TrendingUp, Brain, Target, BarChart, Zap, Smartphone, Rocket } from "lucide-react";
 
-import UrgencyBar from "@/components/sales/UrgencyBar";
+import SiteTopChrome from "@/components/layout/SiteTopChrome";
 import PricingSection from "@/components/sales/PricingSection";
 import BeforeAfter from "@/components/sales/BeforeAfter";
 import ReviewsCarousel from "@/components/sales/ReviewsCarousel";
@@ -19,7 +19,6 @@ import VideoTestimonialsStrip from "@/components/sales/VideoTestimonialsStrip";
 import { useBundleProduct } from "@/lib/localizedProducts";
 import { getProductGallery } from "@/lib/productGallery";
 import { useLocale } from "@/lib/LocaleContext";
-import SiteHeader from "@/components/layout/SiteHeader";
 import { getTestimonials } from "@/i18n/testimonials";
 
 
@@ -81,10 +80,8 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <UrgencyBar />
-
-      <SiteHeader className="top-[44px]" />
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      <SiteTopChrome />
 
       <main className="pb-28 md:pb-16">
         {/* ─── HERO ─── */}

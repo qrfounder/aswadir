@@ -23,7 +23,7 @@ export default function CurrencySwitcher({ className = "" }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 rounded-lg border border-yellow-400/25 bg-white/5 px-2.5 py-1.5 text-xs font-bold text-gray-200 hover:border-yellow-400/50 hover:text-white transition-colors"
+        className="flex items-center gap-1 rounded-lg border border-yellow-400/25 bg-white/5 px-2 py-1.5 text-xs font-bold text-gray-200 hover:border-yellow-400/50 hover:text-white transition-colors min-w-[2.75rem] justify-center"
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label={t("currency.label")}

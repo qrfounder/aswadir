@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useLocale } from "@/lib/LocaleContext";
 import { LOCALE_META, SUPPORTED_LOCALES } from "@/i18n/constants";
 
-export default function LanguageSwitcher({ className = "" }) {
+export default function LanguageSwitcher({ className = "", compact = false }) {
   const { t } = useTranslation();
   const { locale, changeLocale } = useLocale();
   const [open, setOpen] = useState(false);
@@ -23,13 +23,22 @@ export default function LanguageSwitcher({ className = "" }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 rounded-lg border border-yellow-400/25 bg-white/5 px-2.5 py-1.5 text-xs font-bold text-gray-200 hover:border-yellow-400/50 hover:text-white transition-colors"
+        className={`flex items-center gap-1 rounded-lg border border-yellow-400/25 bg-white/5 text-xs font-bold text-gray-200 hover:border-yellow-400/50 hover:text-white transition-colors ${
+          compact ? "px-2 py-1.5 min-w-[2.75rem] justify-center" : "gap-1.5 px-2.5 py-1.5"
+        }`}
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label={t("lang.label")}
       >
-        <Globe className="w-3.5 h-3.5 text-yellow-400" />
-        <span>{LOCALE_META[locale]?.native || locale}</span>
+        <Globe className="w-3.5 h-3.5 text-yellow-400 shrink-0" />
+        {compact ? (
+          <>
+            <span className="uppercase tabular-nums sm:hidden">{locale}</span>
+            <span className="hidden sm:inline">{LOCALE_META[locale]?.native || locale}</span>
+          </>
+        ) : (
+          <span>{LOCALE_META[locale]?.native || locale}</span>
+        )}
       </button>
       {open && (
         <ul
