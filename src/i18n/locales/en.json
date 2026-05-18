@@ -475,6 +475,27 @@
     },
     "noProducts": "No active products yet.",
     "defaultName": "there",
+    "nav": {
+      "aria": "Dashboard sections",
+      "track": "Track",
+      "tools": "Tools",
+      "news": "News",
+      "account": "Account",
+      "trackTitle": "Track",
+      "trackLead": "Log habits and tasks here — start with Overview, then open Habits or Tasks.",
+      "toolsKicker": "Extra tools",
+      "toolsTitle": "Focus & planning",
+      "toolsLead": "Quick todos, pomodoro, goals, and reflection — separate from your main habit and task trackers.",
+      "newsKicker": "Member updates",
+      "newsTitle": "News & roadmap",
+      "newsLead": "Product announcements and upcoming content for your plan.",
+      "accountTitle": "Account & billing",
+      "accountLead": "Password, theme, subscription, active plans, and help links.",
+      "supportTitle": "Help & contact",
+      "supportLead": "Billing questions, refunds, or technical issues — check FAQs on the homepage first.",
+      "supportFaq": "View FAQs",
+      "signedInAs": "Signed in as"
+    },
     "updateItems": [
       {
         "id": "welcome",
