@@ -22,6 +22,7 @@ import {
 import { handleDashboard } from "./api/member-handlers.js";
 import { getDb, getDbError } from "./api/db.js";
 import { isStripeConfigured, validateStripeEnvironment } from "./api/stripe-config.js";
+import { getCatalog } from "./api/catalog.js";
 import { handleLocaleDetect } from "./api/locale-detect.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -90,6 +91,9 @@ app.get("/api/health", (_req, res) => {
     stripeMode: stripeCheck.mode,
     stripeReady: stripeCheck.ok,
     stripeWarnings: stripeCheck.warnings.length ? stripeCheck.warnings : undefined,
+    stripePrices: Object.fromEntries(
+      Object.entries(getCatalog()).map(([id, p]) => [id, p?.priceId ? `${p.priceId.slice(0, 12)}…` : "missing"]),
+    ),
     time: new Date().toISOString(),
   });
 });

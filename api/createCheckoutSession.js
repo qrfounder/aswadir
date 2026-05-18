@@ -154,7 +154,19 @@ export default async function createCheckoutSession(req, res) {
       sessionParams.cancel_url = `${base}/checkout?product=${encodeURIComponent(productId)}`;
     }
 
-    const session = await stripe.checkout.sessions.create(sessionParams);
+    let session;
+    try {
+      session = await stripe.checkout.sessions.create(sessionParams);
+    } catch (stripeErr) {
+      if (stripeErr?.code === "resource_missing") {
+        console.error("[createCheckoutSession] Invalid price:", {
+          productId,
+          priceId: product.priceId,
+          stripeMessage: stripeErr.message,
+        });
+      }
+      throw stripeErr;
+    }
 
     createPendingCheckout({
       checkoutSessionId: session.id,
