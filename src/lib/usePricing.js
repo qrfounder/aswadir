@@ -3,9 +3,9 @@ import { useLocale } from "@/lib/LocaleContext";
 import {
   CHECKOUT_CHARGE_CURRENCY,
   formatMoney,
+  formatPerDayFromMonthlySale,
   formatProductPrice,
   getLowestSalePrice,
-  getProductPrices,
 } from "@/lib/currency";
 
 /** Format catalog amounts for the active display currency. */
@@ -34,6 +34,16 @@ export function usePricing() {
     [format, lowestSaleAmount],
   );
 
+  const originalPriceFor = useCallback(
+    (productId) => formatProductPrice(productId, "original", currency, locale),
+    [currency, locale],
+  );
+
+  const perDayPriceFor = useCallback(
+    (productId) => formatPerDayFromMonthlySale(productId, currency, locale),
+    [currency, locale],
+  );
+
   const checkoutNoteNeeded = currency !== CHECKOUT_CHARGE_CURRENCY;
 
   return useMemo(
@@ -43,6 +53,8 @@ export function usePricing() {
       changeCurrency,
       format,
       priceFor,
+      originalPriceFor,
+      perDayPriceFor,
       amountsFor,
       lowestSaleAmount,
       lowestPriceFor,
@@ -55,6 +67,8 @@ export function usePricing() {
       changeCurrency,
       format,
       priceFor,
+      originalPriceFor,
+      perDayPriceFor,
       amountsFor,
       lowestSaleAmount,
       lowestPriceFor,

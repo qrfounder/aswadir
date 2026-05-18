@@ -44,6 +44,14 @@ app.set("trust proxy", 1);
 app.use(compression());
 app.use(cookieParser());
 
+app.get("/api/stripe-webhook", (_req, res) => {
+  res.status(200).json({
+    ok: true,
+    message:
+      "Stripe webhook is active. Stripe sends POST requests here (not browser visits). Configure this URL in Stripe Dashboard → Webhooks.",
+  });
+});
+
 app.post(
   "/api/stripe-webhook",
   express.raw({ type: "application/json", limit: "1mb" }),

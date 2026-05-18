@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Users, Award, Link2, TrendingUp, Brain, Target, BarChart, Zap, Smartphone, Rocket } from "lucide-react";
 
 import UrgencyBar from "@/components/sales/UrgencyBar";
@@ -13,17 +13,12 @@ import BrandLogo from "@/components/BrandLogo";
 import SocialProofBar from "@/components/sales/SocialProofBar";
 import StarRating from "@/components/sales/StarRating";
 import StatsResults from "@/components/sales/StatsResults";
-import ResearchSection from "@/components/sales/ResearchSection";
-import PerformersSection from "@/components/sales/PerformersSection";
-import TrustPillars from "@/components/sales/TrustPillars";
 import GiftBanner from "@/components/sales/GiftBanner";
+import TrustPillars from "@/components/sales/TrustPillars";
 import VideoTestimonialsStrip from "@/components/sales/VideoTestimonialsStrip";
 import { useBundleProduct } from "@/lib/localizedProducts";
-import { usePricing } from "@/lib/usePricing";
 import SiteHeader from "@/components/layout/SiteHeader";
 import { getTestimonials } from "@/i18n/testimonials";
-import ComparisonTableSection from "@/components/sales/ComparisonTableSection";
-import HabitJourneySection from "@/components/sales/HabitJourneySection";
 
 
 const FEATURE_ICONS = [Link2, TrendingUp, Brain, Target];
@@ -32,7 +27,6 @@ const HERO_BULLET_ICONS = [Link2, BarChart, Zap, Smartphone];
 export default function ProductPage() {
   const { t, i18n } = useTranslation();
   const bundle = useBundleProduct();
-  const { format, lowestPriceFor, priceFor } = usePricing();
   const testimonials = useMemo(
     () => getTestimonials(i18n.language?.split("-")[0] || "en"),
     [i18n.language],
@@ -82,10 +76,6 @@ export default function ProductPage() {
     navigate(`/checkout?product=${encodeURIComponent(product.id)}`);
   };
 
-  const scrollToPricing = () => {
-    pricingRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   const startBundleTrial = () => {
     if (bundle) handleSelectProduct(bundle);
   };
@@ -102,7 +92,7 @@ export default function ProductPage() {
             onClick={startBundleTrial}
             className="cta-button px-5 py-2 rounded-xl text-sm font-black"
           >
-            {t("nav.subscribeNow", { price: lowestPriceFor() })}
+            {t("nav.subscribeNow")}
           </button>
         }
       />
@@ -158,7 +148,7 @@ export default function ProductPage() {
                   <Rocket className="w-6 h-6" /> {t("landing.heroCta")}
                 </button>
                 <p className="text-center text-yellow-300/90 text-sm font-bold">
-                  {t("landing.heroCtaSub", { lowest: lowestPriceFor(), bundle: priceFor("bundle") })}
+                  {t("landing.heroCtaSubNoPrice")}
                 </p>
                 <p className="text-center text-gray-500 text-xs">✅ {t("landing.heroGuarantee")}</p>
               </div>
@@ -354,7 +344,7 @@ export default function ProductPage() {
               <GiftBanner />
               <TrustPillars />
             </div>
-            <PricingSection onSelectProduct={handleSelectProduct} />
+            <PricingSection hideAmounts onSelectProduct={handleSelectProduct} />
             <div className="mt-6">
               <TrustBadges />
             </div>
@@ -386,8 +376,12 @@ export default function ProductPage() {
               {t("landing.finalTitle2")}
             </h2>
             <p className="text-gray-300 text-base md:text-lg">{t("landing.finalSubtitle")}</p>
-            <button onClick={scrollToPricing} className="cta-button w-full max-w-sm px-8 py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black flex justify-center items-center gap-2 mx-auto pulse-gold">
-              <Rocket className="w-6 h-6" /> {t("landing.finalCta", { price: bundle.salePrice })}
+            <button
+              type="button"
+              onClick={startBundleTrial}
+              className="cta-button w-full max-w-sm px-8 py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black flex justify-center items-center gap-2 mx-auto pulse-gold"
+            >
+              <Rocket className="w-6 h-6" /> {t("landing.finalCta")}
             </button>
             <p className="text-gray-500 text-sm">✅ {t("landing.finalNote")}</p>
           </div>
@@ -422,14 +416,10 @@ export default function ProductPage() {
               <div className="flex-1 min-w-0">
                 <p className="text-white font-black text-sm truncate">{t("landing.stickyBundle")}</p>
                 <p className="text-emerald-400/90 text-[10px] font-bold">{t("landing.stickyTrial")}</p>
-                <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-gray-400 text-[10px]">{t("landing.stickyFrom", { price: lowestPriceFor() })}</span>
-                <span className="text-gray-500 text-xs line-through">{format(bundle.originalPrice)}</span>
-                <span className="text-yellow-400 font-black">{format(bundle.salePrice)}</span>
-                <span className="bg-red-500/20 text-red-400 text-xs px-1.5 py-0.5 rounded">
+                <p className="text-gray-400 text-[10px] leading-snug">{t("landing.stickyBundlePitch")}</p>
+                <span className="inline-flex items-center gap-1 bg-red-500/15 text-red-300 text-[10px] font-black px-2 py-0.5 rounded border border-red-500/25">
                   -{bundle.discount}
                 </span>
-                </div>
               </div>
               <button
                 type="button"

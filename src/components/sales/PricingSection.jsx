@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Check, Info, Star, Zap } from "lucide-react";
+import { Check, Info, Lock, Star, Zap } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import CountdownTimer from "./CountdownTimer";
 import { useLocalizedProducts } from "@/lib/localizedProducts";
 import { usePricing } from "@/lib/usePricing";
 
-export default function PricingSection({ onSelectProduct }) {
+/**
+ * @param {{ onSelectProduct: (p: import('@/lib/localizedProducts').LocalizedProduct) => void, hideAmounts?: boolean }} props
+ */
+export default function PricingSection({ onSelectProduct, hideAmounts = false }) {
   const { t } = useTranslation();
   const { format, lowestPriceFor } = usePricing();
   const products = useLocalizedProducts();
@@ -18,7 +21,6 @@ export default function PricingSection({ onSelectProduct }) {
 
   return (
     <div className="space-y-5">
-      {/* Urgency */}
       <div className="flex items-center justify-between dark-card rounded-xl px-4 py-3">
         <div className="flex items-center gap-2">
           <Zap className="w-4 h-4 text-yellow-400" />
@@ -27,15 +29,20 @@ export default function PricingSection({ onSelectProduct }) {
         <CountdownTimer initialMinutes={47} />
       </div>
 
-      <p className="text-center text-yellow-300/90 text-xs font-bold">
-        {t("pricing.singlesFrom", { price: lowestPriceFor() })}
-      </p>
+      {!hideAmounts && (
+        <p className="text-center text-yellow-300/90 text-xs font-bold">
+          {t("pricing.singlesFrom", { price: lowestPriceFor() })}
+        </p>
+      )}
+      {hideAmounts && (
+        <p className="text-center text-emerald-300/90 text-xs font-bold">{t("pricing.fullTrialPitch")}</p>
+      )}
 
-      {/* Plans */}
       <div className="space-y-3">
         {products.map((product) => (
           <button
             key={product.id}
+            type="button"
             onClick={() => setSelected(product.id)}
             className={`w-full text-start rounded-2xl p-4 border-2 transition-all duration-300 relative ${
               selected === product.id
@@ -52,13 +59,15 @@ export default function PricingSection({ onSelectProduct }) {
               </div>
             )}
             <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${
-                  selected === product.id ? "border-yellow-400 bg-yellow-400" : "border-gray-500"
-                }`}>
+              <div className="flex items-center gap-3 min-w-0">
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                    selected === product.id ? "border-yellow-400 bg-yellow-400" : "border-gray-500"
+                  }`}
+                >
                   {selected === product.id && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
                 </div>
-                <div className="text-start">
+                <div className="text-start min-w-0">
                   <p className="text-white font-black text-base">{product.name}</p>
                   <p className="text-gray-400 text-xs">{product.subtitle}</p>
                   <ul className="mt-1.5 space-y-0.5">
@@ -71,15 +80,27 @@ export default function PricingSection({ onSelectProduct }) {
                   </ul>
                 </div>
               </div>
-              <div className="text-end flex-shrink-0">
-                <div className="flex items-center gap-1.5 mb-0.5">
-                  <span className="bg-red-500/20 text-red-400 text-xs font-black px-2 py-0.5 rounded border border-red-500/30">
-                    -{product.discount}
-                  </span>
-                </div>
-                <p className="text-gray-500 text-xs line-through">{format(product.originalPrice)}</p>
-                <p className="text-yellow-400 text-2xl font-black price-tag">{format(product.salePrice)}</p>
-                <p className="text-yellow-600 text-xs">{t("pricing.perMonth")}</p>
+              <div className="text-end flex-shrink-0 min-w-[100px]">
+                {hideAmounts ? (
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="inline-flex items-center gap-1 text-yellow-300/90 text-[11px] font-black bg-black/40 border border-yellow-400/25 px-2 py-1 rounded-lg">
+                      <Lock className="w-3.5 h-3.5" aria-hidden />
+                      {t("pricing.atCheckout")}
+                    </span>
+                    <span className="text-gray-500 text-[10px] leading-snug max-w-[120px]">{t("pricing.valueStack")}</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-1.5 mb-0.5 justify-end">
+                      <span className="bg-red-500/20 text-red-400 text-xs font-black px-2 py-0.5 rounded border border-red-500/30">
+                        -{product.discount}
+                      </span>
+                    </div>
+                    <p className="text-gray-500 text-xs line-through">{format(product.originalPrice)}</p>
+                    <p className="text-yellow-400 text-2xl font-black price-tag">{format(product.salePrice)}</p>
+                    <p className="text-yellow-600 text-xs">{t("pricing.perMonth")}</p>
+                  </>
+                )}
               </div>
             </div>
           </button>
@@ -94,18 +115,19 @@ export default function PricingSection({ onSelectProduct }) {
         </div>
       </div>
 
-      {/* CTA */}
       <button
+        type="button"
         onClick={handleBuy}
         className="cta-button w-full py-5 rounded-2xl text-lg font-black flex items-center justify-center gap-2 pulse-gold"
       >
         <Zap className="w-5 h-5" />{" "}
-        {t("pricing.subscribeBtn", {
-          price: format(products.find((p) => p.id === selected)?.salePrice ?? 0),
-        })}
+        {hideAmounts
+          ? t("pricing.subscribeBtnBlind")
+          : t("pricing.subscribeBtn", {
+              price: format(products.find((p) => p.id === selected)?.salePrice ?? 0),
+            })}
       </button>
 
-      {/* Micro copy */}
       <p className="text-center text-gray-400 text-xs flex items-center justify-center gap-2 flex-wrap">
         {t("pricing.trialNote")}
       </p>

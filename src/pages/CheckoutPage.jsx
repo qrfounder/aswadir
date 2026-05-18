@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Check,
   CheckCircle,
@@ -53,7 +53,7 @@ function StepDot({ active, done, num, label }) {
 export default function CheckoutPage() {
   const { t } = useTranslation();
   const { locale, currency } = useLocale();
-  const { format, priceFor, checkoutNoteNeeded, chargeCurrency } = usePricing();
+  const { format, priceFor, perDayPriceFor, originalPriceFor, checkoutNoteNeeded, chargeCurrency } = usePricing();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -185,7 +185,7 @@ export default function CheckoutPage() {
                 <span className="gold-gradient">{t("checkout.title")}</span>
               </h1>
               <p className="text-gray-400 text-sm md:text-base">
-                {t("checkout.subtitle", { price: priceFor(product.id) })}
+                {step === 1 ? t("checkout.subtitleBlind") : t("checkout.subtitle", { price: priceFor(product.id) })}
               </p>
             </div>
 
@@ -282,6 +282,15 @@ export default function CheckoutPage() {
 
             {step === 2 && (
               <div className="space-y-5 w-full min-w-0">
+                <div className="dark-card rounded-2xl p-5 border border-emerald-400/25 space-y-2 w-full">
+                  <p className="text-emerald-300/90 text-xs font-black uppercase tracking-wide">{t("checkout.valueFramingTitle")}</p>
+                  <p className="text-white font-black text-2xl">
+                    {format(product.salePrice)}{" "}
+                    <span className="text-yellow-600 text-sm font-bold">{t("pricing.perMonth")}</span>
+                  </p>
+                  <p className="text-emerald-200 text-sm font-bold">{t("checkout.valuePerDay", { perDay: perDayPriceFor(product.id) })}</p>
+                  <p className="text-gray-500 text-xs line-through">{t("checkout.valueAnchor", { anchor: originalPriceFor(product.id), price: priceFor(product.id) })}</p>
+                </div>
                 <DevApiBanner />
                 <div className="dark-card rounded-2xl p-4 flex items-center justify-between gap-3">
                   <div className="min-w-0">
@@ -397,6 +406,36 @@ export default function CheckoutPage() {
 
                 </div>
 
+                <div className="rounded-2xl border border-gray-800/80 bg-black/25 px-4 py-4 space-y-3">
+                  <p className="text-gray-500 text-[11px] font-bold text-center">{t("checkout.downsellTitle")}</p>
+                  <div className="flex flex-wrap justify-center gap-2 text-[11px] font-bold">
+                    {product.id !== "bundle" && (
+                      <Link
+                        to="/checkout?product=bundle"
+                        className="px-3 py-2 rounded-lg bg-yellow-400/10 text-yellow-200 border border-yellow-400/30 hover:bg-yellow-400/20"
+                      >
+                        {t("checkout.downsellBundle")}
+                      </Link>
+                    )}
+                    {product.id !== "habit" && (
+                      <Link
+                        to="/checkout?product=habit"
+                        className="px-3 py-2 rounded-lg bg-black/40 text-gray-300 border border-gray-700 hover:border-yellow-400/30"
+                      >
+                        {t("checkout.downsellHabit")}
+                      </Link>
+                    )}
+                    {product.id !== "task" && (
+                      <Link
+                        to="/checkout?product=task"
+                        className="px-3 py-2 rounded-lg bg-black/40 text-gray-300 border border-gray-700 hover:border-yellow-400/30"
+                      >
+                        {t("checkout.downsellTask")}
+                      </Link>
+                    )}
+                  </div>
+                </div>
+
               </div>
             )}
           </div>
@@ -407,7 +446,7 @@ export default function CheckoutPage() {
               <div className="dark-card rounded-2xl p-5 space-y-4 border border-yellow-400/20 glow-gold-sm">
                 <h3 className="text-white font-black text-base flex items-center gap-2">
                   <Tag className="w-5 h-5 text-yellow-400" />
-                  {t("checkout.summary")}
+                  {t("checkout.summaryBlindTitle")}
                 </h3>
                 <div className="flex gap-3 items-start">
                   <img
@@ -417,18 +456,7 @@ export default function CheckoutPage() {
                   />
                   <div>
                     <p className="text-white font-bold text-sm">{product.name}</p>
-                    <p className="text-yellow-400 font-black text-2xl mt-1">
-                      {format(product.salePrice)}{" "}
-                      <span className="text-sm text-yellow-600">{t("pricing.perMonth")}</span>
-                    </p>
-                    {checkoutNoteNeeded && (
-                      <p className="text-gray-500 text-[11px] mt-2 leading-relaxed">
-                        {t("currency.chargeNote", {
-                          display: currency,
-                          charge: chargeCurrency,
-                        })}
-                      </p>
-                    )}
+                    <p className="text-gray-400 text-xs mt-2 leading-relaxed">{t("checkout.summaryBlindBody")}</p>
                   </div>
                 </div>
                 <ul className="space-y-1.5 border-t border-yellow-400/10 pt-3">

@@ -14,6 +14,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { client } from "@/api/client";
 import { useTrackerCatalog } from "@/lib/useTrackerCatalog";
 import MemberTrackerHub from "@/components/member/MemberTrackerHub";
+import MemberProductivitySuite from "@/components/member/MemberProductivitySuite";
 import BundleUpgradeBanner from "@/components/member/BundleUpgradeBanner";
 import SubscriptionBanner from "@/components/member/SubscriptionBanner";
 import BrandLogo from "@/components/BrandLogo";
@@ -156,6 +157,8 @@ export default function DashboardPage() {
             hasBundle={hasBundle}
           />
         )}
+
+        {user?.id && <MemberProductivitySuite userId={user.id} />}
 
         <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
           <aside className="space-y-4 order-2 lg:order-1">

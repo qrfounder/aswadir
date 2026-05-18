@@ -182,3 +182,9 @@ export function formatProductPrice(productId, kind, currency, uiLocale) {
   const prices = getProductPrices(productId, currency);
   return formatMoney(prices[kind], currency, uiLocale);
 }
+
+/** ~30-day framing for “less than X / day” checkout copy (display currency). */
+export function formatPerDayFromMonthlySale(productId, currency, locale) {
+  const { sale } = getProductPrices(productId, currency);
+  return formatMoney(sale / 30, currency, locale);
+}
