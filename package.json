@@ -21,7 +21,8 @@
     "smoke:member": "NODE_ENV=development node scripts/smoke-member-flow.mjs http://127.0.0.1:3000",
     "stripe:prices": "node scripts/stripe-list-prices.mjs",
     "stripe:setup": "node scripts/stripe-setup-products.mjs",
-    "stripe:verify": "node scripts/stripe-verify.mjs"
+    "stripe:verify": "node scripts/stripe-verify.mjs",
+    "stripe:print-deploy-env": "node scripts/stripe-print-deploy-env.mjs"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^17.0.0",

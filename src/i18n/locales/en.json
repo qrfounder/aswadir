@@ -327,6 +327,9 @@
     "phoneDialLabel": "Country code",
     "phonePopularCountries": "Popular",
     "phoneAllCountries": "All countries",
+    "stripeConfigTitle": "Payments not configured on this server",
+    "stripeConfigHint": "Hosting still uses test Stripe Price IDs with live keys. In Easypanel → Environment, replace STRIPE_PRICE_TASK, STRIPE_PRICE_HABIT, and STRIPE_PRICE_BUNDLE with your live price IDs from local .env, then Redeploy.",
+    "stripeConfigGeneric": "Stripe configuration incomplete on server.",
     "continuePay": "Continue to payment",
     "edit": "Edit",
     "paySecure": "Complete secure payment",
@@ -347,7 +350,7 @@
       "phone": "Enter a valid phone number for the selected country (digits only, no country code).",
       "generic": "Something went wrong. Please try again.",
       "payments_not_configured": "Payments are not enabled on the server. Add Stripe keys to .env and restart npm run dev:all.",
-      "stripe_price_invalid": "Invalid Price ID — check STRIPE_PRICE_* in .env",
+      "stripe_price_invalid": "Server still has old test Price IDs. Update STRIPE_PRICE_* in your hosting panel (Easypanel), redeploy, then check /api/health shows stripeReady: true.",
       "stripe_auth_invalid": "Invalid Stripe key in .env",
       "stripe_checkout_failed": "Could not open checkout. Check Stripe keys and price IDs.",
       "server_error": "Payment server error. Refresh the page and try again, or contact support if it persists."

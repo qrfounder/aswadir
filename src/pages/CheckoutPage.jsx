@@ -26,6 +26,7 @@ import { client } from "@/api/client";
 import { fetchStripeConfig } from "@/lib/stripe";
 import TrustBadges from "@/components/sales/TrustBadges";
 import DevApiBanner from "@/components/checkout/DevApiBanner";
+import StripeConfigBanner from "@/components/checkout/StripeConfigBanner";
 import PhoneDialSelect, { formatDialPrefix } from "@/components/checkout/PhoneDialSelect";
 import BrandLogo from "@/components/BrandLogo";
 import { BackChevron, ForwardChevron } from "@/lib/locale-ui";
@@ -326,6 +327,7 @@ export default function CheckoutPage() {
                   <p className="text-gray-500 text-xs line-through">{t("checkout.valueAnchor", { anchor: originalPriceFor(product.id), price: priceFor(product.id) })}</p>
                 </div>
                 <DevApiBanner />
+                <StripeConfigBanner />
                 <div className="dark-card rounded-2xl p-4 flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-white font-bold text-sm truncate">{customer.name}</p>
