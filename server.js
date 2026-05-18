@@ -23,6 +23,10 @@ import { handleDashboard } from "./api/member-handlers.js";
 import { getDb, getDbError } from "./api/db.js";
 import { isStripeConfigured, validateStripeEnvironment } from "./api/stripe-config.js";
 import { getCatalog } from "./api/catalog.js";
+import {
+  getStripePriceValidation,
+  validateStripePrices,
+} from "./api/stripe-price-validation.js";
 import { handleLocaleDetect } from "./api/locale-detect.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -80,6 +84,9 @@ app.get("/api/locale/detect", handleLocaleDetect);
 app.get("/api/health", (_req, res) => {
   const dbError = getDbError();
   const stripeCheck = validateStripeEnvironment();
+  const priceCheck = getStripePriceValidation();
+  const stripeReady =
+    stripeCheck.ok && (!priceCheck.checked || priceCheck.ok) && isStripeConfigured();
   res.status(200).json({
     ok: true,
     server: "up",
@@ -89,10 +96,11 @@ app.get("/api/health", (_req, res) => {
     dist: fs.existsSync(path.join(distPath, "index.html")),
     payments: isStripeConfigured(),
     stripeMode: stripeCheck.mode,
-    stripeReady: stripeCheck.ok,
+    stripeReady,
     stripeWarnings: stripeCheck.warnings.length ? stripeCheck.warnings : undefined,
+    stripePriceErrors: priceCheck.errors?.length ? priceCheck.errors : undefined,
     stripePrices: Object.fromEntries(
-      Object.entries(getCatalog()).map(([id, p]) => [id, p?.priceId ? `${p.priceId.slice(0, 12)}…` : "missing"]),
+      Object.entries(getCatalog()).map(([id, p]) => [id, p?.priceId || "missing"]),
     ),
     time: new Date().toISOString(),
   });
@@ -162,4 +170,16 @@ app.listen(PORT, HOST, () => {
   }
   for (const w of stripe.warnings) console.warn(`[massar] Stripe warning: ${w}`);
   for (const e of stripe.errors) console.error(`[massar] Stripe error: ${e}`);
+
+  if (isStripeConfigured()) {
+    validateStripePrices().then((result) => {
+      if (result.ok) {
+        console.log("[massar] Stripe price IDs verified (mode match)");
+      } else {
+        for (const err of result.errors) {
+          console.error(`[massar] Stripe price error: ${err}`);
+        }
+      }
+    });
+  }
 });
