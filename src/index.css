@@ -72,14 +72,19 @@ html.light .checkout-stripe-frame {
   }
 
   html {
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100%;
   }
 
   body {
     @apply bg-background text-foreground;
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100%;
+  }
+
+  /* Sticky site chrome must not clip header dropdowns (overflow-x:hidden forces overflow-y:auto). */
+  .site-top-chrome {
+    overflow: visible;
   }
 
   /* Direction follows <html dir> set by applyDocumentLocale — never hardcode RTL globally */

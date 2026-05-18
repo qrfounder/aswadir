@@ -86,7 +86,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background" dir={dir}>
-      <header className="bg-black/70 border-b border-yellow-400/10 sticky top-0 z-40 backdrop-blur-md">
+      <header className="bg-black/70 border-b border-yellow-400/10 sticky top-0 z-40 backdrop-blur-md overflow-visible">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <BrandLogo size="compact" className="flex-shrink-0" />

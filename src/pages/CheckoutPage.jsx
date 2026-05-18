@@ -178,7 +178,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="checkout-page min-h-screen bg-background">
-      <header className="bg-black/60 backdrop-blur-md border-b border-yellow-400/10 py-3 sm:py-4 sticky top-0 z-40">
+      <header className="bg-black/60 backdrop-blur-md border-b border-yellow-400/10 py-3 sm:py-4 sticky top-0 z-40 overflow-visible">
         <div className="checkout-header-inner flex items-center justify-between gap-2 sm:gap-3 min-w-0">
           <button
             type="button"

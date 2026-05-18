@@ -10,7 +10,7 @@ export default function SiteHeader({ className = "", embedded = false }) {
 
   return (
     <header
-      className={`bg-black/60 backdrop-blur-md border-b border-yellow-400/10 py-2.5 sm:py-4 px-3 sm:px-4 w-full overflow-x-hidden ${
+      className={`bg-black/60 backdrop-blur-md border-b border-yellow-400/10 py-2.5 sm:py-4 px-3 sm:px-4 w-full overflow-visible ${
         embedded ? "" : "sticky top-0 z-40"
       } ${className}`}
     >
@@ -24,7 +24,7 @@ export default function SiteHeader({ className = "", embedded = false }) {
             className="group-hover:opacity-90 transition-opacity max-w-[min(42vw,9.5rem)] sm:max-w-[280px]"
           />
         </Link>
-        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0 relative z-[60]">
           <CurrencySwitcher />
           <LanguageSwitcher compact />
           <Link
