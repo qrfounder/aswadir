@@ -39,6 +39,7 @@ RUN mkdir -p /app/data
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/api ./api
+COPY --from=builder /app/shared ./shared
 COPY --from=builder /app/server.js ./
 
 VOLUME ["/app/data"]
