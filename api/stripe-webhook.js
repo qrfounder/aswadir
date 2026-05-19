@@ -7,6 +7,7 @@ import {
   getSubscriptionByStripeId,
 } from "./subscriptions.js";
 import { getDb } from "./db.js";
+import { recordServerEvent } from "./analytics-store.js";
 
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -25,6 +26,19 @@ async function fulfillOrder({ paymentIntentId, productId, productName, customerN
     amount,
     newlyPaid,
   });
+
+  if (newlyPaid) {
+    recordServerEvent("payment_success", {
+      path: "/checkout",
+      productId: productId || null,
+      metadata: {
+        paymentIntentId,
+        productName,
+        amount,
+        customerName,
+      },
+    });
+  }
 }
 
 export default async function stripeWebhook(req, res) {
@@ -74,6 +88,17 @@ export default async function stripeWebhook(req, res) {
               `UPDATE purchases SET subscription_id = ? WHERE checkout_session_id = ?`,
             ).run(subscription.id, session.id);
           }
+
+          recordServerEvent("payment_success", {
+            path: "/checkout/success",
+            productId: session.metadata?.productId || null,
+            userId: session.metadata?.userId || null,
+            metadata: {
+              checkoutSessionId: session.id,
+              mode: session.mode,
+              amount: session.amount_total,
+            },
+          });
         }
         break;
       }
@@ -81,6 +106,13 @@ export default async function stripeWebhook(req, res) {
       case "customer.subscription.deleted": {
         const subscription = event.data.object;
         await syncStripeSubscription(subscription);
+        recordServerEvent("subscription_updated", {
+          productId: subscription.metadata?.productId || null,
+          metadata: {
+            status: subscription.status,
+            subscriptionId: subscription.id,
+          },
+        });
         break;
       }
       case "invoice.paid": {

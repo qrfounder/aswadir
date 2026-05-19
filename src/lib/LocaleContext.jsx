@@ -13,13 +13,26 @@ import {
   normalizeCurrency,
   suggestCurrency,
 } from "@/lib/currency.js";
+import { captureAttributionFromUrl } from "@/lib/attribution.js";
 
 /** @typedef {import('@/i18n/constants.js').AppLocale} AppLocale */
 /** @typedef {import('@/lib/currency.js').AppCurrency} AppCurrency */
 
 const LocaleContext = createContext(null);
 
+function readUrlLocale() {
+  try {
+    const lang = new URLSearchParams(window.location.search).get("lang");
+    if (lang) return normalizeLocale(lang);
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
 function readStoredLocale() {
+  const fromUrl = readUrlLocale();
+  if (fromUrl) return fromUrl;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return normalizeLocale(raw);
@@ -91,6 +104,7 @@ export function LocaleProvider({ children }) {
     let cancelled = false;
 
     (async () => {
+      captureAttributionFromUrl(window.location.search);
       const storedLocale = readStoredLocale();
       const storedCurrency = readStoredCurrency();
       const currencyManual = readCurrencyManual();

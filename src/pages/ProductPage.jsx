@@ -117,8 +117,6 @@ export default function ProductPage() {
                     <strong className="text-white">{t("common.ratingValue")}</strong> {t("common.reviewsCount")}
                   </span>
                 </div>
-                <p className="text-gray-500 text-[11px] leading-relaxed -mt-2">* {t("landing.disclaimer")}</p>
-
                 <ul className="space-y-2.5">
                   {heroBullets.map((item, i) => (
                     <li key={i} className="flex items-center gap-3 text-gray-200 text-sm">

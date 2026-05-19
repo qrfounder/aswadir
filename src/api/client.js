@@ -151,6 +151,62 @@ export const client = {
       return { data };
     },
   },
+  admin: {
+    async login(username, password) {
+      return request("/api/admin/login", {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+      });
+    },
+    async logout() {
+      return request("/api/admin/logout", { method: "POST" });
+    },
+    async me() {
+      return request("/api/admin/me");
+    },
+    async overview() {
+      return request("/api/admin/overview");
+    },
+    async live(params = {}) {
+      const q = new URLSearchParams();
+      if (params.since) q.set("since", params.since);
+      if (params.limit) q.set("limit", String(params.limit));
+      const suffix = q.toString() ? `?${q}` : "";
+      return request(`/api/admin/live${suffix}`);
+    },
+    async users(params = {}) {
+      const q = new URLSearchParams();
+      if (params.q) q.set("q", params.q);
+      if (params.limit) q.set("limit", String(params.limit));
+      const suffix = q.toString() ? `?${q}` : "";
+      return request(`/api/admin/users${suffix}`);
+    },
+    async userDetail(id) {
+      return request(`/api/admin/users/${encodeURIComponent(id)}`);
+    },
+    async purchases(params = {}) {
+      const q = new URLSearchParams();
+      if (params.status) q.set("status", params.status);
+      if (params.limit) q.set("limit", String(params.limit));
+      const suffix = q.toString() ? `?${q}` : "";
+      return request(`/api/admin/purchases${suffix}`);
+    },
+    async subscriptions(params = {}) {
+      const q = new URLSearchParams();
+      if (params.limit) q.set("limit", String(params.limit));
+      const suffix = q.toString() ? `?${q}` : "";
+      return request(`/api/admin/subscriptions${suffix}`);
+    },
+    async analytics(params = {}) {
+      const q = new URLSearchParams();
+      if (params.hours) q.set("hours", String(params.hours));
+      const suffix = q.toString() ? `?${q}` : "";
+      return request(`/api/admin/analytics${suffix}`);
+    },
+    async campaignLinks() {
+      return request("/api/admin/campaign-links");
+    },
+  },
 };
 
 export default client;

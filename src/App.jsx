@@ -14,6 +14,11 @@ import ThankYouPage from "./pages/ThankYouPage";
 import SetupAccountPage from "./pages/SetupAccountPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
+import AnalyticsProvider from "@/components/AnalyticsProvider";
+import { AdminAuthProvider } from "@/lib/AdminAuthContext";
+import ProtectedAdminRoute from "@/components/admin/ProtectedAdminRoute";
+import AdminLoginPage from "./pages/admin/AdminLoginPage";
+import MojourneyDashboard from "./pages/admin/MojourneyDashboard";
 
 function App() {
   return (
@@ -22,6 +27,8 @@ function App() {
         <AuthProvider>
           <QueryClientProvider client={queryClientInstance}>
             <Router>
+              <AnalyticsProvider>
+              <AdminAuthProvider>
               <Routes>
                 <Route path="/" element={<ProductPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
@@ -38,8 +45,14 @@ function App() {
               >
                 <Route path="/dashboard" element={<DashboardPage />} />
               </Route>
+              <Route path="/mojourney/login" element={<AdminLoginPage />} />
+              <Route element={<ProtectedAdminRoute />}>
+                <Route path="/mojourney" element={<MojourneyDashboard />} />
+              </Route>
               <Route path="*" element={<PageNotFound />} />
             </Routes>
+              </AdminAuthProvider>
+              </AnalyticsProvider>
             </Router>
             <Toaster />
           </QueryClientProvider>

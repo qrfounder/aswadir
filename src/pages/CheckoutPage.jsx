@@ -33,6 +33,11 @@ import {
   getDialCountry,
   validateNationalNumber,
 } from "@/lib/phoneDialCodes";
+import {
+  trackCheckoutStarted,
+  trackCheckoutView,
+  trackAddToCart,
+} from "@/lib/analytics-tracker";
 
 function StepDot({ active, done, num, label }) {
   return (
@@ -98,6 +103,10 @@ export default function CheckoutPage() {
   }, []);
 
   useEffect(() => {
+    trackCheckoutView(productId);
+  }, [productId]);
+
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
 
@@ -127,12 +136,14 @@ export default function CheckoutPage() {
       setFormError(t("auth.passwordMismatch"));
       return;
     }
+    trackAddToCart(product.id);
     setStep(2);
   };
 
   const startSubscription = async () => {
     setSubmitting(true);
     setFormError(null);
+    trackCheckoutStarted(product.id, { email: customer.email.trim().toLowerCase() });
     try {
       const res = await client.functions.invoke("createCheckoutSession", {
         productId: product.id,

@@ -19,6 +19,7 @@ import {
   getUserIdFromSession,
   sessionCookieOptions,
 } from "./session.js";
+import { recordServerEvent } from "./analytics-store.js";
 
 const SALT_ROUNDS = 12;
 
@@ -127,6 +128,12 @@ export async function handleRegister(req, res) {
   repairEntitlementsForUser(userId);
   const sub = getActiveSubscriptionForUser(userId);
 
+  recordServerEvent("lead_register", {
+    userId,
+    path: "/setup-account",
+    metadata: { email: cleanEmail },
+  });
+
   return res.status(201).json({
     user: publicUser(db.prepare(`SELECT * FROM users WHERE id = ?`).get(userId)),
     entitlements: getUserEntitlements(userId),
@@ -159,6 +166,12 @@ export async function handleLogin(req, res) {
 
   repairEntitlementsForUser(user.id);
   const sub = getActiveSubscriptionForUser(user.id);
+
+  recordServerEvent("user_login", {
+    userId: user.id,
+    path: "/login",
+    metadata: { email: cleanEmail },
+  });
 
   return res.status(200).json({
     user: publicUser(user),

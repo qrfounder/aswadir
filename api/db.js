@@ -144,6 +144,35 @@ function migrate(database) {
 
     CREATE INDEX IF NOT EXISTS idx_member_daily_notes_user_date
       ON member_daily_notes(user_id, note_date DESC);
+
+    CREATE TABLE IF NOT EXISTS analytics_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      event_type TEXT NOT NULL,
+      session_id TEXT,
+      user_id TEXT,
+      path TEXT,
+      product_id TEXT,
+      locale TEXT,
+      utm_source TEXT,
+      utm_medium TEXT,
+      utm_campaign TEXT,
+      utm_content TEXT,
+      utm_term TEXT,
+      referrer TEXT,
+      country TEXT,
+      metadata TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_analytics_events_created ON analytics_events(created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_analytics_events_type ON analytics_events(event_type, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_analytics_events_session ON analytics_events(session_id);
+
+    CREATE TABLE IF NOT EXISTS admin_sessions (
+      id TEXT PRIMARY KEY,
+      expires_at TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 }
 

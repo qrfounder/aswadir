@@ -38,6 +38,23 @@ import {
   validateStripePrices,
 } from "./api/stripe-price-validation.js";
 import { handleLocaleDetect } from "./api/locale-detect.js";
+import { handleAnalyticsEvent } from "./api/analytics-handlers.js";
+import {
+  handleAdminLogin,
+  handleAdminLogout,
+  handleAdminMe,
+  requireAdmin,
+} from "./api/admin-auth-handlers.js";
+import {
+  handleAdminOverview,
+  handleAdminLive,
+  handleAdminUsers,
+  handleAdminUserDetail,
+  handleAdminPurchases,
+  handleAdminSubscriptions,
+  handleAdminAnalytics,
+  handleAdminCampaignLinks,
+} from "./api/admin-handlers.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -98,6 +115,20 @@ app.get("/api/member/daily-notes", handleDailyNotesList);
 app.get("/api/member/daily-note", handleDailyNoteGet);
 app.put("/api/member/daily-note", handleDailyNotePut);
 app.get("/api/locale/detect", handleLocaleDetect);
+
+app.post("/api/analytics/event", handleAnalyticsEvent);
+
+app.post("/api/admin/login", handleAdminLogin);
+app.post("/api/admin/logout", handleAdminLogout);
+app.get("/api/admin/me", handleAdminMe);
+app.get("/api/admin/overview", requireAdmin, handleAdminOverview);
+app.get("/api/admin/live", requireAdmin, handleAdminLive);
+app.get("/api/admin/users", requireAdmin, handleAdminUsers);
+app.get("/api/admin/users/:id", requireAdmin, handleAdminUserDetail);
+app.get("/api/admin/purchases", requireAdmin, handleAdminPurchases);
+app.get("/api/admin/subscriptions", requireAdmin, handleAdminSubscriptions);
+app.get("/api/admin/analytics", requireAdmin, handleAdminAnalytics);
+app.get("/api/admin/campaign-links", requireAdmin, handleAdminCampaignLinks);
 
 app.get("/api/health", (_req, res) => {
   const dbError = getDbError();
