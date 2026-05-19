@@ -72,10 +72,10 @@ export default function ProductPage() {
       alert(t("common.publishedAppOnly"));
       return;
     }
-    navigate(`/checkout?product=${encodeURIComponent(product.id)}`);
+    navigate(`/checkout?product=bundle`);
   };
 
-  const startBundleTrial = () => {
+  const startCheckout = () => {
     if (bundle) handleSelectProduct(bundle);
   };
 
@@ -128,7 +128,7 @@ export default function ProductPage() {
                   ))}
                 </ul>
 
-                <button onClick={startBundleTrial} className="cta-button w-full py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black pulse-gold flex justify-center items-center gap-2">
+                <button onClick={startCheckout} className="cta-button w-full py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black pulse-gold flex justify-center items-center gap-2">
                   <Rocket className="w-6 h-6" /> {t("landing.heroCta")}
                 </button>
                 <p className="text-center text-brand/90 text-sm font-bold">
@@ -347,7 +347,7 @@ export default function ProductPage() {
             <p className="text-gray-300 text-base md:text-lg">{t("landing.finalSubtitle")}</p>
             <button
               type="button"
-              onClick={startBundleTrial}
+              onClick={startCheckout}
               className="cta-button w-full max-w-sm px-8 py-4 md:py-5 rounded-2xl text-lg md:text-xl font-black flex justify-center items-center gap-2 mx-auto pulse-gold"
             >
               <Rocket className="w-6 h-6" /> {t("landing.finalCta")}
@@ -384,7 +384,6 @@ export default function ProductPage() {
             <div className="flex items-center gap-3 pb-1">
               <div className="flex-1 min-w-0">
                 <p className="text-white font-black text-sm truncate">{t("landing.stickyBundle")}</p>
-                <p className="text-success/90 text-[10px] font-bold">{t("landing.stickyTrial")}</p>
                 <p className="text-gray-400 text-[10px] leading-snug">{t("landing.stickyBundlePitch")}</p>
                 <span className="inline-flex items-center gap-1 bg-red-500/15 text-red-300 text-[10px] font-black px-2 py-0.5 rounded border border-red-500/25">
                   -{bundle.discount}
@@ -392,7 +391,7 @@ export default function ProductPage() {
               </div>
               <button
                 type="button"
-                onClick={startBundleTrial}
+                onClick={startCheckout}
                 className="cta-button px-6 py-3 rounded-xl text-sm font-black flex-shrink-0"
               >
                 {t("landing.stickyCta")}

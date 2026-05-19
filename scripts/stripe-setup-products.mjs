@@ -33,26 +33,26 @@ const envFile = loadEnvFile(path.join(root, ".env"));
 Object.assign(process.env, envFile);
 dotenv.config({ path: path.join(root, ".env") });
 
-/** Global USD pricing — 1-day trial applied at checkout (not on Price). */
+/** Global USD pricing — public offer is full bundle at $9.99/mo (no free trial). */
 const PLANS = [
   {
     id: "task",
     name: "Massar — Task Tracker | متتبع المهام",
-    description: "Daily & weekly task board — $4.99/mo after 1-day free trial.",
+    description: "Daily & weekly task board — $4.99/mo (legacy; not sold on site).",
     amountCents: 499,
     envKey: "STRIPE_PRICE_TASK",
   },
   {
     id: "habit",
     name: "Massar — Habit Tracker | متتبع العادات",
-    description: "Habit grid, streaks, mood — $4.99/mo after 1-day free trial.",
+    description: "Habit grid, streaks, mood — $4.99/mo (legacy; not sold on site).",
     amountCents: 499,
     envKey: "STRIPE_PRICE_HABIT",
   },
   {
     id: "bundle",
     name: "Massar — Full Bundle | الباقة الكاملة",
-    description: "Habits + tasks + member dashboard — $9.99/mo after 1-day free trial.",
+    description: "Habits + tasks + member dashboard — $9.99/mo, billed monthly.",
     amountCents: 999,
     envKey: "STRIPE_PRICE_BUNDLE",
   },
@@ -139,8 +139,8 @@ console.log("\n--- Add to .env and Easypanel ---\n");
 for (const [envKey, priceId] of Object.entries(priceIds)) {
   console.log(`${envKey}=${priceId}`);
 }
-console.log(`STRIPE_TRIAL_DAYS=${process.env.STRIPE_TRIAL_DAYS || "1"}`);
-console.log("\n1-day free trial is applied at checkout (subscription_data.trial_period_days).\n");
+console.log(`STRIPE_TRIAL_DAYS=${process.env.STRIPE_TRIAL_DAYS ?? "0"}`);
+console.log("\nSet STRIPE_TRIAL_DAYS=0 for no free trial (recommended). Trial is applied at checkout only if > 0.\n");
 
 const envPath = path.join(root, ".env");
 if (fs.existsSync(envPath)) {

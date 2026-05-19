@@ -16,7 +16,7 @@
   },
   "nav": {
     "memberLogin": "Member login",
-    "subscribeNow": "Start free trial — full Massar",
+    "subscribeNow": "Get full Massar",
     "securePay": "Secure checkout",
     "monthlySub": "Monthly subscription",
     "back": "Back",
@@ -34,13 +34,13 @@
     "guarantee": "day money-back"
   },
   "hero": {
-    "badge": "Monthly subscription · 1-day free trial",
+    "badge": "Full pack · monthly access",
     "title": "The only system that keeps habits & tasks",
     "titleHighlight": "in front of you — fun and impossible to ignore",
     "subtitle": "Built on behavioral science — track daily inside Massar.",
     "rating": "{{score}}/5 from {{count}}+ real reviews",
-    "cta": "Start 1-day free trial",
-    "ctaSub": "1-day trial · then {{price}}/mo · cancel anytime",
+    "cta": "Get full access",
+    "ctaSub": "{{price}}/mo · cancel anytime",
     "galleryQuick": "Quick look",
     "galleryBundle": "Bundle",
     "galleryHabits": "Habits",
@@ -54,13 +54,12 @@
     "discountEnds": "Discount ends in:",
     "bestSeller": "Best seller",
     "perMonth": "/ month",
-    "subscribeBtn": "Start free trial — from {{price}}/mo",
-    "singlesFrom": "Singles from {{price}}/mo",
-    "trialNote": "1-day free trial · cancel anytime from your dashboard",
-    "fullTrialPitch": "Full bundle during trial · exact total only on secure checkout",
+    "subscribeBtn": "Subscribe — {{price}}/mo",
+    "billingNote": "Full Massar pack · billed monthly · cancel anytime from your dashboard",
+    "fullTrialPitch": "Full bundle — habits, tasks, analytics & productivity hub",
     "atCheckout": "At checkout",
     "valueStack": "Habits · tasks · analytics · productivity hub",
-    "subscribeBtnBlind": "Start free trial — continue",
+    "subscribeBtnBlind": "Continue to checkout",
     "infoTitle": "How billing works",
     "infoBody": "Monthly subscription with automatic renewal. You get instant access to your member dashboard after payment."
   },
@@ -176,7 +175,7 @@
       },
       {
         "q": "Monthly subscription or one-time?",
-        "a": "Monthly with a 1-day free trial. After day one it renews each month; cancel anytime from your dashboard. No hidden fees."
+        "a": "One simple plan: the full Massar pack. You see the exact monthly total on secure checkout (charged in USD). Renews monthly; cancel anytime from your dashboard. No hidden fees."
       },
       {
         "q": "What if I don't like it?",
@@ -198,7 +197,7 @@
       "Instant access — start in 60 seconds",
       "Works on phone, tablet, and laptop"
     ],
-    "heroCta": "Start 1-day free trial",
+    "heroCta": "Get full Massar",
     "heroGuarantee": "21-day money-back guarantee · no questions asked",
     "disclaimer": "Ratings and user counts on this page are illustrative. Individual results vary with commitment.",
     "features": [
@@ -219,7 +218,7 @@
         "desc": "A goal only in your head doesn't motivate. When you see the number, percentage, and chart in front of you, you feel real daily progress."
       }
     ],
-    "stickyCta": "Start 1-day free trial",
+    "stickyCta": "Subscribe now",
     "comparisonTitle": "Massar vs other apps",
     "comparisonMassar": "Massar",
     "comparisonApps": "Other apps",
@@ -284,9 +283,8 @@
     "featuresSubtitle": "Built on behavioral science and motivation research.",
     "pricingTitle": "Start your",
     "pricingTitleHighlight": "system today",
-    "pricingSubtitle": "Try everything free first — pricing is revealed only on secure checkout.",
-    "heroCtaSubNoPrice": "1-day full access · no card until you choose to pay · cancel anytime",
-    "stickyTrial": "1-day free trial",
+    "pricingSubtitle": "One plan — the full pack. Price on secure checkout.",
+    "heroCtaSubNoPrice": "Full access · price on secure checkout · cancel anytime",
     "stickyBundlePitch": "Full Massar — habits, tasks, analytics & productivity hub",
     "faqTitle": "Frequently asked",
     "faqTitleHighlight": "questions",
@@ -294,7 +292,7 @@
     "finalTitleHighlight": "decision",
     "finalTitle2": "can change your daily life",
     "finalSubtitle": "Successful people run systems. Yours is ready in 60 seconds.",
-    "finalCta": "Start 1-day free trial",
+    "finalCta": "Get full Massar",
     "finalNote": "21-day full refund · secure payment · instant access",
     "stickyGuarantee": "21-day guarantee",
     "stickySecure": "Secure pay",
@@ -307,9 +305,9 @@
     "regions": "Saudi Arabia · UAE · Morocco · USA · Thailand · Worldwide"
   },
   "checkout": {
-    "title": "Start your 1-day free trial",
-    "subtitle": "Daily habit & task app — {{price}} / month",
-    "subtitleBlind": "Full Massar during your trial — you’ll see the monthly total on the payment step (less than a coffee a day for most members).",
+    "title": "Subscribe to full Massar",
+    "subtitle": "Full pack — habits, tasks & dashboard — {{price}} / month",
+    "subtitleBlind": "Full Massar pack — secure checkout (less than a coffee a day for most members).",
     "valueFramingTitle": "Simple math · high leverage",
     "valuePerDay": "≈ {{perDay}} / day when you use Massar daily (billed monthly).",
     "valueAnchor": "Public value anchor {{anchor}} — your member price {{price}} / mo",
@@ -347,7 +345,7 @@
     "trialDevHint": "Add Stripe keys to .env and run npm run dev:all to enable card checkout.",
     "trialDevBtn": "Complete test checkout (no card)",
     "renewMonthly": "Auto-renews monthly — {{price}}",
-    "trialDay": "1-day free trial — then {{price}} / month",
+    "billedToday": "{{price}} / month — billed today, renews monthly",
     "refund": "21-day refund guarantee on first subscription",
     "summary": "Subscription summary",
     "errors": {
@@ -590,7 +588,7 @@
     "home": "Back to homepage",
     "discount": "Off",
     "ssl": "SSL encryption",
-    "freeTrialBadge": "Free trial day",
+    "freeTrialBadge": "Member",
     "exampleName": "e.g. James Mitchell",
     "paymentChecking": "Checking payment settings…",
     "publishedAppOnly": "Checkout works on the published app only. Open the live site URL.",
@@ -763,7 +761,7 @@
     "upgradeBody": "Get habits + tasks + unified analytics in one dashboard.",
     "upgradeCta": "Get Full Bundle — {{price}}",
     "subscriptionActive": "Subscription active",
-    "subscriptionTrial": "Free trial",
+    "subscriptionTrial": "Trial period",
     "subscriptionPastDue": "Payment issue",
     "subscriptionCanceled": "Canceled",
     "manageBilling": "Manage billing",

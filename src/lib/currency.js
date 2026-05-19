@@ -135,11 +135,9 @@ export function getProductPrices(productId, currency) {
   return row[c] || row.USD;
 }
 
-/** Lowest monthly sale price (task or habit) for “from” conversion copy. */
+/** Public offer price — full bundle only. */
 export function getLowestSalePrice(currency) {
-  const task = getProductPrices("task", currency).sale;
-  const habit = getProductPrices("habit", currency).sale;
-  return Math.min(task, habit);
+  return getProductPrices("bundle", currency).sale;
 }
 
 /**

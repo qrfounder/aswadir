@@ -39,11 +39,14 @@ export function useLocalizedProducts() {
   );
 }
 
+/** Checkout and public offer — full bundle only ($9.99/mo). */
+export const OFFER_PRODUCT_ID = "bundle";
+
 export function useLocalizedProduct(productId) {
   const products = useLocalizedProducts();
   return useMemo(
-    () => products.find((p) => p.id === productId) || products.find((p) => p.popular) || products[0],
-    [products, productId],
+    () => products.find((p) => p.id === OFFER_PRODUCT_ID) || products.find((p) => p.popular) || products[0],
+    [products],
   );
 }
 

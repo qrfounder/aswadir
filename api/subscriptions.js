@@ -146,15 +146,15 @@ export function subscriptionForClient(row) {
 export function createDevSimulatedSubscription({ productId, userId = null, checkoutSessionId }) {
   const subId = `dev_sub_${Date.now()}`;
   const customerId = `dev_cus_${Date.now()}`;
-  const trialDays = Number.parseInt(process.env.STRIPE_TRIAL_DAYS || "1", 10) || 1;
+  const trialDays = Number.parseInt(process.env.STRIPE_TRIAL_DAYS ?? "0", 10) || 0;
   const periodEnd = new Date();
-  periodEnd.setDate(periodEnd.getDate() + trialDays);
+  periodEnd.setDate(periodEnd.getDate() + (trialDays > 0 ? trialDays : 30));
 
   upsertSubscription({
     stripeSubscriptionId: subId,
     stripeCustomerId: customerId,
     productId,
-    status: "trialing",
+    status: trialDays > 0 ? "trialing" : "active",
     currentPeriodEnd: periodEnd.toISOString(),
     cancelAtPeriodEnd: false,
     checkoutSessionId,

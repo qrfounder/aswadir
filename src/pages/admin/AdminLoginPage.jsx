@@ -24,8 +24,12 @@ export default function AdminLoginPage() {
     } catch (err) {
       if (err.data?.error === "admin_not_configured") {
         setError("Admin login is not configured on the server. Set ADMIN_USERNAME and ADMIN_PASSWORD in .env.");
-      } else {
+      } else if (err.status === 404) {
+        setError("Admin API is unavailable — restart the server (npm run dev:all) or redeploy the latest build.");
+      } else if (err.data?.error === "invalid_credentials") {
         setError("Invalid username or password.");
+      } else {
+        setError("Could not sign in. Check that the API is running and admin env vars are set.");
       }
     }
   };

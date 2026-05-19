@@ -69,8 +69,16 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const productId = searchParams.get("product") || "bundle";
-  const product = useLocalizedProduct(productId);
+  const product = useLocalizedProduct("bundle");
+
+  useEffect(() => {
+    const requested = searchParams.get("product");
+    if (requested && requested !== "bundle") {
+      const next = new URLSearchParams(searchParams);
+      next.set("product", "bundle");
+      navigate(`/checkout?${next.toString()}`, { replace: true });
+    }
+  }, [searchParams, navigate]);
 
   const [step, setStep] = useState(1);
   const [customer, setCustomer] = useState({
@@ -456,7 +464,7 @@ export default function CheckoutPage() {
                     </li>
                     <li className="flex gap-2 items-start">
                       <ShieldCheck className="w-3.5 h-3.5 text-success mt-0.5 flex-shrink-0" />
-                      {t("checkout.trialDay", { price: priceFor(product.id) })}
+                      {t("checkout.billedToday", { price: priceFor(product.id) })}
                     </li>
                     <li className="flex gap-2 items-start">
                       <ShieldCheck className="w-3.5 h-3.5 text-success mt-0.5 flex-shrink-0" />
@@ -472,35 +480,6 @@ export default function CheckoutPage() {
 
                 </div>
 
-                <div className="rounded-2xl border border-gray-800/80 bg-black/25 px-4 py-4 space-y-3">
-                  <p className="text-gray-500 text-[11px] font-bold text-center">{t("checkout.downsellTitle")}</p>
-                  <div className="flex flex-wrap justify-center gap-2 text-[11px] font-bold">
-                    {product.id !== "bundle" && (
-                      <Link
-                        to="/checkout?product=bundle"
-                        className="px-3 py-2 rounded-lg bg-brand/10 text-brand/90 border border-brand/30 hover:bg-primary/20"
-                      >
-                        {t("checkout.downsellBundle")}
-                      </Link>
-                    )}
-                    {product.id !== "habit" && (
-                      <Link
-                        to="/checkout?product=habit"
-                        className="px-3 py-2 rounded-lg bg-black/40 text-gray-300 border border-gray-700 hover:border-primary/30"
-                      >
-                        {t("checkout.downsellHabit")}
-                      </Link>
-                    )}
-                    {product.id !== "task" && (
-                      <Link
-                        to="/checkout?product=task"
-                        className="px-3 py-2 rounded-lg bg-black/40 text-gray-300 border border-gray-700 hover:border-primary/30"
-                      >
-                        {t("checkout.downsellTask")}
-                      </Link>
-                    )}
-                  </div>
-                </div>
 
               </div>
             )}

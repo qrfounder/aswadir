@@ -1,6 +1,6 @@
-/** Free trial length for new subscriptions (days). Default: 1 */
+/** Subscription trial length (days). Set STRIPE_TRIAL_DAYS=0 for no free trial. */
 export function getTrialPeriodDays() {
-  const n = Number.parseInt(process.env.STRIPE_TRIAL_DAYS || "1", 10);
-  if (!Number.isFinite(n) || n < 0) return 1;
+  const n = Number.parseInt(process.env.STRIPE_TRIAL_DAYS ?? "0", 10);
+  if (!Number.isFinite(n) || n < 0) return 0;
   return Math.min(n, 730);
 }

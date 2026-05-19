@@ -242,7 +242,7 @@ function buildFunnel(hours) {
 
 export function handleAdminCampaignLinks(_req, res) {
   const base = (process.env.SITE_URL || "").replace(/\/$/, "");
-  const products = ["task", "habit", "bundle"];
+  const products = ["bundle"];
   const locales = ["en", "ar", "th"];
   const utmPresets = [
     { source: "facebook", medium: "paid", campaign: "massar_launch" },

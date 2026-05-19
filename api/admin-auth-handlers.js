@@ -16,8 +16,8 @@ function adminAuthConfigured() {
 }
 
 async function verifyAdminPassword(password) {
-  const plain = process.env.ADMIN_PASSWORD;
-  const hash = process.env.ADMIN_PASSWORD_HASH;
+  const plain = process.env.ADMIN_PASSWORD?.trim();
+  const hash = process.env.ADMIN_PASSWORD_HASH?.trim();
   if (hash) {
     return bcrypt.compare(String(password || ""), hash);
   }
