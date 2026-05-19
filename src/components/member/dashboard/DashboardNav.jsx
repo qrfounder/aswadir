@@ -28,12 +28,12 @@ function NavButton({ item, active, onSelect, compact }) {
           ? `flex-1 flex-col gap-0.5 py-1.5 px-1 text-[10px] sm:text-[11px] ${
               active
                 ? "text-primary"
-                : "text-gray-500 hover:text-gray-300"
+                : "text-muted-foreground hover:text-foreground/85"
             }`
           : `w-full px-3 py-2.5 text-sm text-start ${
               active
                 ? "bg-primary/15 text-primary border border-primary/35 shadow-sm shadow-primary/10"
-                : "text-gray-400 border border-transparent hover:bg-white/5 hover:text-gray-200"
+                : "text-muted-foreground border border-transparent hover:bg-muted hover:text-foreground"
             }`
       }`}
     >
@@ -55,7 +55,7 @@ export function DashboardNavSidebar({ section, onSectionChange }) {
       className="dashboard-sidebar hidden md:flex md:flex-col gap-1.5 shrink-0 w-52 lg:w-60 border-e border-brand/10 md:sticky md:top-[4.25rem] md:self-start md:max-h-[calc(100dvh-4.25rem)] md:overflow-y-auto py-5 px-3 lg:px-4"
       aria-label={t("dashboard.nav.aria")}
     >
-      <p className="text-[10px] uppercase tracking-widest text-gray-600 font-bold px-2 mb-2 hidden lg:block">
+      <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold px-2 mb-2 hidden lg:block">
         {t("dashboard.nav.menuLabel")}
       </p>
       {NAV_ITEMS.map((item) => (

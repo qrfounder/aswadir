@@ -6,7 +6,7 @@ export default function HabitProgressBars({ habits }) {
   const { t } = useTranslation();
 
   if (!habits?.length) {
-    return <p className="text-gray-500 text-sm text-center py-6">{t("member.analytics.noHabitsYet")}</p>;
+    return <p className="text-muted-foreground text-sm text-center py-6">{t("member.analytics.noHabitsYet")}</p>;
   }
 
   return (
@@ -17,7 +17,7 @@ export default function HabitProgressBars({ habits }) {
             <span className="text-base flex-shrink-0" aria-hidden>
               {h.icon}
             </span>
-            <span className="text-gray-200 text-xs sm:text-sm font-medium leading-snug text-start truncate">
+            <span className="text-foreground/90 text-xs sm:text-sm font-medium leading-snug text-start truncate">
               {h.name}
             </span>
           </div>
@@ -34,7 +34,7 @@ export default function HabitProgressBars({ habits }) {
             />
           </div>
           {h.streak > 0 && (
-            <p className="col-span-2 order-4 text-[10px] text-gray-500 text-start">
+            <p className="col-span-2 order-4 text-[10px] text-muted-foreground text-start">
               🔥 {t("member.analytics.streakDays", { count: h.streak })}
             </p>
           )}

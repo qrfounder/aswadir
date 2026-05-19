@@ -23,7 +23,7 @@ export default function BundleUpgradeBanner({ ownedKeys }) {
 
   return (
     <section
-      className="relative overflow-hidden rounded-2xl border border-brand/35 bg-gradient-to-e from-brand/15 via-black/40 to-black/60 p-5 md:p-6"
+      className="relative overflow-hidden rounded-2xl border border-brand/30 bg-gradient-to-e from-brand/12 via-card to-muted p-5 md:p-6"
       aria-label={t("member.upgradeAria")}
     >
       <Glow className="-top-10 -end-10 bg-brand/10" />
@@ -35,18 +35,18 @@ export default function BundleUpgradeBanner({ ownedKeys }) {
             <Sparkles className="w-3.5 h-3.5" />
             {t("member.upgradeBadge")}
           </p>
-          <h2 className="text-white font-black text-lg md:text-xl leading-snug">
+          <h2 className="text-foreground font-black text-lg md:text-xl leading-snug">
             {hasHabit && hasTask
               ? t("member.upgradeTitleBoth")
               : t("member.upgradeTitleMissing", { items: missing.join(" + ") })}
           </h2>
-          <p className="text-gray-300 text-sm leading-relaxed max-w-xl">
+          <p className="text-foreground/85 text-sm leading-relaxed max-w-xl">
             {hasHabit && !hasTask && t("member.upgradeBodyHabitOnly")}
             {hasTask && !hasHabit && t("member.upgradeBodyTaskOnly")}
             {hasHabit && hasTask && t("member.upgradeBodyBoth")}
           </p>
           {singlesTotal > bundle.salePrice && (
-            <p className="text-gray-500 text-xs">
+            <p className="text-muted-foreground text-xs">
               {t("member.upgradePriceCompare", {
                 singles: format(singlesTotal),
                 bundle: priceFor("bundle"),

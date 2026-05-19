@@ -58,20 +58,20 @@ export default function DailyNotesPanel({ userId, syncStatus }) {
 
   return (
     <section
-      className="dashboard-daily-note dark-card rounded-2xl border border-info/25 bg-gradient-to-br from-info/10 via-black/40 to-black/60 p-4 sm:p-5"
+      className="dashboard-daily-note dark-card rounded-2xl border border-info/25 bg-gradient-to-br from-info/10 via-card to-muted p-4 sm:p-5"
       aria-labelledby="daily-notes-heading"
     >
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-2 min-w-0">
           <BookOpen className="w-5 h-5 text-info flex-shrink-0" aria-hidden />
           <div>
-            <h2 id="daily-notes-heading" className="text-white font-black text-base sm:text-lg leading-tight">
+            <h2 id="daily-notes-heading" className="text-foreground font-black text-base sm:text-lg leading-tight">
               {t("dashboard.dailyNote.title")}
             </h2>
-            <p className="text-gray-500 text-xs mt-0.5">{t("dashboard.dailyNote.subtitle", { date })}</p>
+            <p className="text-muted-foreground text-xs mt-0.5">{t("dashboard.dailyNote.subtitle", { date })}</p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 text-[11px] text-gray-500 flex-shrink-0" aria-live="polite">
+        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground flex-shrink-0" aria-live="polite">
           {cloudOk && <Cloud className="w-3.5 h-3.5 text-success/90" aria-hidden />}
           {cloudOff && <CloudOff className="w-3.5 h-3.5 text-amber-400/80" aria-hidden />}
           <span>
@@ -89,7 +89,7 @@ export default function DailyNotesPanel({ userId, syncStatus }) {
         disabled={!loaded}
         placeholder={t("dashboard.dailyNote.placeholder")}
         rows={4}
-        className="w-full rounded-xl bg-black/50 border border-gray-700/80 text-gray-100 text-sm p-3 sm:p-4 resize-y min-h-[6rem] focus:border-info/50 focus:outline-none focus:ring-1 focus:ring-info/30 placeholder:text-gray-600"
+        className="w-full rounded-xl bg-muted border border-border text-foreground text-sm p-3 sm:p-4 resize-y min-h-[6rem] focus:border-info/50 focus:outline-none focus:ring-1 focus:ring-info/30 placeholder:text-muted-foreground"
         aria-label={t("dashboard.dailyNote.title")}
       />
     </section>

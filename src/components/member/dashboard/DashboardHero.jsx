@@ -71,11 +71,11 @@ export default function DashboardHero({
           </p>
           <h1
             id="dashboard-hero-heading"
-            className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-[1.15] text-pretty"
+            className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground leading-[1.15] text-pretty"
           >
             {t(`dashboard.hero.greeting.${period}`, { name: firstName })}
           </h1>
-          <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-xl">
+          <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-xl">
             {t(`dashboard.hero.coach.${coachKey}`)}
           </p>
 
@@ -106,7 +106,7 @@ export default function DashboardHero({
               </button>
             )}
             {streak > 0 && (
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-black/40 border border-brand/25 px-3.5 py-2.5 text-xs sm:text-sm font-bold text-brand min-h-[44px]">
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-muted border border-brand/25 px-3.5 py-2.5 text-xs sm:text-sm font-bold text-brand min-h-[44px]">
                 <span aria-hidden>🔥</span>
                 {t("dashboard.hero.streak", { count: streak })}
               </span>
@@ -131,7 +131,7 @@ export default function DashboardHero({
               whileHover={{ scale: 1.01 }}
             >
               <Target className="w-8 h-8 text-primary shrink-0" aria-hidden />
-              <p className="text-gray-300 text-sm leading-snug">{t("dashboard.hero.noTracker")}</p>
+              <p className="text-foreground/85 text-sm leading-snug">{t("dashboard.hero.noTracker")}</p>
             </motion.div>
           )}
         </div>

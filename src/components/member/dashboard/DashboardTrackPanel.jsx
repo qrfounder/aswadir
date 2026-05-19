@@ -68,17 +68,17 @@ export default function DashboardTrackPanel({
     ) : (
       <div className="space-y-5 sm:space-y-6">
         <header className="dashboard-section-header">
-          <h1 className="text-xl sm:text-2xl font-black text-white leading-tight">
+          <h1 className="text-xl sm:text-2xl font-black text-foreground leading-tight">
             {t("dashboard.nav.trackTitle")}{" "}
             <span className="gold-gradient">{firstName}</span>
           </h1>
-          <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-2xl">
+          <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-2xl">
             {t("dashboard.nav.trackLead")}
           </p>
         </header>
         {userId && <DailyNotesPanel userId={userId} syncStatus={syncStatus} />}
         {!loading && (
-          <p className="text-gray-500 text-sm text-center py-10 px-4 dark-card rounded-2xl border border-gray-800">
+          <p className="text-muted-foreground text-sm text-center py-10 px-4 dark-card rounded-2xl border border-border">
             {t("tracker.noSystem")}
           </p>
         )}
@@ -90,7 +90,7 @@ export default function DashboardTrackPanel({
       {subscription && <SubscriptionBanner subscription={subscription} />}
 
       {loading && (
-        <p className="text-gray-500 text-sm py-2 flex items-center gap-2" role="status">
+        <p className="text-muted-foreground text-sm py-2 flex items-center gap-2" role="status">
           <span className="dashboard-loading-dot" aria-hidden />
           {t("dashboard.loading")}
         </p>

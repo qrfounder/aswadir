@@ -11,14 +11,14 @@ function TrustStrip() {
   const { t } = useTranslation();
   return (
     <div
-      className="member-trust-strip flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-4 rounded-xl border border-brand/10 px-4 py-3 text-xs text-gray-400"
+      className="member-trust-strip flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-4 rounded-xl border border-brand/10 px-4 py-3 text-xs text-muted-foreground"
       role="note"
     >
       <span className="inline-flex items-center gap-1.5">
         <ShieldCheck className="w-3.5 h-3.5 text-brand/80" aria-hidden />
         {t("dashboard.trustSecure")}
       </span>
-      <span className="hidden sm:inline text-gray-700" aria-hidden>
+      <span className="hidden sm:inline text-muted-foreground" aria-hidden>
         ·
       </span>
       <span>{t("dashboard.trustLocal")}</span>
@@ -39,10 +39,10 @@ export default function DashboardAccountPanel({
   return (
     <div className="space-y-5 sm:space-y-6 w-full">
       <header className="space-y-2">
-        <h1 className="text-xl sm:text-2xl font-black text-white leading-tight">
+        <h1 className="text-xl sm:text-2xl font-black text-foreground leading-tight">
           {t("dashboard.nav.accountTitle")}
         </h1>
-        <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-3xl">
+        <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
           {t("dashboard.nav.accountLead")}
         </p>
       </header>
@@ -60,13 +60,13 @@ export default function DashboardAccountPanel({
         </div>
 
         <div className="space-y-5 sm:space-y-6 min-w-0">
-          <section className="dark-card rounded-2xl p-5 sm:p-6 border border-gray-800/80 space-y-4">
-            <h2 className="text-white font-black text-base flex items-center gap-2">
+          <section className="dark-card rounded-2xl p-5 sm:p-6 border border-border space-y-4">
+            <h2 className="text-foreground font-black text-base flex items-center gap-2">
               <Package className="w-5 h-5 text-primary" aria-hidden />
               {t("dashboard.yourProducts")}
             </h2>
             {ownedKeys.length === 0 ? (
-              <p className="text-gray-500 text-sm">{t("dashboard.noProducts")}</p>
+              <p className="text-muted-foreground text-sm">{t("dashboard.noProducts")}</p>
             ) : (
               <ul className="space-y-3">
                 {ownedKeys
@@ -74,12 +74,12 @@ export default function DashboardAccountPanel({
                   .map((key) => (
                     <li
                       key={key}
-                      className="rounded-xl border border-gray-800/80 bg-black/25 p-4"
+                      className="rounded-xl border border-border bg-muted/55 p-4"
                     >
-                      <p className="text-white font-bold text-sm leading-snug">
+                      <p className="text-foreground font-bold text-sm leading-snug">
                         {packMeta[key].icon} {productLabel(key)}
                       </p>
-                      <p className="text-gray-500 text-xs mt-1.5 leading-relaxed">
+                      <p className="text-muted-foreground text-xs mt-1.5 leading-relaxed">
                         {packMeta[key].tagline}
                       </p>
                     </li>
@@ -87,9 +87,9 @@ export default function DashboardAccountPanel({
               </ul>
             )}
             {user?.email && (
-              <p className="text-gray-600 text-xs">
+              <p className="text-muted-foreground text-xs">
                 {t("dashboard.nav.signedInAs")}{" "}
-                <span className="text-gray-400 font-mono" dir="ltr">
+                <span className="text-muted-foreground font-mono" dir="ltr">
                   {user.email}
                 </span>
               </p>
@@ -97,11 +97,11 @@ export default function DashboardAccountPanel({
           </section>
 
           <section className="dark-card rounded-2xl p-5 sm:p-6 border border-brand/15 space-y-3">
-            <h2 className="text-white font-black text-base flex items-center gap-2">
+            <h2 className="text-foreground font-black text-base flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-primary" aria-hidden />
               {t("dashboard.nav.supportTitle")}
             </h2>
-            <p className="text-gray-400 text-sm leading-relaxed">{t("dashboard.nav.supportLead")}</p>
+            <p className="text-muted-foreground text-sm leading-relaxed">{t("dashboard.nav.supportLead")}</p>
             <div className="flex flex-col sm:flex-row flex-wrap gap-2 pt-1">
               <Link
                 to="/#faq"
@@ -112,7 +112,7 @@ export default function DashboardAccountPanel({
               </Link>
               <Link
                 to="/"
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-gray-700 text-gray-300 text-sm font-bold hover:border-gray-500 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-border text-foreground/85 text-sm font-bold hover:border-gray-500 transition-colors"
               >
                 <Home className="w-3.5 h-3.5" aria-hidden />
                 {t("dashboard.backHome")}

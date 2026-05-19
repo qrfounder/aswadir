@@ -6,8 +6,8 @@ export default function ProgressRing({
   stroke = 7,
   label,
   sublabel,
-  accent = "#facc15",
-  track = "rgba(255,255,255,0.08)",
+  accent = "hsl(168 62% 42%)",
+  track = "hsl(var(--border))",
 }) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
@@ -15,7 +15,7 @@ export default function ProgressRing({
   const offset = c - (clamped / 100) * c;
 
   return (
-    <div className="flex flex-col items-center gap-1">
+    <motion.div className="flex flex-col items-center gap-1">
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="-rotate-90">
           <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={track} strokeWidth={stroke} />
@@ -33,21 +33,23 @@ export default function ProgressRing({
             transition={{ type: "spring", stiffness: 90, damping: 16 }}
           />
         </svg>
-        <div
-          className="absolute inset-0 flex items-center justify-center font-black text-white tabular-nums"
+        <motion.div
+          className="progress-ring-value absolute inset-0 flex items-center justify-center font-black text-foreground tabular-nums"
           style={{ fontSize: `clamp(0.65rem, ${size * 0.2}px, 1.35rem)` }}
         >
           {clamped}%
-        </div>
+        </motion.div>
       </div>
       {label && (
-        <p className="text-gray-300 text-xs font-bold text-center leading-tight px-1">{label}</p>
+        <p className="member-ring-label progress-ring-sublabel text-foreground text-xs font-bold text-center leading-tight px-1">
+          {label}
+        </p>
       )}
       {sublabel && (
-        <p className="text-gray-500 text-[10px] text-center leading-snug px-1 max-w-[120px]">
+        <p className="progress-ring-sublabel text-muted-foreground text-[10px] text-center leading-snug px-1 max-w-[120px]">
           {sublabel}
         </p>
       )}
-    </div>
+    </motion.div>
   );
 }

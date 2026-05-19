@@ -58,20 +58,20 @@ export default function MemberAccountSettings() {
         <p className="text-muted-foreground text-sm mt-1">{t("dashboard.settings.subtitle")}</p>
       </div>
 
-      <div className="rounded-xl border border-gray-800/80 bg-black/20 p-4 space-y-3">
-        <p className="text-gray-300 text-sm font-bold flex items-center gap-2">
+      <div className="rounded-xl border border-border bg-muted/50 p-4 space-y-3">
+        <p className="text-foreground/85 text-sm font-bold flex items-center gap-2">
           <Mail className="w-4 h-4 text-primary" aria-hidden />
           {t("dashboard.settings.emailLabel")}
         </p>
-        <p className="text-white text-sm font-mono" dir="ltr">
+        <p className="text-foreground text-sm font-mono" dir="ltr">
           {user?.email}
         </p>
-        <p className="text-gray-500 text-xs">{t("dashboard.settings.emailHint")}</p>
+        <p className="text-muted-foreground text-xs">{t("dashboard.settings.emailHint")}</p>
       </div>
 
-      <div className="rounded-xl border border-gray-800/80 bg-black/20 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="rounded-xl border border-border bg-muted/50 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <p className="text-gray-300 text-sm font-bold flex items-center gap-2">
+          <p className="text-foreground/85 text-sm font-bold flex items-center gap-2">
             {isLight ? (
               <Sun className="w-4 h-4 text-primary" aria-hidden />
             ) : (
@@ -79,7 +79,7 @@ export default function MemberAccountSettings() {
             )}
             {t("dashboard.settings.appearance")}
           </p>
-          <p className="text-gray-500 text-xs mt-1">{t("dashboard.settings.appearanceHint")}</p>
+          <p className="text-muted-foreground text-xs mt-1">{t("dashboard.settings.appearanceHint")}</p>
         </div>
         <button
           type="button"
@@ -92,12 +92,12 @@ export default function MemberAccountSettings() {
       </div>
 
       <form onSubmit={handleChangePassword} className="space-y-4">
-        <p className="text-gray-300 text-sm font-bold flex items-center gap-2">
+        <p className="text-foreground/85 text-sm font-bold flex items-center gap-2">
           <KeyRound className="w-4 h-4 text-primary" aria-hidden />
           {t("dashboard.settings.changePassword")}
         </p>
         <label className="block">
-          <span className="text-gray-500 text-xs font-bold mb-1 block">
+          <span className="text-muted-foreground text-xs font-bold mb-1 block">
             {t("dashboard.settings.currentPassword")}
           </span>
           <input
@@ -105,11 +105,11 @@ export default function MemberAccountSettings() {
             autoComplete="current-password"
             value={form.current}
             onChange={(e) => setForm((f) => ({ ...f, current: e.target.value }))}
-            className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
+            className="w-full bg-muted border border-border focus:border-primary rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
           />
         </label>
         <label className="block">
-          <span className="text-gray-500 text-xs font-bold mb-1 block">
+          <span className="text-muted-foreground text-xs font-bold mb-1 block">
             {t("dashboard.settings.newPassword")}
           </span>
           <input
@@ -118,11 +118,11 @@ export default function MemberAccountSettings() {
             minLength={8}
             value={form.next}
             onChange={(e) => setForm((f) => ({ ...f, next: e.target.value }))}
-            className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
+            className="w-full bg-muted border border-border focus:border-primary rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
           />
         </label>
         <label className="block">
-          <span className="text-gray-500 text-xs font-bold mb-1 block">
+          <span className="text-muted-foreground text-xs font-bold mb-1 block">
             {t("auth.confirmPassword")}
           </span>
           <input
@@ -130,7 +130,7 @@ export default function MemberAccountSettings() {
             autoComplete="new-password"
             value={form.confirm}
             onChange={(e) => setForm((f) => ({ ...f, confirm: e.target.value }))}
-            className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
+            className="w-full bg-muted border border-border focus:border-primary rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
           />
         </label>
         {error && (
@@ -152,7 +152,7 @@ export default function MemberAccountSettings() {
         </button>
       </form>
 
-      <ul className="text-xs text-gray-500 space-y-1.5 list-disc ps-4">
+      <ul className="text-xs text-muted-foreground space-y-1.5 list-disc ps-4">
         <li>{t("dashboard.settings.securityTip1")}</li>
         <li>{t("dashboard.settings.securityTip2")}</li>
       </ul>

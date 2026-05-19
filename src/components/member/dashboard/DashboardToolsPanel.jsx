@@ -14,10 +14,10 @@ export default function DashboardToolsPanel({ userId }) {
           <Sparkles className="w-4 h-4" aria-hidden />
           {t("dashboard.nav.toolsKicker")}
         </div>
-        <h1 className="text-xl sm:text-2xl font-black text-white leading-tight">
+        <h1 className="text-xl sm:text-2xl font-black text-foreground leading-tight">
           {t("dashboard.nav.toolsTitle")}
         </h1>
-        <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-2xl">
+        <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-2xl">
           {t("dashboard.nav.toolsLead")}
         </p>
       </header>

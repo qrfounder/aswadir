@@ -63,14 +63,14 @@ export default function SubscriptionBanner({ subscription }) {
           <Sparkles className="w-5 h-5 text-primary" />
         </div>
         <div className="min-w-0">
-          <p className="text-white font-black text-sm">
+          <p className="text-foreground font-black text-sm">
             {t("member.subYourPlan", { name: subscription.productName })}
           </p>
-          <p className="text-gray-400 text-xs mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+          <p className="text-muted-foreground text-xs mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
             <span className="text-success/90 font-bold">{statusLabel}</span>
             {periodLabel && (
               <>
-                <span className="text-gray-600" aria-hidden>
+                <span className="text-muted-foreground" aria-hidden>
                   ·
                 </span>
                 <span className="inline-flex items-center gap-1">

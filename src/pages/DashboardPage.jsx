@@ -91,7 +91,7 @@ export default function DashboardPage() {
             <BrandLogo size="compact" className="flex-shrink-0" />
             <div className="min-w-0 hidden min-[400px]:block">
               <p className="text-primary font-black text-xs sm:text-sm tracking-wide">{t("dashboard.memberArea")}</p>
-              <p className="text-gray-500 text-[11px] sm:text-xs truncate max-w-[10rem] sm:max-w-none">
+              <p className="text-muted-foreground text-[11px] sm:text-xs truncate max-w-[10rem] sm:max-w-none">
                 {user?.name || user?.email}
               </p>
             </div>
@@ -104,7 +104,7 @@ export default function DashboardPage() {
             <button
               type="button"
               onClick={() => logout(true)}
-              className="flex items-center gap-1.5 text-gray-400 hover:text-red-300 text-sm font-bold px-2.5 py-2 rounded-lg hover:bg-red-900/20 min-h-[44px]"
+              className="flex items-center gap-1.5 text-muted-foreground hover:text-red-300 text-sm font-bold px-2.5 py-2 rounded-lg hover:bg-red-900/20 min-h-[44px]"
               aria-label={t("dashboard.logout")}
             >
               <LogOut className="w-4 h-4 shrink-0" aria-hidden />

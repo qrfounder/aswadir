@@ -16,7 +16,7 @@ export default function InsightFlash() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -6, scale: 0.99 }}
           transition={{ type: "spring", stiffness: 380, damping: 28 }}
-          className="relative overflow-hidden rounded-xl border border-brand/35 bg-gradient-to-e from-brand/15 via-[#0a0e14] to-black/95 p-3.5 sm:p-4 shadow-md shadow-primary/5"
+          className="relative overflow-hidden rounded-xl border border-brand/30 bg-gradient-to-e from-brand/12 via-card to-muted p-3.5 sm:p-4 shadow-md shadow-primary/5"
           role="status"
           aria-live="polite"
         >
@@ -30,14 +30,14 @@ export default function InsightFlash() {
             </span>
             <div className="flex-1 min-w-0 pe-1">
               <p className="text-brand font-black text-sm leading-snug">{insight.title}</p>
-              <p className="text-gray-300 text-xs sm:text-sm mt-1 leading-relaxed text-pretty">
+              <p className="text-foreground/85 text-xs sm:text-sm mt-1 leading-relaxed text-pretty">
                 {insight.body}
               </p>
             </div>
             <button
               type="button"
               onClick={dismissInsight}
-              className="text-gray-500 hover:text-white p-2 -m-1 flex-shrink-0 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-lg hover:bg-white/5"
+              className="text-muted-foreground hover:text-foreground p-2 -m-1 flex-shrink-0 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-lg hover:bg-muted"
               aria-label={t("member.insight.dismiss")}
             >
               <X className="w-4 h-4" />

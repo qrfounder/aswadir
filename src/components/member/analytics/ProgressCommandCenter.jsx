@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@/lib/ThemeContext";
 import {
   Area,
   AreaChart,
@@ -21,8 +22,8 @@ import ProgressRing from "./ProgressRing";
 
 function MetricTile({ label, value, suffix = "%", accent = "text-brand", empty = false }) {
   return (
-    <div className="rounded-xl border border-gray-800/90 bg-black/50 px-2.5 sm:px-3 py-2.5 text-center min-h-[64px] flex flex-col justify-center">
-      <p className="text-gray-500 text-[10px] sm:text-[11px] font-bold mb-1 leading-tight">{label}</p>
+    <div className="rounded-xl border border-border/90 bg-muted px-2.5 sm:px-3 py-2.5 text-center min-h-[64px] flex flex-col justify-center">
+      <p className="text-muted-foreground text-[10px] sm:text-[11px] font-bold mb-1 leading-tight">{label}</p>
       {empty ? (
         <span className={`font-black text-lg ${accent} opacity-60`}>—</span>
       ) : (
@@ -34,7 +35,7 @@ function MetricTile({ label, value, suffix = "%", accent = "text-brand", empty =
 
 function ChartLegend({ t }) {
   return (
-    <div className="flex flex-wrap justify-center gap-4 text-[10px] sm:text-xs text-gray-400 mb-2">
+    <div className="flex flex-wrap justify-center gap-4 text-[10px] sm:text-xs text-muted-foreground mb-2">
       <span className="inline-flex items-center gap-1.5">
         <span className="w-2.5 h-2.5 rounded-full bg-primary" aria-hidden />
         {t("member.analytics.legendHabits")}
@@ -49,6 +50,10 @@ function ChartLegend({ t }) {
 
 export default function ProgressCommandCenter({ hasHabit, hasTask }) {
   const { t } = useTranslation();
+  const { isLight } = useTheme();
+  const chartTick = isLight ? "hsl(215 14% 38%)" : "#9ca3af";
+  const chartTickDim = isLight ? "hsl(215 14% 55%)" : "#6b7280";
+  const gridStroke = isLight ? "hsl(222 38% 14% / 0.08)" : "rgba(255,255,255,0.06)";
   const { weekDays, weekDaysList: weekDaysFromCatalog } = useTrackerCatalog();
   const weekDaysList = weekDaysFromCatalog ?? weekDays ?? [];
   const { analytics } = useTracker();
@@ -95,7 +100,7 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-4 sm:space-y-5"
     >
-      <section className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-bl from-brand/10 via-[#0d1117] to-black p-4 sm:p-5 md:p-6">
+      <section className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-bl from-brand/10 via-card to-background p-4 sm:p-5 md:p-6">
         <motion.div
           className="absolute -top-16 -start-16 w-48 h-48 rounded-full bg-brand/10 blur-3xl pointer-events-none"
           animate={{ scale: [1, 1.08, 1], opacity: [0.35, 0.55, 0.35] }}
@@ -115,10 +120,10 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
             />
             <div className="flex-1 w-full text-center lg:text-start space-y-2">
               <p className="text-primary/90 text-xs font-bold">{t("member.analytics.progressBoard")}</p>
-              <h3 className="text-white font-black text-lg sm:text-xl md:text-2xl leading-snug">
+              <h3 className="text-foreground font-black text-lg sm:text-xl md:text-2xl leading-snug">
                 {t("member.analytics.progressHeadline")}
               </h3>
-              <p className="text-gray-400 text-xs sm:text-sm leading-relaxed max-w-xl mx-auto lg:mx-0">
+              <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed max-w-xl mx-auto lg:mx-0">
                 {habit && (
                   <>
                     {t("member.analytics.progressToday", {
@@ -146,7 +151,7 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
                   label={t("member.analytics.metricMental")}
                   value={habit.mentalToday ?? 0}
                   empty={habit.mentalToday == null}
-                  accent="text-sky-300"
+                  accent="text-info"
                 />
                 <MetricTile
                   label={t("member.analytics.metricStreak")}
@@ -161,7 +166,7 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
             )}
           </div>
 
-          <div className="hidden md:flex flex-wrap justify-center gap-6 pt-2 border-t border-gray-800/80">
+          <div className="hidden md:flex flex-wrap justify-center gap-6 pt-2 border-t border-border">
             {hasHabit && habit && (
               <>
                 <ProgressRing
@@ -194,8 +199,8 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
       </section>
 
       {hasHabit && habit && trendData.length > 0 && (
-        <section className="rounded-2xl border border-gray-800 bg-[#0d1117]/90 p-3 sm:p-4 member-chart-wrap">
-          <h4 className="text-white font-black text-sm mb-1">
+        <section className="rounded-2xl border border-border bg-card/90 p-3 sm:p-4 member-chart-wrap">
+          <h4 className="text-foreground font-black text-sm mb-1">
             {t("member.analytics.trendTitle", { count: trendData.length })}
           </h4>
           <ChartLegend t={t} />
@@ -211,17 +216,17 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
                   <stop offset="100%" stopColor="hsl(var(--chart-3))" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} vertical={false} />
               <XAxis
                 dataKey="label"
-                tick={{ fill: "#9ca3af", fontSize: 10 }}
+                tick={{ fill: chartTick, fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
                 interval="preserveStartEnd"
               />
               <YAxis
                 domain={[0, 100]}
-                tick={{ fill: "#6b7280", fontSize: 10 }}
+                tick={{ fill: chartTickDim, fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
                 width={32}
@@ -251,16 +256,16 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {hasHabit && habit && (
-          <section className="rounded-2xl border border-brand/15 bg-black/30 p-3 sm:p-4 min-w-0">
-            <h4 className="text-white font-black text-sm mb-1">{t("member.analytics.habitMonthTitle")}</h4>
-            <p className="text-gray-500 text-[11px] mb-4">{t("member.analytics.habitMonthSub")}</p>
+          <section className="rounded-2xl border border-brand/15 bg-muted/60 p-3 sm:p-4 min-w-0">
+            <h4 className="text-foreground font-black text-sm mb-1">{t("member.analytics.habitMonthTitle")}</h4>
+            <p className="text-muted-foreground text-[11px] mb-4">{t("member.analytics.habitMonthSub")}</p>
             <HabitProgressBars habits={habit.perHabit} />
           </section>
         )}
 
         {hasTask && task && (
-          <section className="rounded-2xl border border-success/15 bg-black/30 p-3 sm:p-4 member-chart-wrap min-w-0">
-            <h4 className="text-white font-black text-sm mb-3">{t("member.analytics.taskDayTitle")}</h4>
+          <section className="rounded-2xl border border-success/15 bg-muted/60 p-3 sm:p-4 member-chart-wrap min-w-0">
+            <h4 className="text-foreground font-black text-sm mb-3">{t("member.analytics.taskDayTitle")}</h4>
             <ChartContainer config={taskDayConfig} className="h-[200px] sm:h-[220px] w-full aspect-auto">
               <BarChart data={taskByDay} margin={{ top: 8, right: 4, left: 0, bottom: 4 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
@@ -272,7 +277,7 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
                 />
                 <YAxis
                   domain={[0, 100]}
-                  tick={{ fill: "#6b7280", fontSize: 10 }}
+                  tick={{ fill: chartTickDim, fontSize: 10 }}
                   axisLine={false}
                   tickLine={false}
                   width={32}
@@ -280,9 +285,9 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
                 <ChartTooltip
                   content={({ active, payload }) =>
                     active && payload?.[0] ? (
-                      <div className="rounded-lg border border-gray-700 bg-black/95 px-3 py-2 text-xs">
+                      <div className="rounded-lg border border-border bg-card px-3 py-2 text-xs">
                         <p className="text-success font-bold">{payload[0].payload.fullName}</p>
-                        <p className="text-gray-300 mt-0.5">
+                        <p className="text-foreground/85 mt-0.5">
                           {payload[0].payload.done}/{payload[0].payload.total} · {payload[0].value}%
                         </p>
                       </div>
@@ -296,7 +301,7 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
                 </Bar>
               </BarChart>
             </ChartContainer>
-            <p className="text-gray-500 text-[11px] mt-2 text-center leading-relaxed">
+            <p className="text-muted-foreground text-[11px] mt-2 text-center leading-relaxed">
               {t("member.analytics.taskRemaining", { count: task.remaining })}
             </p>
           </section>

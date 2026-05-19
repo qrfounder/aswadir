@@ -87,40 +87,40 @@ export default function DailyHabitsPanel({ userId }) {
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
         <div>
           <p className="text-primary/90 text-xs font-bold">{t("member.habitTracker")}</p>
-          <h3 className="text-white font-black text-lg sm:text-xl">{monthLabel(today)}</h3>
+          <h3 className="text-foreground font-black text-lg sm:text-xl">{monthLabel(today)}</h3>
         </div>
         <div className="flex gap-2 self-start sm:self-auto">
-          <div className="rounded-xl bg-black/50 border border-brand/20 px-3 py-2 text-center min-w-[76px]">
-            <p className="text-gray-500 text-[10px] font-bold mb-0.5">{t("member.today")}</p>
+          <div className="rounded-xl bg-muted border border-brand/20 px-3 py-2 text-center min-w-[76px]">
+            <p className="text-muted-foreground text-[10px] font-bold mb-0.5">{t("member.today")}</p>
             <AnimatedValue value={todayRate} suffix="%" className="font-black text-lg text-brand" />
           </div>
-          <div className="rounded-xl bg-black/50 border border-success/20 px-3 py-2 text-center min-w-[76px]">
-            <p className="text-gray-500 text-[10px] font-bold mb-0.5">{t("member.monthCol")}</p>
+          <div className="rounded-xl bg-muted border border-success/20 px-3 py-2 text-center min-w-[76px]">
+            <p className="text-muted-foreground text-[10px] font-bold mb-0.5">{t("member.monthCol")}</p>
             <AnimatedValue value={monthRate} suffix="%" className="font-black text-lg text-success" />
           </div>
         </div>
       </div>
 
       <div>
-        <p className="text-gray-500 text-[11px] mb-2 flex items-center gap-1 md:hidden">
+        <p className="text-muted-foreground text-[11px] mb-2 flex items-center gap-1 md:hidden">
           <ChevronLeft className="w-3.5 h-3.5 text-primary/70" aria-hidden />
           {t("member.scrollHint")}
         </p>
-        <div className="member-table-scroll overflow-x-auto rounded-xl border border-brand/20 bg-[#0d1117]/90 -mx-0.5 px-0.5">
+        <div className="member-table-scroll overflow-x-auto rounded-xl border border-brand/20 bg-card/90 -mx-0.5 px-0.5">
           <table className="w-full min-w-[min(100%,520px)] sm:min-w-[640px] border-collapse text-xs">
             <thead>
-              <tr className="bg-[#1a2744] text-white">
+              <tr className="bg-[#1a2744] text-foreground">
                 <th className="sticky start-0 z-20 bg-[#1a2744] px-2 sm:px-3 py-2.5 text-start font-black min-w-[120px] sm:min-w-[140px] member-sticky-col">
                   {t("member.habitColumn")}
                 </th>
-                <th className="w-9 sm:w-10 text-center text-[10px] text-gray-400 py-2">{t("member.monthCol")}</th>
+                <th className="w-9 sm:w-10 text-center text-[10px] text-muted-foreground py-2">{t("member.monthCol")}</th>
                 {days.map((d) => (
                   <th
                     key={d}
                     className={`w-8 sm:w-9 py-2 text-center font-bold ${
                       d === todayNum
                         ? "bg-brand/30 text-brand ring-1 ring-primary/50"
-                        : "text-gray-400"
+                        : "text-muted-foreground"
                     }`}
                   >
                     {d}
@@ -134,16 +134,16 @@ export default function DailyHabitsPanel({ userId }) {
                 const bar = Math.round((doneCount / dayCount) * 10);
                 return (
                   <tr key={habit.id} className={rowIdx % 2 === 0 ? "bg-[#12181f]" : "bg-[#0f1419]"}>
-                    <td className="sticky start-0 z-10 px-2 py-2 border-s border-gray-800/80 bg-inherit member-sticky-col">
+                    <td className="sticky start-0 z-10 px-2 py-2 border-s border-border bg-inherit member-sticky-col">
                       <div className="flex items-center gap-1.5 min-w-0">
                         <span className="flex-shrink-0 text-sm">{habit.icon}</span>
-                        <span className="text-gray-200 text-xs leading-snug line-clamp-2 min-w-0 flex-1">
+                        <span className="text-foreground/90 text-xs leading-snug line-clamp-2 min-w-0 flex-1">
                           {habit.name}
                         </span>
                         <button
                           type="button"
                           onClick={() => removeHabit(habit.id)}
-                          className="flex-shrink-0 text-gray-600 hover:text-red-400 p-1 min-w-[28px] min-h-[28px] flex items-center justify-center"
+                          className="flex-shrink-0 text-muted-foreground hover:text-red-400 p-1 min-w-[28px] min-h-[28px] flex items-center justify-center"
                           aria-label={t("member.deleteHabitAria", { name: habit.name })}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -193,7 +193,7 @@ export default function DailyHabitsPanel({ userId }) {
           onChange={(e) => setNewHabit(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addHabit())}
           placeholder={t("member.newHabitPlaceholder")}
-          className="flex-1 bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm min-h-[44px] outline-none focus:border-primary/50"
+          className="flex-1 bg-muted border border-border rounded-xl px-3 py-3 text-foreground text-sm min-h-[44px] outline-none focus:border-primary/50"
         />
         <button
           type="button"
@@ -208,16 +208,16 @@ export default function DailyHabitsPanel({ userId }) {
       <MentalMoodLive variant="habits" />
 
       <section className="rounded-xl border border-blue-400/20 bg-blue-950/25 p-4 sm:p-5">
-        <h4 className="text-white font-black text-sm mb-1">{t("member.mentalTitle")}</h4>
-        <p className="text-gray-500 text-xs mb-4 leading-relaxed">
+        <h4 className="text-foreground font-black text-sm mb-1">{t("member.mentalTitle")}</h4>
+        <p className="text-muted-foreground text-xs mb-4 leading-relaxed">
           {t("member.mentalHint", { day: todayNum })}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {mentalMetrics.map((m) => {
             const val = mental[`${todayNum}:${m.id}`] ?? 5;
             return (
-              <div key={m.id} className="bg-black/40 rounded-xl p-4 border border-gray-800/90">
-                <p className="text-gray-200 text-xs font-bold mb-3">
+              <div key={m.id} className="bg-muted rounded-xl p-4 border border-border/90">
+                <p className="text-foreground/90 text-xs font-bold mb-3">
                   {m.icon} {m.label}
                 </p>
                 <input

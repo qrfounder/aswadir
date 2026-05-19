@@ -46,32 +46,32 @@
   }
 
   html.light {
-    --background: 40 33% 98%;
-    --foreground: 222 35% 14%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 35% 14%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 35% 14%;
-    --primary: 168 55% 38%;
+    --background: 40 22% 93%;
+    --foreground: 222 38% 14%;
+    --card: 40 28% 98%;
+    --card-foreground: 222 38% 14%;
+    --popover: 40 28% 98%;
+    --popover-foreground: 222 38% 14%;
+    --primary: 168 48% 34%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 40 25% 92%;
-    --secondary-foreground: 222 35% 22%;
-    --muted: 40 20% 92%;
-    --muted-foreground: 215 16% 40%;
-    --accent: 168 55% 38%;
+    --secondary: 40 18% 90%;
+    --secondary-foreground: 222 32% 20%;
+    --muted: 40 16% 88%;
+    --muted-foreground: 215 14% 38%;
+    --accent: 168 48% 34%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 50%;
+    --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
-    --border: 40 18% 88%;
-    --input: 40 20% 90%;
-    --ring: 168 55% 38%;
-    --brand: 43 74% 42%;
+    --border: 40 14% 80%;
+    --input: 40 18% 92%;
+    --ring: 168 48% 34%;
+    --brand: 43 68% 36%;
     --brand-foreground: 0 0% 100%;
-    --success: 152 50% 36%;
+    --success: 152 45% 32%;
     --success-foreground: 0 0% 100%;
-    --warning: 38 92% 45%;
-    --warning-foreground: 0 0% 100%;
-    --info: 199 65% 42%;
+    --warning: 32 85% 42%;
+    --warning-foreground: 222 38% 10%;
+    --info: 199 58% 38%;
     --info-foreground: 0 0% 100%;
     --chart-1: 43 74% 42%;
     --chart-2: 168 55% 38%;
@@ -83,15 +83,102 @@
 
 html.light .dark-card {
   background: hsl(var(--card));
-  border-color: hsl(var(--border));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 2px hsl(222 38% 14% / 0.04);
 }
 
 html.light .hero-gradient {
-  background: linear-gradient(180deg, hsl(40 33% 98%) 0%, hsl(40 25% 94%) 100%);
+  background: linear-gradient(180deg, hsl(40 22% 94%) 0%, hsl(40 18% 90%) 100%);
 }
 
 html.light .checkout-stripe-frame {
   background: hsl(var(--card)) !important;
+}
+
+html.light .gold-gradient {
+  background: linear-gradient(135deg, #8B6914 0%, #B8941F 45%, #6B5410 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+}
+
+/* Light mode — member dashboard coherence */
+html.light .dashboard-shell {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, hsl(168 48% 34% / 0.06), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 0%, hsl(43 68% 36% / 0.05), transparent 45%),
+    hsl(var(--background));
+}
+
+html.light .dashboard-topbar {
+  background: hsl(var(--card) / 0.92);
+  border-bottom-color: hsl(var(--border));
+}
+
+html.light .dashboard-sidebar {
+  background: hsl(var(--muted) / 0.5);
+  border-color: hsl(var(--border)) !important;
+}
+
+html.light .dashboard-bottom-nav {
+  background: hsl(var(--card) / 0.96);
+  border-top-color: hsl(var(--border));
+}
+
+html.light .dashboard-hero {
+  background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted) / 0.6) 100%);
+  box-shadow:
+    0 0 0 1px hsl(var(--border)),
+    0 12px 32px -16px hsl(222 38% 14% / 0.08);
+}
+
+html.light .dashboard-tracker-hub {
+  box-shadow: 0 8px 24px -12px hsl(222 38% 14% / 0.1);
+}
+
+html.light .dashboard-daily-note {
+  box-shadow: 0 8px 20px -12px hsl(var(--info) / 0.15);
+}
+
+html.light .member-summary-tile {
+  background: hsl(var(--card)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+html.light .member-summary-tile .member-summary-value {
+  color: hsl(var(--foreground));
+}
+
+html.light .dashboard-hero .member-ring-label,
+html.light .progress-ring-value {
+  color: hsl(var(--foreground));
+}
+
+html.light .progress-ring-sublabel {
+  color: hsl(var(--muted-foreground));
+}
+
+html.light .checkout-card {
+  background: hsl(var(--card));
+  border-color: hsl(var(--border));
+  box-shadow: 0 1px 3px hsl(222 38% 14% / 0.06);
+}
+
+html.light .checkout-page .checkout-field {
+  background: hsl(var(--input));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+html.light .checkout-page .checkout-field::placeholder {
+  color: hsl(var(--muted-foreground));
 }
 
 @layer base {

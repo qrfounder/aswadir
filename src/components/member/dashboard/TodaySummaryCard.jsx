@@ -20,10 +20,10 @@ function SummaryTile({
   className = "",
 }) {
   const variants = {
-    brand: "border-brand/30 bg-gradient-to-br from-brand/15 to-black/40",
-    success: "border-success/30 bg-gradient-to-br from-success/15 to-black/40",
-    info: "border-info/30 bg-gradient-to-br from-info/15 to-black/40",
-    momentum: "border-primary/35 bg-gradient-to-br from-primary/15 to-black/40",
+    brand: "member-summary-tile border-brand/30 bg-gradient-to-br from-brand/12 to-card",
+    success: "member-summary-tile border-success/30 bg-gradient-to-br from-success/12 to-card",
+    info: "member-summary-tile border-info/30 bg-gradient-to-br from-info/12 to-card",
+    momentum: "member-summary-tile border-primary/30 bg-gradient-to-br from-primary/12 to-card",
   };
   const labelColors = {
     brand: "text-brand",
@@ -44,10 +44,10 @@ function SummaryTile({
         <Icon className="w-3.5 h-3.5 shrink-0" aria-hidden />
         {label}
       </p>
-      <p className="text-white font-black text-2xl sm:text-3xl mt-1.5 tabular-nums">
+      <p className="member-summary-value text-foreground font-black text-2xl sm:text-3xl mt-1.5 tabular-nums">
         <AnimatedValue value={value} suffix={suffix} />
       </p>
-      {detail && <p className="text-gray-500 text-[11px] sm:text-xs mt-1 leading-snug">{detail}</p>}
+      {detail && <p className="text-muted-foreground text-[11px] sm:text-xs mt-1 leading-snug">{detail}</p>}
     </motion.div>
   );
 }
@@ -65,10 +65,10 @@ export default function TodaySummaryCard() {
     <section aria-labelledby="today-summary-heading" className="space-y-3">
       <div className="flex items-end justify-between gap-3">
         <div>
-          <h2 id="today-summary-heading" className="text-white font-black text-base sm:text-lg">
+          <h2 id="today-summary-heading" className="text-foreground font-black text-base sm:text-lg">
             {t("dashboard.todaySummary.title")}
           </h2>
-          <p className="text-gray-500 text-xs sm:text-sm mt-0.5">{t("dashboard.todaySummary.subtitle")}</p>
+          <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">{t("dashboard.todaySummary.subtitle")}</p>
         </div>
       </div>
 

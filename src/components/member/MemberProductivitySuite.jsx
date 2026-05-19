@@ -30,7 +30,7 @@ function TabBtn({ active, onClick, icon: Icon, label }) {
       className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-black transition-all min-h-[44px] snap-start ${
         active
           ? "bg-brand/15 text-brand border border-brand/40"
-          : "text-gray-400 border border-gray-800 bg-black/30 hover:border-gray-600"
+          : "text-muted-foreground border border-border bg-muted/60 hover:border-gray-600"
       }`}
     >
       <Icon className="w-4 h-4 flex-shrink-0" aria-hidden />
@@ -160,12 +160,12 @@ export default function MemberProductivitySuite({ userId }) {
       className="dark-card rounded-2xl border border-success/15 overflow-hidden"
       aria-label={t("member.productivity.aria")}
     >
-      <div className="px-4 sm:px-5 pt-4 pb-3 border-b border-gray-800/80 bg-black/40 space-y-3">
+      <div className="px-4 sm:px-5 pt-4 pb-3 border-b border-border bg-muted space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <Sparkles className="w-5 h-5 text-success flex-shrink-0" aria-hidden />
           <div>
             <p className="text-success/90 text-xs font-black">{t("member.productivity.kicker")}</p>
-            <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{t("member.productivity.lead")}</p>
+            <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{t("member.productivity.lead")}</p>
           </div>
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -195,7 +195,7 @@ export default function MemberProductivitySuite({ userId }) {
                 onChange={(e) => setTodoDraft(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTodo())}
                 placeholder={t("member.productivity.todoPlaceholder")}
-                className="flex-1 bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm min-h-[44px] outline-none focus:border-success/50"
+                className="flex-1 bg-muted border border-border rounded-xl px-3 py-3 text-foreground text-sm min-h-[44px] outline-none focus:border-success/50"
               />
               <button
                 type="button"
@@ -207,12 +207,12 @@ export default function MemberProductivitySuite({ userId }) {
             </div>
             <ul className="space-y-2">
               {data.todos.length === 0 ? (
-                <li className="text-gray-500 text-sm">{t("member.productivity.todoEmpty")}</li>
+                <li className="text-muted-foreground text-sm">{t("member.productivity.todoEmpty")}</li>
               ) : (
                 data.todos.map((item) => (
                   <li
                     key={item.id}
-                    className="flex items-start gap-3 bg-black/35 border border-gray-800/80 rounded-xl px-3 py-2.5"
+                    className="flex items-start gap-3 bg-muted border border-border rounded-xl px-3 py-2.5"
                   >
                     <button
                       type="button"
@@ -220,22 +220,22 @@ export default function MemberProductivitySuite({ userId }) {
                       className="mt-0.5 text-success"
                       aria-label={item.done ? t("member.productivity.markOpen") : t("member.productivity.markDone")}
                     >
-                      {item.done ? <CheckCircle2 className="w-5 h-5" /> : <Circle className="w-5 h-5 text-gray-500" />}
+                      {item.done ? <CheckCircle2 className="w-5 h-5" /> : <Circle className="w-5 h-5 text-muted-foreground" />}
                     </button>
-                    <span className={`flex-1 text-sm leading-relaxed ${item.done ? "line-through text-gray-500" : "text-gray-100"}`}>
+                    <span className={`flex-1 text-sm leading-relaxed ${item.done ? "line-through text-muted-foreground" : "text-foreground"}`}>
                       {item.text}
                     </span>
-                    <button type="button" onClick={() => removeTodo(item.id)} className="text-xs text-gray-600 hover:text-red-400 font-bold">
+                    <button type="button" onClick={() => removeTodo(item.id)} className="text-xs text-muted-foreground hover:text-red-400 font-bold">
                       {t("member.productivity.remove")}
                     </button>
                   </li>
                 ))
               )}
             </ul>
-            <div className="rounded-xl border border-gray-800/80 bg-black/25 p-4">
+            <div className="rounded-xl border border-border bg-muted/55 p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Target className="w-4 h-4 text-primary" aria-hidden />
-                <p className="text-white font-black text-sm">{t("member.productivity.okrTitle")}</p>
+                <p className="text-foreground font-black text-sm">{t("member.productivity.okrTitle")}</p>
               </div>
               <div className="space-y-3">
                 {data.goals.map((g, idx) => (
@@ -247,7 +247,7 @@ export default function MemberProductivitySuite({ userId }) {
                         persist({ ...data, goals });
                       }}
                       placeholder={t("member.productivity.okrPlaceholder", { n: idx + 1 })}
-                      className="w-full bg-black/40 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs mb-1.5 outline-none focus:border-primary/40"
+                      className="w-full bg-muted border border-border rounded-lg px-3 py-2 text-foreground text-xs mb-1.5 outline-none focus:border-primary/40"
                     />
                     <input
                       type="range"
@@ -272,10 +272,10 @@ export default function MemberProductivitySuite({ userId }) {
 
         {tab === "wealth" && (
           <div className="space-y-4">
-            <p className="text-gray-400 text-xs leading-relaxed">{t("member.productivity.wealthHint")}</p>
+            <p className="text-muted-foreground text-xs leading-relaxed">{t("member.productivity.wealthHint")}</p>
             <div className="grid sm:grid-cols-2 gap-3">
               <label className="block space-y-1">
-                <span className="text-gray-500 text-[11px] font-bold">{t("member.productivity.goalLabel")}</span>
+                <span className="text-muted-foreground text-[11px] font-bold">{t("member.productivity.goalLabel")}</span>
                 <input
                   type="number"
                   min={0}
@@ -284,11 +284,11 @@ export default function MemberProductivitySuite({ userId }) {
                   onChange={(e) =>
                     persist({ ...data, money: { ...data.money, goal: Number(e.target.value) || 0 } })
                   }
-                  className="w-full bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm outline-none"
+                  className="w-full bg-muted border border-border rounded-xl px-3 py-3 text-foreground text-sm outline-none"
                 />
               </label>
               <label className="block space-y-1">
-                <span className="text-gray-500 text-[11px] font-bold">{t("member.productivity.savedLabel")}</span>
+                <span className="text-muted-foreground text-[11px] font-bold">{t("member.productivity.savedLabel")}</span>
                 <input
                   type="number"
                   min={0}
@@ -297,7 +297,7 @@ export default function MemberProductivitySuite({ userId }) {
                   onChange={(e) =>
                     persist({ ...data, money: { ...data.money, saved: Number(e.target.value) || 0 } })
                   }
-                  className="w-full bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm outline-none"
+                  className="w-full bg-muted border border-border rounded-xl px-3 py-3 text-foreground text-sm outline-none"
                 />
               </label>
             </div>
@@ -309,7 +309,7 @@ export default function MemberProductivitySuite({ userId }) {
               <div className="h-2 rounded-full bg-gray-800 overflow-hidden">
                 <div className="h-full bg-gradient-to-r from-success to-info transition-all" style={{ width: `${pctMoney}%` }} />
               </div>
-              <p className="text-gray-500 text-[11px] mt-2">{t("member.productivity.wealthFoot", { saved: format(data.money.saved || 0) })}</p>
+              <p className="text-muted-foreground text-[11px] mt-2">{t("member.productivity.wealthFoot", { saved: format(data.money.saved || 0) })}</p>
             </div>
             <div className="flex flex-wrap gap-2">
               {[10, 25, 50, 100].map((n) => (
@@ -322,7 +322,7 @@ export default function MemberProductivitySuite({ userId }) {
                       money: { ...data.money, saved: (Number(data.money.saved) || 0) + n },
                     })
                   }
-                  className="px-3 py-2 rounded-lg bg-black/40 border border-gray-700 text-success/90 text-xs font-black hover:border-success/40"
+                  className="px-3 py-2 rounded-lg bg-muted border border-border text-success/90 text-xs font-black hover:border-success/40"
                 >
                   +{format(n)}
                 </button>
@@ -337,8 +337,8 @@ export default function MemberProductivitySuite({ userId }) {
               <Flame className="w-4 h-4" aria-hidden />
               {t("member.productivity.pomSessions", { count: sessionsToday })}
             </div>
-            <p className="text-4xl sm:text-5xl font-black text-white tabular-nums tracking-tight">{fmtClock(pomLeft)}</p>
-            <p className="text-gray-500 text-xs">
+            <p className="text-4xl sm:text-5xl font-black text-foreground tabular-nums tracking-tight">{fmtClock(pomLeft)}</p>
+            <p className="text-muted-foreground text-xs">
               {pomMode === "work" ? t("member.productivity.pomWork") : t("member.productivity.pomBreak")}
             </p>
             <div className="flex flex-wrap justify-center gap-2">
@@ -356,19 +356,19 @@ export default function MemberProductivitySuite({ userId }) {
                   setPomMode("work");
                   setPomLeft(WORK_SEC);
                 }}
-                className="px-6 py-3 rounded-xl border border-gray-600 text-gray-300 text-sm font-bold hover:bg-gray-800/80"
+                className="px-6 py-3 rounded-xl border border-gray-600 text-foreground/85 text-sm font-bold hover:bg-gray-800/80"
               >
                 {t("member.productivity.pomReset")}
               </button>
             </div>
-            <p className="text-gray-600 text-[11px] max-w-md mx-auto leading-relaxed">{t("member.productivity.pomHint")}</p>
+            <p className="text-muted-foreground text-[11px] max-w-md mx-auto leading-relaxed">{t("member.productivity.pomHint")}</p>
           </div>
         )}
 
         {tab === "reflect" && (
           <div className="space-y-5">
             <div>
-              <p className="text-white font-black text-sm mb-2">{t("member.productivity.gratitudeTitle")}</p>
+              <p className="text-foreground font-black text-sm mb-2">{t("member.productivity.gratitudeTitle")}</p>
               <div className="space-y-2">
                 {data.gratitude.map((line, i) => (
                   <input
@@ -380,19 +380,19 @@ export default function MemberProductivitySuite({ userId }) {
                       persist({ ...data, gratitude });
                     }}
                     placeholder={t("member.productivity.gratitudeLine", { n: i + 1 })}
-                    className="w-full bg-black/40 border border-gray-700 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-primary/40"
+                    className="w-full bg-muted border border-border rounded-xl px-3 py-2.5 text-foreground text-sm outline-none focus:border-primary/40"
                   />
                 ))}
               </div>
             </div>
             <div>
-              <p className="text-white font-black text-sm mb-2">{t("member.productivity.reviewTitle")}</p>
+              <p className="text-foreground font-black text-sm mb-2">{t("member.productivity.reviewTitle")}</p>
               <textarea
                 value={data.weeklyReview}
                 onChange={(e) => persist({ ...data, weeklyReview: e.target.value })}
                 rows={5}
                 placeholder={t("member.productivity.reviewPlaceholder")}
-                className="w-full bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm outline-none focus:border-primary/40 resize-y min-h-[120px]"
+                className="w-full bg-muted border border-border rounded-xl px-3 py-3 text-foreground text-sm outline-none focus:border-primary/40 resize-y min-h-[120px]"
               />
             </div>
           </div>
