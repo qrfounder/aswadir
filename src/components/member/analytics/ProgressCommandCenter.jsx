@@ -19,7 +19,7 @@ import HabitProgressBars from "./HabitProgressBars";
 import MentalMoodLive from "./MentalMoodLive";
 import ProgressRing from "./ProgressRing";
 
-function MetricTile({ label, value, suffix = "%", accent = "text-yellow-300", empty = false }) {
+function MetricTile({ label, value, suffix = "%", accent = "text-brand", empty = false }) {
   return (
     <div className="rounded-xl border border-gray-800/90 bg-black/50 px-2.5 sm:px-3 py-2.5 text-center min-h-[64px] flex flex-col justify-center">
       <p className="text-gray-500 text-[10px] sm:text-[11px] font-bold mb-1 leading-tight">{label}</p>
@@ -36,11 +36,11 @@ function ChartLegend({ t }) {
   return (
     <div className="flex flex-wrap justify-center gap-4 text-[10px] sm:text-xs text-gray-400 mb-2">
       <span className="inline-flex items-center gap-1.5">
-        <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" aria-hidden />
+        <span className="w-2.5 h-2.5 rounded-full bg-primary" aria-hidden />
         {t("member.analytics.legendHabits")}
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="w-2.5 h-2.5 rounded-full bg-sky-400" aria-hidden />
+        <span className="w-2.5 h-2.5 rounded-full bg-info" aria-hidden />
         {t("member.analytics.legendMental")}
       </span>
     </div>
@@ -58,15 +58,15 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
 
   const trendConfig = useMemo(
     () => ({
-      habits: { label: t("member.analytics.chartHabits"), color: "hsl(48 96% 53%)" },
-      mental: { label: t("member.analytics.chartMental"), color: "hsl(199 89% 48%)" },
+      habits: { label: t("member.analytics.chartHabits"), color: "hsl(var(--chart-1))" },
+      mental: { label: t("member.analytics.chartMental"), color: "hsl(var(--chart-3))" },
     }),
     [t],
   );
 
   const taskDayConfig = useMemo(
     () => ({
-      pct: { label: t("member.analytics.chartTaskDay"), color: "hsl(152 76% 45%)" },
+      pct: { label: t("member.analytics.chartTaskDay"), color: "hsl(var(--chart-5))" },
     }),
     [t],
   );
@@ -95,9 +95,9 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-4 sm:space-y-5"
     >
-      <section className="relative overflow-hidden rounded-2xl border border-yellow-400/25 bg-gradient-to-bl from-yellow-400/10 via-[#0d1117] to-black p-4 sm:p-5 md:p-6">
+      <section className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-bl from-brand/10 via-[#0d1117] to-black p-4 sm:p-5 md:p-6">
         <motion.div
-          className="absolute -top-16 -start-16 w-48 h-48 rounded-full bg-yellow-400/10 blur-3xl pointer-events-none"
+          className="absolute -top-16 -start-16 w-48 h-48 rounded-full bg-brand/10 blur-3xl pointer-events-none"
           animate={{ scale: [1, 1.08, 1], opacity: [0.35, 0.55, 0.35] }}
           transition={{ duration: 5, repeat: Infinity }}
           aria-hidden
@@ -109,12 +109,12 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
               value={lifeScore}
               size={112}
               stroke={8}
-              accent="#facc15"
+              accent="hsl(43 74% 52%)"
               label={t("member.analytics.lifeScore")}
               sublabel={t("member.analytics.lifeSublabel")}
             />
             <div className="flex-1 w-full text-center lg:text-start space-y-2">
-              <p className="text-yellow-400/90 text-xs font-bold">{t("member.analytics.progressBoard")}</p>
+              <p className="text-primary/90 text-xs font-bold">{t("member.analytics.progressBoard")}</p>
               <h3 className="text-white font-black text-lg sm:text-xl md:text-2xl leading-snug">
                 {t("member.analytics.progressHeadline")}
               </h3>
@@ -140,8 +140,8 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
             {hasHabit && habit && (
               <>
-                <MetricTile label={t("member.analytics.metricToday")} value={habit.todayRate} accent="text-yellow-300" />
-                <MetricTile label={t("member.analytics.metricMonth")} value={habit.monthRate} accent="text-emerald-300" />
+                <MetricTile label={t("member.analytics.metricToday")} value={habit.todayRate} accent="text-brand" />
+                <MetricTile label={t("member.analytics.metricMonth")} value={habit.monthRate} accent="text-success" />
                 <MetricTile
                   label={t("member.analytics.metricMental")}
                   value={habit.mentalToday ?? 0}
@@ -157,7 +157,7 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
               </>
             )}
             {hasTask && task && (
-              <MetricTile label={t("member.analytics.metricWeekTasks")} value={task.pct} accent="text-emerald-300" />
+              <MetricTile label={t("member.analytics.metricWeekTasks")} value={task.pct} accent="text-success" />
             )}
           </div>
 
@@ -169,14 +169,14 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
                   size={80}
                   stroke={6}
                   label={t("member.analytics.ringToday")}
-                  accent="#facc15"
+                  accent="hsl(43 74% 52%)"
                 />
                 <ProgressRing
                   value={habit.monthRate}
                   size={80}
                   stroke={6}
                   label={t("member.analytics.ringMonth")}
-                  accent="#34d399"
+                  accent="hsl(168 62% 42%)"
                 />
               </>
             )}
@@ -203,12 +203,12 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
             <AreaChart data={trendData} margin={{ top: 8, right: 4, left: 0, bottom: 4 }}>
               <defs>
                 <linearGradient id="habitFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(48 96% 53%)" stopOpacity={0.45} />
-                  <stop offset="100%" stopColor="hsl(48 96% 53%)" stopOpacity={0} />
+                  <stop offset="0%" stopColor="hsl(var(--chart-1))" stopOpacity={0.45} />
+                  <stop offset="100%" stopColor="hsl(var(--chart-1))" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="mentalFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(199 89% 48%)" stopOpacity={0.35} />
-                  <stop offset="100%" stopColor="hsl(199 89% 48%)" stopOpacity={0} />
+                  <stop offset="0%" stopColor="hsl(var(--chart-3))" stopOpacity={0.35} />
+                  <stop offset="100%" stopColor="hsl(var(--chart-3))" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
@@ -251,7 +251,7 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {hasHabit && habit && (
-          <section className="rounded-2xl border border-yellow-400/15 bg-black/30 p-3 sm:p-4 min-w-0">
+          <section className="rounded-2xl border border-brand/15 bg-black/30 p-3 sm:p-4 min-w-0">
             <h4 className="text-white font-black text-sm mb-1">{t("member.analytics.habitMonthTitle")}</h4>
             <p className="text-gray-500 text-[11px] mb-4">{t("member.analytics.habitMonthSub")}</p>
             <HabitProgressBars habits={habit.perHabit} />
@@ -259,7 +259,7 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
         )}
 
         {hasTask && task && (
-          <section className="rounded-2xl border border-emerald-400/15 bg-black/30 p-3 sm:p-4 member-chart-wrap min-w-0">
+          <section className="rounded-2xl border border-success/15 bg-black/30 p-3 sm:p-4 member-chart-wrap min-w-0">
             <h4 className="text-white font-black text-sm mb-3">{t("member.analytics.taskDayTitle")}</h4>
             <ChartContainer config={taskDayConfig} className="h-[200px] sm:h-[220px] w-full aspect-auto">
               <BarChart data={taskByDay} margin={{ top: 8, right: 4, left: 0, bottom: 4 }}>
@@ -281,7 +281,7 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
                   content={({ active, payload }) =>
                     active && payload?.[0] ? (
                       <div className="rounded-lg border border-gray-700 bg-black/95 px-3 py-2 text-xs">
-                        <p className="text-emerald-300 font-bold">{payload[0].payload.fullName}</p>
+                        <p className="text-success font-bold">{payload[0].payload.fullName}</p>
                         <p className="text-gray-300 mt-0.5">
                           {payload[0].payload.done}/{payload[0].payload.total} · {payload[0].value}%
                         </p>
@@ -289,9 +289,9 @@ export default function ProgressCommandCenter({ hasHabit, hasTask }) {
                     ) : null
                   }
                 />
-                <Bar dataKey="pct" radius={[6, 6, 0, 0]} fill="hsl(152 76% 45%)" maxBarSize={36}>
+                <Bar dataKey="pct" radius={[6, 6, 0, 0]} fill="hsl(var(--chart-5))" maxBarSize={36}>
                   {taskByDay.map((_, i) => (
-                    <Cell key={i} fill={`hsl(152 76% ${38 + (i % 3) * 6}%)`} />
+                    <Cell key={i} fill={`hsl(152 55% ${38 + (i % 3) * 6}%)`} />
                   ))}
                 </Bar>
               </BarChart>

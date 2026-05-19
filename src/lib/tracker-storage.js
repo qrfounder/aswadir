@@ -1,5 +1,6 @@
 import { defaultHabitDefs, defaultTaskItems } from "@/lib/tracker-resolve";
 import { monthStorageKey } from "@/lib/tracker-catalog";
+import { scheduleTrackerPush } from "@/lib/member-sync";
 
 function safeParse(raw, fallback) {
   try {
@@ -40,6 +41,7 @@ export function saveHabitTracker(userId, data) {
     habits: stripHabitsForStorage(data.habits),
   };
   localStorage.setItem(key(userId, "habits"), JSON.stringify(toSave));
+  scheduleTrackerPush(userId, "habits", toSave);
 }
 
 export function loadTaskTracker(userId) {
@@ -67,6 +69,7 @@ export function ensureDefaultWeekTasks(userId, t) {
 
 export function saveTaskTracker(userId, data) {
   localStorage.setItem(key(userId, "tasks"), JSON.stringify(data));
+  scheduleTrackerPush(userId, "tasks", data);
 }
 
 function weekStorageKey(date = new Date()) {

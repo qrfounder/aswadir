@@ -44,7 +44,7 @@ export default function MemberAccountSettings() {
 
   return (
     <section
-      className="dark-card rounded-2xl p-5 sm:p-6 border border-yellow-400/15 space-y-6"
+      className="dark-card rounded-2xl p-5 sm:p-6 border border-brand/15 space-y-6"
       aria-labelledby="account-settings-heading"
     >
       <div>
@@ -52,7 +52,7 @@ export default function MemberAccountSettings() {
           id="account-settings-heading"
           className="text-foreground font-black text-base sm:text-lg flex items-center gap-2"
         >
-          <Shield className="w-5 h-5 text-yellow-400" aria-hidden />
+          <Shield className="w-5 h-5 text-primary" aria-hidden />
           {t("dashboard.settings.title")}
         </h2>
         <p className="text-muted-foreground text-sm mt-1">{t("dashboard.settings.subtitle")}</p>
@@ -60,7 +60,7 @@ export default function MemberAccountSettings() {
 
       <div className="rounded-xl border border-gray-800/80 bg-black/20 p-4 space-y-3">
         <p className="text-gray-300 text-sm font-bold flex items-center gap-2">
-          <Mail className="w-4 h-4 text-yellow-400" aria-hidden />
+          <Mail className="w-4 h-4 text-primary" aria-hidden />
           {t("dashboard.settings.emailLabel")}
         </p>
         <p className="text-white text-sm font-mono" dir="ltr">
@@ -73,9 +73,9 @@ export default function MemberAccountSettings() {
         <div>
           <p className="text-gray-300 text-sm font-bold flex items-center gap-2">
             {isLight ? (
-              <Sun className="w-4 h-4 text-yellow-400" aria-hidden />
+              <Sun className="w-4 h-4 text-primary" aria-hidden />
             ) : (
-              <Moon className="w-4 h-4 text-yellow-400" aria-hidden />
+              <Moon className="w-4 h-4 text-primary" aria-hidden />
             )}
             {t("dashboard.settings.appearance")}
           </p>
@@ -84,7 +84,7 @@ export default function MemberAccountSettings() {
         <button
           type="button"
           onClick={toggleTheme}
-          className="px-4 py-2 rounded-xl border border-yellow-400/30 text-yellow-200 text-sm font-bold hover:bg-yellow-400/10 transition-colors"
+          className="px-4 py-2 rounded-xl border border-brand/30 text-brand/90 text-sm font-bold hover:bg-primary/90/10 transition-colors"
           aria-pressed={isLight}
         >
           {isLight ? t("dashboard.settings.themeDark") : t("dashboard.settings.themeLight")}
@@ -93,7 +93,7 @@ export default function MemberAccountSettings() {
 
       <form onSubmit={handleChangePassword} className="space-y-4">
         <p className="text-gray-300 text-sm font-bold flex items-center gap-2">
-          <KeyRound className="w-4 h-4 text-yellow-400" aria-hidden />
+          <KeyRound className="w-4 h-4 text-primary" aria-hidden />
           {t("dashboard.settings.changePassword")}
         </p>
         <label className="block">
@@ -105,7 +105,7 @@ export default function MemberAccountSettings() {
             autoComplete="current-password"
             value={form.current}
             onChange={(e) => setForm((f) => ({ ...f, current: e.target.value }))}
-            className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
+            className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
           />
         </label>
         <label className="block">
@@ -118,7 +118,7 @@ export default function MemberAccountSettings() {
             minLength={8}
             value={form.next}
             onChange={(e) => setForm((f) => ({ ...f, next: e.target.value }))}
-            className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
+            className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
           />
         </label>
         <label className="block">
@@ -130,7 +130,7 @@ export default function MemberAccountSettings() {
             autoComplete="new-password"
             value={form.confirm}
             onChange={(e) => setForm((f) => ({ ...f, confirm: e.target.value }))}
-            className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
+            className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-2.5 text-foreground outline-none text-sm"
           />
         </label>
         {error && (
@@ -139,7 +139,7 @@ export default function MemberAccountSettings() {
           </p>
         )}
         {message && (
-          <p className="text-emerald-300 text-sm bg-emerald-900/20 border border-emerald-500/30 rounded-lg px-3 py-2">
+          <p className="text-success text-sm bg-success/15 border border-success/30 rounded-lg px-3 py-2">
             {message}
           </p>
         )}

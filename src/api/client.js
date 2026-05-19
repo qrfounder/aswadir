@@ -121,6 +121,29 @@ export const client = {
     async dashboard() {
       return request("/api/member/dashboard");
     },
+    async syncAll() {
+      return request("/api/member/sync");
+    },
+    async pushSync(namespace, payload) {
+      const res = await request(`/api/member/sync/${namespace}`, {
+        method: "PUT",
+        body: JSON.stringify({ payload }),
+      });
+      return res.updatedAt;
+    },
+    async getDailyNote(date) {
+      const q = new URLSearchParams({ date });
+      return request(`/api/member/daily-note?${q.toString()}`);
+    },
+    async saveDailyNote(date, content) {
+      return request("/api/member/daily-note", {
+        method: "PUT",
+        body: JSON.stringify({ date, content }),
+      });
+    },
+    async listDailyNotes() {
+      return request("/api/member/daily-notes");
+    },
   },
   functions: {
     async invoke(name, payload = {}) {

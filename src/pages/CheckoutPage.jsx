@@ -40,9 +40,9 @@ function StepDot({ active, done, num, label }) {
       <div
         className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-black text-sm transition-all flex-shrink-0 ${
           done
-            ? "bg-yellow-400 text-black"
+            ? "bg-primary text-primary-foreground"
             : active
-              ? "bg-yellow-400/15 text-yellow-400 ring-2 ring-yellow-400"
+              ? "bg-brand/15 text-primary ring-2 ring-primary"
               : "bg-gray-800 text-gray-500"
         }`}
       >
@@ -178,12 +178,12 @@ export default function CheckoutPage() {
 
   return (
     <div className="checkout-page min-h-screen bg-background">
-      <header className="bg-black/60 backdrop-blur-md border-b border-yellow-400/10 py-3 sm:py-4 sticky top-0 z-40 overflow-visible">
+      <header className="bg-black/60 backdrop-blur-md border-b border-brand/10 py-3 sm:py-4 sticky top-0 z-40 overflow-visible">
         <div className="checkout-header-inner flex items-center justify-between gap-2 sm:gap-3 min-w-0">
           <button
             type="button"
             onClick={() => navigate("/")}
-            className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-lg"
+            className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
           >
             <BrandLogo size="header" className="group-hover:opacity-90 transition-opacity" />
           </button>
@@ -202,7 +202,7 @@ export default function CheckoutPage() {
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="text-gray-400 hover:text-yellow-400 text-sm sm:text-base flex items-center gap-1.5 mb-5 sm:mb-6 transition-colors"
+          className="text-gray-400 hover:text-primary text-sm sm:text-base flex items-center gap-1.5 mb-5 sm:mb-6 transition-colors"
         >
           <BackChevron className="w-4 h-4" /> {t("nav.back")}
         </button>
@@ -232,7 +232,7 @@ export default function CheckoutPage() {
               <StepDot active={step >= 1} done={step > 1} num={1} label={t("checkout.stepInfo")} />
               <div
                 className={`h-0.5 flex-1 rounded-full transition-colors ${
-                  step > 1 ? "bg-yellow-400" : "bg-gray-700"
+                  step > 1 ? "bg-primary" : "bg-gray-700"
                 }`}
               />
               <StepDot active={step >= 2} done={false} num={2} label={t("checkout.stepPay")} />
@@ -244,7 +244,7 @@ export default function CheckoutPage() {
                 className="checkout-card dark-card p-5 sm:p-6 md:p-7 space-y-5 sm:space-y-6"
               >
                 <h3 className="text-white font-black text-lg flex items-center gap-2">
-                  <User className="w-5 h-5 text-yellow-400" />
+                  <User className="w-5 h-5 text-primary" />
                   {t("checkout.personalInfo")}
                 </h3>
 
@@ -258,13 +258,13 @@ export default function CheckoutPage() {
                     value={customer.name}
                     onChange={(e) => setCustomer((c) => ({ ...c, name: e.target.value }))}
                     placeholder={t("common.exampleName")}
-                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white placeholder:text-gray-500 outline-none transition-colors"
+                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 text-white placeholder:text-gray-500 outline-none transition-colors"
                   />
                 </label>
 
                 <label className="block">
                   <span className="text-gray-300 text-sm sm:text-[15px] font-bold mb-2 flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-yellow-400" />
+                    <Mail className="w-4 h-4 text-primary" />
                     {t("checkout.email")}
                   </span>
                   <input
@@ -275,13 +275,13 @@ export default function CheckoutPage() {
                     value={customer.email}
                     onChange={(e) => setCustomer((c) => ({ ...c, email: e.target.value }))}
                     placeholder="you@example.com"
-                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white placeholder:text-gray-500 outline-none transition-colors text-left"
+                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 text-white placeholder:text-gray-500 outline-none transition-colors text-left"
                   />
                 </label>
 
                 <label className="block">
                   <span className="text-gray-300 text-sm sm:text-[15px] font-bold mb-2 flex items-center gap-2">
-                    <Lock className="w-4 h-4 text-yellow-400" />
+                    <Lock className="w-4 h-4 text-primary" />
                     {t("checkout.accountPassword")}
                   </span>
                   <input
@@ -291,7 +291,7 @@ export default function CheckoutPage() {
                     autoComplete="new-password"
                     value={customer.password}
                     onChange={(e) => setCustomer((c) => ({ ...c, password: e.target.value }))}
-                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white outline-none transition-colors"
+                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 text-white outline-none transition-colors"
                   />
                   <p className="text-gray-500 text-xs mt-1.5">{t("checkout.accountPasswordHint")}</p>
                 </label>
@@ -306,7 +306,7 @@ export default function CheckoutPage() {
                     onChange={(e) =>
                       setCustomer((c) => ({ ...c, confirmPassword: e.target.value }))
                     }
-                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white outline-none transition-colors"
+                    className="checkout-field w-full bg-black/40 border border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 text-white outline-none transition-colors"
                   />
                 </label>
 
@@ -330,7 +330,7 @@ export default function CheckoutPage() {
                       }
                       placeholder={t("checkout.whatsappPlaceholder")}
                       maxLength={dialCountry.max}
-                      className="checkout-field flex-1 min-w-0 bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-4 text-white outline-none text-left"
+                      className="checkout-field flex-1 min-w-0 bg-black/40 border border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 text-white outline-none text-left"
                     />
                   </div>
                 </label>
@@ -353,13 +353,13 @@ export default function CheckoutPage() {
 
             {step === 2 && (
               <div className="space-y-5 w-full min-w-0">
-                <div className="dark-card rounded-2xl p-5 border border-emerald-400/25 space-y-2 w-full">
-                  <p className="text-emerald-300/90 text-xs font-black uppercase tracking-wide">{t("checkout.valueFramingTitle")}</p>
+                <div className="dark-card rounded-2xl p-5 border border-success/25 space-y-2 w-full">
+                  <p className="text-success/90 text-xs font-black uppercase tracking-wide">{t("checkout.valueFramingTitle")}</p>
                   <p className="text-white font-black text-2xl">
                     {format(product.salePrice)}{" "}
-                    <span className="text-yellow-600 text-sm font-bold">{t("pricing.perMonth")}</span>
+                    <span className="text-brand text-sm font-bold">{t("pricing.perMonth")}</span>
                   </p>
-                  <p className="text-emerald-200 text-sm font-bold">{t("checkout.valuePerDay", { perDay: perDayPriceFor(product.id) })}</p>
+                  <p className="text-success/90 text-sm font-bold">{t("checkout.valuePerDay", { perDay: perDayPriceFor(product.id) })}</p>
                   <p className="text-gray-500 text-xs line-through">{t("checkout.valueAnchor", { anchor: originalPriceFor(product.id), price: priceFor(product.id) })}</p>
                 </div>
                 <DevApiBanner />
@@ -377,7 +377,7 @@ export default function CheckoutPage() {
                   <button
                     type="button"
                     onClick={() => setStep(1)}
-                    className="text-yellow-400 text-xs font-bold hover:underline"
+                    className="text-primary text-xs font-bold hover:underline"
                   >
                     {t("checkout.edit")}
                   </button>
@@ -440,15 +440,15 @@ export default function CheckoutPage() {
                 <div className="dark-card rounded-2xl p-5 space-y-3">
                   <ul className="text-xs text-gray-400 space-y-2">
                     <li className="flex gap-2 items-start">
-                      <RefreshCw className="w-3.5 h-3.5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                      <RefreshCw className="w-3.5 h-3.5 text-primary mt-0.5 flex-shrink-0" />
                       {t("checkout.renewMonthly", { price: priceFor(product.id) })}
                     </li>
                     <li className="flex gap-2 items-start">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-success mt-0.5 flex-shrink-0" />
                       {t("checkout.trialDay", { price: priceFor(product.id) })}
                     </li>
                     <li className="flex gap-2 items-start">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-success mt-0.5 flex-shrink-0" />
                       {t("checkout.refund")}
                     </li>
                   </ul>
@@ -467,7 +467,7 @@ export default function CheckoutPage() {
                     {product.id !== "bundle" && (
                       <Link
                         to="/checkout?product=bundle"
-                        className="px-3 py-2 rounded-lg bg-yellow-400/10 text-yellow-200 border border-yellow-400/30 hover:bg-yellow-400/20"
+                        className="px-3 py-2 rounded-lg bg-brand/10 text-brand/90 border border-brand/30 hover:bg-primary/20"
                       >
                         {t("checkout.downsellBundle")}
                       </Link>
@@ -475,7 +475,7 @@ export default function CheckoutPage() {
                     {product.id !== "habit" && (
                       <Link
                         to="/checkout?product=habit"
-                        className="px-3 py-2 rounded-lg bg-black/40 text-gray-300 border border-gray-700 hover:border-yellow-400/30"
+                        className="px-3 py-2 rounded-lg bg-black/40 text-gray-300 border border-gray-700 hover:border-primary/30"
                       >
                         {t("checkout.downsellHabit")}
                       </Link>
@@ -483,7 +483,7 @@ export default function CheckoutPage() {
                     {product.id !== "task" && (
                       <Link
                         to="/checkout?product=task"
-                        className="px-3 py-2 rounded-lg bg-black/40 text-gray-300 border border-gray-700 hover:border-yellow-400/30"
+                        className="px-3 py-2 rounded-lg bg-black/40 text-gray-300 border border-gray-700 hover:border-primary/30"
                       >
                         {t("checkout.downsellTask")}
                       </Link>
@@ -498,26 +498,26 @@ export default function CheckoutPage() {
           {step !== 2 && (
           <aside className="order-1 lg:order-2">
             <div className="lg:sticky lg:top-[5.5rem] space-y-4 sm:space-y-5">
-              <div className="dark-card rounded-2xl p-5 space-y-4 border border-yellow-400/20 glow-gold-sm">
+              <div className="dark-card rounded-2xl p-5 space-y-4 border border-brand/20 glow-gold-sm">
                 <h3 className="text-white font-black text-base flex items-center gap-2">
-                  <Tag className="w-5 h-5 text-yellow-400" />
+                  <Tag className="w-5 h-5 text-primary" />
                   {t("checkout.summaryBlindTitle")}
                 </h3>
                 <div className="flex gap-3 items-start">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-20 h-20 rounded-xl object-cover border border-yellow-400/20"
+                    className="w-20 h-20 rounded-xl object-cover border border-brand/20"
                   />
                   <div>
                     <p className="text-white font-bold text-sm">{product.name}</p>
                     <p className="text-gray-400 text-xs mt-2 leading-relaxed">{t("checkout.summaryBlindBody")}</p>
                   </div>
                 </div>
-                <ul className="space-y-1.5 border-t border-yellow-400/10 pt-3">
+                <ul className="space-y-1.5 border-t border-brand/10 pt-3">
                   {product.features.slice(0, 4).map((f, i) => (
                     <li key={i} className="flex gap-2 text-gray-300 text-xs">
-                      <CheckCircle className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0" />
+                      <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0" />
                       {f}
                     </li>
                   ))}

@@ -7,49 +7,77 @@
 @layer base {
   :root,
   html.dark {
-    --background: 222 47% 5%;
-    --foreground: 45 100% 92%;
-    --card: 222 40% 8%;
-    --card-foreground: 45 100% 92%;
-    --popover: 222 40% 8%;
-    --popover-foreground: 45 100% 92%;
-    --primary: 43 74% 49%;
-    --primary-foreground: 222 47% 5%;
+    --background: 222 47% 6%;
+    --foreground: 210 20% 96%;
+    --card: 222 40% 9%;
+    --card-foreground: 210 20% 96%;
+    --popover: 222 40% 9%;
+    --popover-foreground: 210 20% 96%;
+    --primary: 168 62% 42%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 222 35% 12%;
-    --secondary-foreground: 45 80% 80%;
+    --secondary-foreground: 215 16% 75%;
     --muted: 222 35% 12%;
-    --muted-foreground: 215 20% 55%;
-    --accent: 43 74% 49%;
-    --accent-foreground: 222 47% 5%;
-    --destructive: 0 84.2% 60.2%;
+    --muted-foreground: 215 16% 58%;
+    --accent: 168 62% 42%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 98%;
-    --border: 222 30% 18%;
+    --border: 222 25% 16%;
     --input: 222 35% 14%;
-    --ring: 43 74% 49%;
+    --ring: 168 62% 42%;
     --radius: 0.75rem;
-    --gold: 43 74% 49%;
+    --brand: 43 74% 52%;
+    --brand-foreground: 222 47% 6%;
+    --success: 152 55% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 6%;
+    --info: 199 70% 48%;
+    --info-foreground: 0 0% 100%;
+    --gold: 43 74% 52%;
     --gold-light: 45 90% 65%;
     --gold-dark: 38 65% 38%;
+    --chart-1: 43 74% 52%;
+    --chart-2: 168 62% 42%;
+    --chart-3: 199 70% 48%;
+    --chart-4: 38 92% 50%;
+    --chart-5: 152 55% 42%;
   }
 
   html.light {
-    --background: 45 40% 97%;
-    --foreground: 222 47% 12%;
+    --background: 40 33% 98%;
+    --foreground: 222 35% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 12%;
+    --card-foreground: 222 35% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 12%;
-    --primary: 43 74% 42%;
+    --popover-foreground: 222 35% 14%;
+    --primary: 168 55% 38%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 45 25% 92%;
-    --secondary-foreground: 222 40% 25%;
-    --muted: 45 20% 92%;
+    --secondary: 40 25% 92%;
+    --secondary-foreground: 222 35% 22%;
+    --muted: 40 20% 92%;
     --muted-foreground: 215 16% 40%;
-    --accent: 43 74% 42%;
+    --accent: 168 55% 38%;
     --accent-foreground: 0 0% 100%;
-    --border: 45 15% 85%;
-    --input: 45 20% 90%;
-    --ring: 43 74% 42%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 18% 88%;
+    --input: 40 20% 90%;
+    --ring: 168 55% 38%;
+    --brand: 43 74% 42%;
+    --brand-foreground: 0 0% 100%;
+    --success: 152 50% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 45%;
+    --warning-foreground: 0 0% 100%;
+    --info: 199 65% 42%;
+    --info-foreground: 0 0% 100%;
+    --chart-1: 43 74% 42%;
+    --chart-2: 168 55% 38%;
+    --chart-3: 199 65% 42%;
+    --chart-4: 38 92% 45%;
+    --chart-5: 152 50% 36%;
   }
 }
 
@@ -59,7 +87,7 @@ html.light .dark-card {
 }
 
 html.light .hero-gradient {
-  background: linear-gradient(180deg, hsl(45 40% 96%) 0%, hsl(45 30% 92%) 100%);
+  background: linear-gradient(180deg, hsl(40 33% 98%) 0%, hsl(40 25% 94%) 100%);
 }
 
 html.light .checkout-stripe-frame {
@@ -357,4 +385,23 @@ html[dir="ltr"] .member-sticky-col {
 
 .member-trust-strip {
   background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.06), transparent);
+}
+
+/* Full-width member dashboard shell */
+.dashboard-main {
+  width: 100%;
+  max-width: none;
+}
+
+.dashboard-sidebar {
+  flex-shrink: 0;
+}
+
+@media (min-width: 1280px) {
+  .dashboard-main--account-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
 }

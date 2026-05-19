@@ -56,8 +56,8 @@ export default function CountdownTimer({ initialMinutes = 47, initialSeconds = 0
     ? "bg-black/50 rounded px-1 py-0.5 text-center min-w-[26px] sm:min-w-[32px]"
     : "bg-black/50 rounded px-2 py-1 text-center min-w-[36px]";
   const digitClass = compact
-    ? "text-sm sm:text-lg font-black text-yellow-400 tabular-nums leading-none"
-    : "text-lg font-black text-yellow-400 tabular-nums";
+    ? "text-sm sm:text-lg font-black text-primary tabular-nums leading-none"
+    : "text-lg font-black text-primary tabular-nums";
 
   return (
     <div
@@ -68,13 +68,13 @@ export default function CountdownTimer({ initialMinutes = 47, initialSeconds = 0
           <div className={boxClass}>
             <span className={digitClass}>{pad(time.hours)}</span>
           </div>
-          <span className="text-yellow-400 font-black text-xs sm:text-base">:</span>
+          <span className="text-primary font-black text-xs sm:text-base">:</span>
         </>
       )}
       <div className={boxClass}>
         <span className={digitClass}>{pad(time.minutes)}</span>
       </div>
-      <span className="text-yellow-400 font-black text-xs sm:text-base">:</span>
+      <span className="text-primary font-black text-xs sm:text-base">:</span>
       <div className={boxClass}>
         <span className={digitClass}>{pad(time.seconds)}</span>
       </div>

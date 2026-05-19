@@ -101,16 +101,16 @@ export default function EmbeddedStripeCheckout({ product, customer, password, lo
         id="stripe-checkout-heading"
         className="text-white font-black text-base flex items-center gap-2 mb-2"
       >
-        <CreditCard className="w-5 h-5 text-yellow-400" />
+        <CreditCard className="w-5 h-5 text-primary" />
         {t("checkout.stripeCardTitle")}
       </h3>
       <p className="text-gray-400 text-sm mb-4 leading-relaxed">{t("checkout.payEmbeddedLead")}</p>
       <p className="text-gray-500 text-xs mb-4">{t("checkout.stripeWalletHint")}</p>
 
-      <div className="checkout-stripe-frame rounded-2xl border border-yellow-400/15 bg-[#0a0e1a]/80 p-1 sm:p-2">
+      <div className="checkout-stripe-frame rounded-2xl border border-brand/15 bg-[#0a0e1a]/80 p-1 sm:p-2">
         {loading && (
           <p className="text-gray-400 text-sm flex items-center justify-center gap-2 py-12">
-            <Loader2 className="w-5 h-5 animate-spin text-yellow-400" />
+            <Loader2 className="w-5 h-5 animate-spin text-primary" />
             {t("checkout.stripeLoading")}
           </p>
         )}

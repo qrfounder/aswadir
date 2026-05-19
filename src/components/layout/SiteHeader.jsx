@@ -10,14 +10,14 @@ export default function SiteHeader({ className = "", embedded = false }) {
 
   return (
     <header
-      className={`bg-black/60 backdrop-blur-md border-b border-yellow-400/10 py-2.5 sm:py-4 px-3 sm:px-4 w-full overflow-visible ${
+      className={`bg-black/60 backdrop-blur-md border-b border-brand/10 py-2.5 sm:py-4 px-3 sm:px-4 w-full overflow-visible ${
         embedded ? "" : "sticky top-0 z-40"
       } ${className}`}
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-1.5 sm:gap-3 min-w-0">
         <Link
           to="/"
-          className="flex items-center min-w-0 flex-1 group focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-lg"
+          className="flex items-center min-w-0 flex-1 group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
         >
           <BrandLogo
             size="header"
@@ -29,7 +29,7 @@ export default function SiteHeader({ className = "", embedded = false }) {
           <LanguageSwitcher compact />
           <Link
             to="/login"
-            className="inline-flex items-center justify-center gap-1.5 text-gray-400 hover:text-yellow-400 text-xs sm:text-sm font-bold p-2 sm:px-2 sm:py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 text-gray-400 hover:text-primary text-xs sm:text-sm font-bold p-2 sm:px-2 sm:py-1.5 rounded-lg hover:bg-white/5 transition-colors"
             aria-label={t("nav.memberLogin")}
             title={t("nav.memberLogin")}
           >

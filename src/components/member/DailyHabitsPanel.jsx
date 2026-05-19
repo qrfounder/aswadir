@@ -86,27 +86,27 @@ export default function DailyHabitsPanel({ userId }) {
     <div className="space-y-4 sm:space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
         <div>
-          <p className="text-yellow-400/90 text-xs font-bold">{t("member.habitTracker")}</p>
+          <p className="text-primary/90 text-xs font-bold">{t("member.habitTracker")}</p>
           <h3 className="text-white font-black text-lg sm:text-xl">{monthLabel(today)}</h3>
         </div>
         <div className="flex gap-2 self-start sm:self-auto">
-          <div className="rounded-xl bg-black/50 border border-yellow-400/20 px-3 py-2 text-center min-w-[76px]">
+          <div className="rounded-xl bg-black/50 border border-brand/20 px-3 py-2 text-center min-w-[76px]">
             <p className="text-gray-500 text-[10px] font-bold mb-0.5">{t("member.today")}</p>
-            <AnimatedValue value={todayRate} suffix="%" className="font-black text-lg text-yellow-300" />
+            <AnimatedValue value={todayRate} suffix="%" className="font-black text-lg text-brand" />
           </div>
-          <div className="rounded-xl bg-black/50 border border-emerald-400/20 px-3 py-2 text-center min-w-[76px]">
+          <div className="rounded-xl bg-black/50 border border-success/20 px-3 py-2 text-center min-w-[76px]">
             <p className="text-gray-500 text-[10px] font-bold mb-0.5">{t("member.monthCol")}</p>
-            <AnimatedValue value={monthRate} suffix="%" className="font-black text-lg text-emerald-300" />
+            <AnimatedValue value={monthRate} suffix="%" className="font-black text-lg text-success" />
           </div>
         </div>
       </div>
 
       <div>
         <p className="text-gray-500 text-[11px] mb-2 flex items-center gap-1 md:hidden">
-          <ChevronLeft className="w-3.5 h-3.5 text-yellow-400/70" aria-hidden />
+          <ChevronLeft className="w-3.5 h-3.5 text-primary/70" aria-hidden />
           {t("member.scrollHint")}
         </p>
-        <div className="member-table-scroll overflow-x-auto rounded-xl border border-yellow-400/20 bg-[#0d1117]/90 -mx-0.5 px-0.5">
+        <div className="member-table-scroll overflow-x-auto rounded-xl border border-brand/20 bg-[#0d1117]/90 -mx-0.5 px-0.5">
           <table className="w-full min-w-[min(100%,520px)] sm:min-w-[640px] border-collapse text-xs">
             <thead>
               <tr className="bg-[#1a2744] text-white">
@@ -119,7 +119,7 @@ export default function DailyHabitsPanel({ userId }) {
                     key={d}
                     className={`w-8 sm:w-9 py-2 text-center font-bold ${
                       d === todayNum
-                        ? "bg-yellow-400/30 text-yellow-100 ring-1 ring-yellow-400/50"
+                        ? "bg-brand/30 text-brand ring-1 ring-primary/50"
                         : "text-gray-400"
                     }`}
                   >
@@ -167,9 +167,9 @@ export default function DailyHabitsPanel({ userId }) {
                             })}
                             className={`w-7 h-7 sm:w-8 sm:h-8 rounded-md mx-auto flex items-center justify-center transition-all active:scale-90 ${
                               on
-                                ? "bg-yellow-400 text-black shadow-sm shadow-yellow-400/30"
+                                ? "bg-primary text-primary-foreground shadow-sm shadow-primary/30"
                                 : d === todayNum
-                                  ? "bg-gray-700 ring-1 ring-yellow-400/30"
+                                  ? "bg-gray-700 ring-1 ring-primary/30"
                                   : "bg-gray-800 hover:bg-gray-700"
                             }`}
                           >
@@ -193,12 +193,12 @@ export default function DailyHabitsPanel({ userId }) {
           onChange={(e) => setNewHabit(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addHabit())}
           placeholder={t("member.newHabitPlaceholder")}
-          className="flex-1 bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm min-h-[44px] outline-none focus:border-yellow-400/50"
+          className="flex-1 bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm min-h-[44px] outline-none focus:border-primary/50"
         />
         <button
           type="button"
           onClick={addHabit}
-          className="bg-yellow-400/15 border border-yellow-400/40 text-yellow-300 px-5 py-3 rounded-xl min-h-[44px] flex items-center justify-center gap-2 font-bold text-sm sm:w-auto"
+          className="bg-brand/15 border border-brand/40 text-brand px-5 py-3 rounded-xl min-h-[44px] flex items-center justify-center gap-2 font-bold text-sm sm:w-auto"
         >
           <Plus className="w-5 h-5" />
           {t("member.addHabit")}
@@ -227,13 +227,13 @@ export default function DailyHabitsPanel({ userId }) {
                   value={val}
                   onChange={(e) => setMental(m.id, Number(e.target.value))}
                   onPointerUp={(e) => setMental(m.id, Number(e.target.value), true)}
-                  className="w-full accent-yellow-400 h-2"
+                  className="w-full accent-primary h-2"
                   aria-valuemin={1}
                   aria-valuemax={10}
                   aria-valuenow={val}
                   aria-label={m.label}
                 />
-                <p className="text-yellow-400 font-black text-center text-base mt-2">{val}/10</p>
+                <p className="text-primary font-black text-center text-base mt-2">{val}/10</p>
               </div>
             );
           })}

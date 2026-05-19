@@ -12,7 +12,7 @@ export default function TrustPillars() {
         items.map((item, i) => (
           <div
             key={item.title}
-            className="dark-card rounded-2xl p-6 text-center border border-yellow-400/10"
+            className="dark-card rounded-2xl p-6 text-center border border-brand/10"
           >
             <span className="text-4xl mb-4 block" role="img" aria-hidden>
               {EMOJIS[i]}

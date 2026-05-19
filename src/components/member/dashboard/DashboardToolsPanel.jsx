@@ -10,7 +10,7 @@ export default function DashboardToolsPanel({ userId }) {
   return (
     <div className="space-y-5 sm:space-y-6">
       <header className="space-y-2">
-        <div className="inline-flex items-center gap-2 text-emerald-300/90 text-xs font-bold">
+        <div className="inline-flex items-center gap-2 text-success/90 text-xs font-bold">
           <Sparkles className="w-4 h-4" aria-hidden />
           {t("dashboard.nav.toolsKicker")}
         </div>

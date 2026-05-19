@@ -15,12 +15,12 @@ export default function CurrencySwitcher({ className = "" }) {
       <button
         type="button"
         onClick={toggle}
-        className="flex items-center gap-1 rounded-lg border border-yellow-400/25 bg-white/5 px-2 py-1.5 text-xs font-bold text-gray-200 hover:border-yellow-400/50 hover:text-white transition-colors min-w-[2.75rem] justify-center"
+        className="flex items-center gap-1 rounded-lg border border-brand/25 bg-white/5 px-2 py-1.5 text-xs font-bold text-gray-200 hover:border-primary/40/50 hover:text-white transition-colors min-w-[2.75rem] justify-center"
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label={t("currency.label")}
       >
-        <Banknote className="w-3.5 h-3.5 text-yellow-400" />
+        <Banknote className="w-3.5 h-3.5 text-primary" />
         <span>{currency}</span>
       </button>
       <AnchoredDropdownMenu
@@ -40,13 +40,13 @@ export default function CurrencySwitcher({ className = "" }) {
                 changeCurrency(code);
                 close();
               }}
-              className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-sm text-gray-200 hover:bg-yellow-400/15 hover:text-white text-start"
+              className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-sm text-gray-200 hover:bg-primary/90/15 hover:text-white text-start"
             >
               <span>
                 <span className="font-bold">{code}</span>
                 <span className="text-gray-500 text-xs ms-2">{t(`currency.names.${code}`)}</span>
               </span>
-              {code === currency && <Check className="w-4 h-4 text-yellow-400 shrink-0" />}
+              {code === currency && <Check className="w-4 h-4 text-primary shrink-0" />}
             </button>
           </li>
         ))}

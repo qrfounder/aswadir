@@ -12,7 +12,7 @@ export default function TestimonialCard({ name, role, text, avatar, country, ver
     <div className="testimonial-card rounded-2xl p-5 flex flex-col gap-3 h-full">
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-br from-yellow-500/30 to-yellow-700/20 flex-shrink-0 border border-yellow-500/20">
+          <div className="w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-br from-brand/30 to-brand/50 flex-shrink-0 border border-brand/20">
             {avatar ? (
               <img
                 src={avatar}
@@ -23,7 +23,7 @@ export default function TestimonialCard({ name, role, text, avatar, country, ver
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-yellow-400 font-black text-lg">
+              <div className="w-full h-full flex items-center justify-center text-primary font-black text-lg">
                 {name.charAt(0)}
               </div>
             )}

@@ -21,12 +21,12 @@ export default function HabitProgressBars({ habits }) {
               {h.name}
             </span>
           </div>
-          <span className="text-yellow-300 text-xs font-black tabular-nums order-2 flex-shrink-0">
+          <span className="text-brand text-xs font-black tabular-nums order-2 flex-shrink-0">
             {h.pct}%
           </span>
           <div className="col-span-2 order-3 h-2.5 rounded-full bg-gray-800/90 overflow-hidden">
             <motion.div
-              className="h-full rounded-full bg-gradient-to-e from-amber-500 to-yellow-400"
+              className="h-full rounded-full bg-gradient-to-e from-amber-500 to-brand"
               initial={{ width: 0 }}
               animate={{ width: `${h.pct}%` }}
               transition={{ type: "spring", stiffness: 90, damping: 18, delay: i * 0.03 }}

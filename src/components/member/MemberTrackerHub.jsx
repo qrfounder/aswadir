@@ -6,18 +6,19 @@ import DailyHabitsPanel from "@/components/member/DailyHabitsPanel";
 import TaskWeeklyBoard from "@/components/member/TaskWeeklyBoard";
 import InsightFlash from "@/components/member/analytics/InsightFlash";
 import ProgressCommandCenter from "@/components/member/analytics/ProgressCommandCenter";
+import TodaySummaryCard from "@/components/member/dashboard/TodaySummaryCard";
 
 function tabButtonClass(active, tabId) {
   if (!active) {
     return "text-gray-400 border border-gray-800/80 bg-black/20 hover:border-gray-600 hover:text-gray-200";
   }
   if (tabId === "task") {
-    return "bg-emerald-400/15 text-emerald-100 border border-emerald-400/35 shadow-sm shadow-emerald-400/10";
+    return "bg-success/15 text-success border border-success/35 shadow-sm shadow-success/10";
   }
   if (tabId === "habit") {
-    return "bg-yellow-400/15 text-yellow-100 border border-yellow-400/35 shadow-sm shadow-yellow-400/10";
+    return "bg-brand/15 text-brand border border-brand/35 shadow-sm shadow-primary/10";
   }
-  return "bg-yellow-400/20 text-yellow-50 border border-yellow-400/40 shadow-sm shadow-yellow-400/10";
+  return "bg-brand/20 text-brand border border-brand/40 shadow-sm shadow-primary/10";
 }
 
 export default function MemberTrackerHub({ userId, hasHabit, hasTask, hasBundle }) {
@@ -53,12 +54,12 @@ export default function MemberTrackerHub({ userId, hasHabit, hasTask, hasBundle 
   return (
     <TrackerProvider userId={userId} hasHabit={hasHabit} hasTask={hasTask}>
       <section
-        className="dark-card rounded-2xl border border-yellow-400/15 overflow-hidden"
+        className="dark-card rounded-2xl border border-brand/15 overflow-hidden"
         aria-label={t("tracker.ariaLabel")}
       >
         <div className="px-4 sm:px-5 pt-4 pb-3 border-b border-gray-800/80 bg-black/40 space-y-3">
           <div className="space-y-1">
-            <p className="text-yellow-400/90 text-xs font-bold">{t("tracker.hubLabel")}</p>
+            <p className="text-primary/90 text-xs font-bold">{t("tracker.hubLabel")}</p>
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
               {hasBundle ? t("tracker.hubBundle") : t("tracker.hubTabs")}
             </p>
@@ -98,7 +99,10 @@ export default function MemberTrackerHub({ userId, hasHabit, hasTask, hasBundle 
 
         <div className="p-4 sm:p-5 md:p-6" role="tabpanel" aria-label={activeMeta?.name}>
           {active === "overview" && (
-            <ProgressCommandCenter hasHabit={hasHabit} hasTask={hasTask} />
+            <>
+              <TodaySummaryCard />
+              <ProgressCommandCenter hasHabit={hasHabit} hasTask={hasTask} />
+            </>
           )}
           {active === "habit" && hasHabit && <DailyHabitsPanel userId={userId} />}
           {active === "task" && hasTask && <TaskWeeklyBoard userId={userId} />}

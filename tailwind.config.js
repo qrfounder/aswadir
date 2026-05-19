@@ -47,6 +47,22 @@ module.exports = {
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
   			gold: 'hsl(var(--gold))',
+  			brand: {
+  				DEFAULT: 'hsl(var(--brand))',
+  				foreground: 'hsl(var(--brand-foreground))'
+  			},
+  			success: {
+  				DEFAULT: 'hsl(var(--success))',
+  				foreground: 'hsl(var(--success-foreground))'
+  			},
+  			warning: {
+  				DEFAULT: 'hsl(var(--warning))',
+  				foreground: 'hsl(var(--warning-foreground))'
+  			},
+  			info: {
+  				DEFAULT: 'hsl(var(--info))',
+  				foreground: 'hsl(var(--info-foreground))'
+  			},
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',
@@ -65,8 +81,8 @@ module.exports = {
   				to: { height: '0' }
   			},
   			'pulse-glow': {
-  				'0%, 100%': { boxShadow: '0 0 15px rgba(212, 175, 55, 0.3)' },
-  				'50%': { boxShadow: '0 0 35px rgba(212, 175, 55, 0.7)' }
+  				'0%, 100%': { boxShadow: '0 0 15px hsl(168 62% 42% / 0.3)' },
+  				'50%': { boxShadow: '0 0 35px hsl(168 62% 42% / 0.55)' }
   			},
   			'float': {
   				'0%, 100%': { transform: 'translateY(0)' },

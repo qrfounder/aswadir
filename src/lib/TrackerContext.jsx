@@ -36,6 +36,16 @@ export function TrackerProvider({ userId, hasHabit, hasTask, children }) {
     return () => clearTimeout(t);
   }, [insight]);
 
+  useEffect(() => {
+    const bump = () => setTick((n) => n + 1);
+    window.addEventListener("massar:data-synced", bump);
+    window.addEventListener("massar:sync-complete", bump);
+    return () => {
+      window.removeEventListener("massar:data-synced", bump);
+      window.removeEventListener("massar:sync-complete", bump);
+    };
+  }, []);
+
   return (
     <TrackerContext.Provider
       value={{ analytics, refresh, flashInsight, insight, dismissInsight, tick }}

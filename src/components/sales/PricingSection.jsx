@@ -23,19 +23,19 @@ export default function PricingSection({ onSelectProduct, hideAmounts = false })
     <div className="space-y-5">
       <div className="flex items-center justify-between dark-card rounded-xl px-4 py-3">
         <div className="flex items-center gap-2">
-          <Zap className="w-4 h-4 text-yellow-400" />
+          <Zap className="w-4 h-4 text-primary" />
           <span className="text-gray-300 text-sm font-bold">{t("pricing.discountEnds")}</span>
         </div>
         <CountdownTimer initialMinutes={47} />
       </div>
 
       {!hideAmounts && (
-        <p className="text-center text-yellow-300/90 text-xs font-bold">
+        <p className="text-center text-brand/90 text-xs font-bold">
           {t("pricing.singlesFrom", { price: lowestPriceFor() })}
         </p>
       )}
       {hideAmounts && (
-        <p className="text-center text-emerald-300/90 text-xs font-bold">{t("pricing.fullTrialPitch")}</p>
+        <p className="text-center text-success/90 text-xs font-bold">{t("pricing.fullTrialPitch")}</p>
       )}
 
       <div className="space-y-3">
@@ -46,7 +46,7 @@ export default function PricingSection({ onSelectProduct, hideAmounts = false })
             onClick={() => setSelected(product.id)}
             className={`w-full text-start rounded-2xl p-4 border-2 transition-all duration-300 relative ${
               selected === product.id
-                ? "border-yellow-400 bg-yellow-400/5 glow-gold-sm"
+                ? "border-brand/25 bg-brand/5 glow-gold-sm"
                 : "border-gray-700/50 bg-white/2 hover:border-gray-600"
             }`}
           >
@@ -62,7 +62,7 @@ export default function PricingSection({ onSelectProduct, hideAmounts = false })
               <div className="flex items-center gap-3 min-w-0">
                 <div
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${
-                    selected === product.id ? "border-yellow-400 bg-yellow-400" : "border-gray-500"
+                    selected === product.id ? "border-brand/25 bg-primary" : "border-gray-500"
                   }`}
                 >
                   {selected === product.id && <Check className="w-3 h-3 text-black" strokeWidth={3} />}
@@ -73,7 +73,7 @@ export default function PricingSection({ onSelectProduct, hideAmounts = false })
                   <ul className="mt-1.5 space-y-0.5">
                     {product.features.slice(0, 2).map((f, i) => (
                       <li key={i} className="text-gray-300 text-xs flex items-center gap-1">
-                        <Check className="w-3 h-3 text-yellow-400 flex-shrink-0" />
+                        <Check className="w-3 h-3 text-primary flex-shrink-0" />
                         {f}
                       </li>
                     ))}
@@ -83,7 +83,7 @@ export default function PricingSection({ onSelectProduct, hideAmounts = false })
               <div className="text-end flex-shrink-0 min-w-[100px]">
                 {hideAmounts ? (
                   <div className="flex flex-col items-end gap-1">
-                    <span className="inline-flex items-center gap-1 text-yellow-300/90 text-[11px] font-black bg-black/40 border border-yellow-400/25 px-2 py-1 rounded-lg">
+                    <span className="inline-flex items-center gap-1 text-brand/90 text-[11px] font-black bg-black/40 border border-brand/25 px-2 py-1 rounded-lg">
                       <Lock className="w-3.5 h-3.5" aria-hidden />
                       {t("pricing.atCheckout")}
                     </span>
@@ -97,8 +97,8 @@ export default function PricingSection({ onSelectProduct, hideAmounts = false })
                       </span>
                     </div>
                     <p className="text-gray-500 text-xs line-through">{format(product.originalPrice)}</p>
-                    <p className="text-yellow-400 text-2xl font-black price-tag">{format(product.salePrice)}</p>
-                    <p className="text-yellow-600 text-xs">{t("pricing.perMonth")}</p>
+                    <p className="text-primary text-2xl font-black price-tag">{format(product.salePrice)}</p>
+                    <p className="text-brand text-xs">{t("pricing.perMonth")}</p>
                   </>
                 )}
               </div>
@@ -107,8 +107,8 @@ export default function PricingSection({ onSelectProduct, hideAmounts = false })
         ))}
       </div>
 
-      <div className="dark-card rounded-xl p-4 border border-yellow-400/15 flex gap-3 items-start">
-        <Info className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+      <div className="dark-card rounded-xl p-4 border border-brand/15 flex gap-3 items-start">
+        <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
         <div className="text-start space-y-2">
           <p className="text-white font-black text-sm">{t("pricing.infoTitle")}</p>
           <p className="text-gray-400 text-xs leading-relaxed">{t("pricing.infoBody")}</p>

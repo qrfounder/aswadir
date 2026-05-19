@@ -27,18 +27,18 @@ function NavButton({ item, active, onSelect, compact }) {
         compact
           ? `flex-1 flex-col gap-0.5 py-1.5 px-1 text-[10px] sm:text-[11px] ${
               active
-                ? "text-yellow-300"
+                ? "text-brand"
                 : "text-gray-500 hover:text-gray-300"
             }`
           : `w-full px-3 py-2.5 text-sm text-start ${
               active
-                ? "bg-yellow-400/15 text-yellow-100 border border-yellow-400/35 shadow-sm"
+                ? "bg-brand/15 text-brand border border-brand/35 shadow-sm"
                 : "text-gray-400 border border-transparent hover:bg-white/5 hover:text-gray-200"
             }`
       }`}
     >
       <Icon
-        className={`shrink-0 ${compact ? "w-5 h-5" : "w-4 h-4"} ${active && compact ? "text-yellow-400" : ""}`}
+        className={`shrink-0 ${compact ? "w-5 h-5" : "w-4 h-4"} ${active && compact ? "text-primary" : ""}`}
         aria-hidden
       />
       <span className={compact ? "leading-tight text-center max-w-[4.5rem] truncate" : ""}>{label}</span>
@@ -52,7 +52,7 @@ export function DashboardNavSidebar({ section, onSectionChange }) {
 
   return (
     <nav
-      className="hidden md:flex md:flex-col gap-1.5 md:w-52 lg:w-56 shrink-0"
+      className="dashboard-sidebar hidden md:flex md:flex-col gap-1.5 shrink-0 w-52 lg:w-60 border-e border-brand/10 bg-black/25 md:sticky md:top-[4.25rem] md:self-start md:max-h-[calc(100dvh-4.25rem)] md:overflow-y-auto py-5 px-3 lg:px-4"
       aria-label={t("dashboard.nav.aria")}
     >
       {NAV_ITEMS.map((item) => (
@@ -73,7 +73,7 @@ export function DashboardNavBottom({ section, onSectionChange }) {
 
   return (
     <nav
-      className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-yellow-400/15 bg-[#060911]/95 backdrop-blur-lg px-2 pt-1.5"
+      className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-brand/15 bg-[#060911]/95 backdrop-blur-lg px-2 pt-1.5"
       style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
       aria-label={t("dashboard.nav.aria")}
     >

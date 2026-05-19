@@ -29,7 +29,7 @@ function TabBtn({ active, onClick, icon: Icon, label }) {
       onClick={onClick}
       className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-black transition-all min-h-[44px] snap-start ${
         active
-          ? "bg-yellow-400/15 text-yellow-100 border border-yellow-400/40"
+          ? "bg-brand/15 text-brand border border-brand/40"
           : "text-gray-400 border border-gray-800 bg-black/30 hover:border-gray-600"
       }`}
     >
@@ -45,9 +45,10 @@ export default function MemberProductivitySuite({ userId }) {
   const [tab, setTab] = useState("today");
   const [data, setData] = useState(() => loadProductivityHub(userId));
   const [todoDraft, setTodoDraft] = useState("");
-  const [pomLeft, setPomLeft] = useState(WORK_SEC);
-  const [pomRunning, setPomRunning] = useState(false);
-  const [pomMode, setPomMode] = useState("work");
+  const initialHub = loadProductivityHub(userId);
+  const [pomLeft, setPomLeft] = useState(() => initialHub.pomodoroSecondsLeft ?? WORK_SEC);
+  const [pomRunning, setPomRunning] = useState(() => Boolean(initialHub.pomodoroRunning));
+  const [pomMode, setPomMode] = useState(() => initialHub.pomodoroMode || "work");
   const pomModeRef = useRef("work");
   const [sessionsToday, setSessionsToday] = useState(() => pomodoroSessionsToday(userId));
 
@@ -64,9 +65,31 @@ export default function MemberProductivitySuite({ userId }) {
   );
 
   useEffect(() => {
-    setData(loadProductivityHub(userId));
+    const hub = loadProductivityHub(userId);
+    setData(hub);
+    setPomLeft(hub.pomodoroSecondsLeft ?? WORK_SEC);
+    setPomRunning(Boolean(hub.pomodoroRunning));
+    const mode = hub.pomodoroMode === "break" ? "break" : "work";
+    setPomMode(mode);
+    pomModeRef.current = mode;
     setSessionsToday(pomodoroSessionsToday(userId));
   }, [userId]);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setData((prev) => {
+        const next = {
+          ...prev,
+          pomodoroSecondsLeft: pomLeft,
+          pomodoroRunning: pomRunning,
+          pomodoroMode: pomMode,
+        };
+        saveProductivityHub(userId, next);
+        return next;
+      });
+    }, 500);
+    return () => clearTimeout(id);
+  }, [pomLeft, pomRunning, pomMode, userId]);
 
   useEffect(() => {
     if (!pomRunning) return undefined;
@@ -134,14 +157,14 @@ export default function MemberProductivitySuite({ userId }) {
 
   return (
     <section
-      className="dark-card rounded-2xl border border-emerald-400/15 overflow-hidden"
+      className="dark-card rounded-2xl border border-success/15 overflow-hidden"
       aria-label={t("member.productivity.aria")}
     >
       <div className="px-4 sm:px-5 pt-4 pb-3 border-b border-gray-800/80 bg-black/40 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <Sparkles className="w-5 h-5 text-emerald-400 flex-shrink-0" aria-hidden />
+          <Sparkles className="w-5 h-5 text-success flex-shrink-0" aria-hidden />
           <div>
-            <p className="text-emerald-300/90 text-xs font-black">{t("member.productivity.kicker")}</p>
+            <p className="text-success/90 text-xs font-black">{t("member.productivity.kicker")}</p>
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{t("member.productivity.lead")}</p>
           </div>
         </div>
@@ -149,7 +172,7 @@ export default function MemberProductivitySuite({ userId }) {
           {chips.map((c) => (
             <span
               key={c}
-              className="text-[10px] sm:text-[11px] font-bold px-2 py-1 rounded-lg bg-emerald-400/10 text-emerald-200/90 border border-emerald-400/20"
+              className="text-[10px] sm:text-[11px] font-bold px-2 py-1 rounded-lg bg-success/10 text-success/90/90 border border-success/20"
             >
               {c}
             </span>
@@ -172,12 +195,12 @@ export default function MemberProductivitySuite({ userId }) {
                 onChange={(e) => setTodoDraft(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTodo())}
                 placeholder={t("member.productivity.todoPlaceholder")}
-                className="flex-1 bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm min-h-[44px] outline-none focus:border-emerald-400/50"
+                className="flex-1 bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm min-h-[44px] outline-none focus:border-success/50"
               />
               <button
                 type="button"
                 onClick={addTodo}
-                className="bg-emerald-400/15 border border-emerald-400/40 text-emerald-200 px-4 rounded-xl font-black text-sm min-h-[44px]"
+                className="bg-success/15 border border-success/40 text-success/90 px-4 rounded-xl font-black text-sm min-h-[44px]"
               >
                 {t("member.productivity.add")}
               </button>
@@ -194,7 +217,7 @@ export default function MemberProductivitySuite({ userId }) {
                     <button
                       type="button"
                       onClick={() => toggleTodo(item.id)}
-                      className="mt-0.5 text-emerald-400"
+                      className="mt-0.5 text-success"
                       aria-label={item.done ? t("member.productivity.markOpen") : t("member.productivity.markDone")}
                     >
                       {item.done ? <CheckCircle2 className="w-5 h-5" /> : <Circle className="w-5 h-5 text-gray-500" />}
@@ -211,7 +234,7 @@ export default function MemberProductivitySuite({ userId }) {
             </ul>
             <div className="rounded-xl border border-gray-800/80 bg-black/25 p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Target className="w-4 h-4 text-yellow-400" aria-hidden />
+                <Target className="w-4 h-4 text-primary" aria-hidden />
                 <p className="text-white font-black text-sm">{t("member.productivity.okrTitle")}</p>
               </div>
               <div className="space-y-3">
@@ -224,7 +247,7 @@ export default function MemberProductivitySuite({ userId }) {
                         persist({ ...data, goals });
                       }}
                       placeholder={t("member.productivity.okrPlaceholder", { n: idx + 1 })}
-                      className="w-full bg-black/40 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs mb-1.5 outline-none focus:border-yellow-400/40"
+                      className="w-full bg-black/40 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs mb-1.5 outline-none focus:border-primary/40"
                     />
                     <input
                       type="range"
@@ -237,9 +260,9 @@ export default function MemberProductivitySuite({ userId }) {
                         );
                         persist({ ...data, goals });
                       }}
-                      className="w-full accent-yellow-400 h-1.5"
+                      className="w-full accent-primary h-1.5"
                     />
-                    <p className="text-yellow-400/80 text-[11px] font-bold text-end">{g.progress}%</p>
+                    <p className="text-brand/80 text-[11px] font-bold text-end">{g.progress}%</p>
                   </div>
                 ))}
               </div>
@@ -278,13 +301,13 @@ export default function MemberProductivitySuite({ userId }) {
                 />
               </label>
             </div>
-            <div className="rounded-xl border border-emerald-400/25 bg-emerald-950/20 p-4">
+            <div className="rounded-xl border border-success/25 bg-success/15 p-4">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-emerald-200 text-xs font-bold">{t("member.productivity.progress")}</span>
-                <span className="text-emerald-300 font-black">{pctMoney}%</span>
+                <span className="text-success/90 text-xs font-bold">{t("member.productivity.progress")}</span>
+                <span className="text-success font-black">{pctMoney}%</span>
               </div>
               <div className="h-2 rounded-full bg-gray-800 overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-emerald-400 to-cyan-400 transition-all" style={{ width: `${pctMoney}%` }} />
+                <div className="h-full bg-gradient-to-r from-success to-info transition-all" style={{ width: `${pctMoney}%` }} />
               </div>
               <p className="text-gray-500 text-[11px] mt-2">{t("member.productivity.wealthFoot", { saved: format(data.money.saved || 0) })}</p>
             </div>
@@ -299,7 +322,7 @@ export default function MemberProductivitySuite({ userId }) {
                       money: { ...data.money, saved: (Number(data.money.saved) || 0) + n },
                     })
                   }
-                  className="px-3 py-2 rounded-lg bg-black/40 border border-gray-700 text-emerald-200 text-xs font-black hover:border-emerald-400/40"
+                  className="px-3 py-2 rounded-lg bg-black/40 border border-gray-700 text-success/90 text-xs font-black hover:border-success/40"
                 >
                   +{format(n)}
                 </button>
@@ -357,7 +380,7 @@ export default function MemberProductivitySuite({ userId }) {
                       persist({ ...data, gratitude });
                     }}
                     placeholder={t("member.productivity.gratitudeLine", { n: i + 1 })}
-                    className="w-full bg-black/40 border border-gray-700 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-yellow-400/40"
+                    className="w-full bg-black/40 border border-gray-700 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-primary/40"
                   />
                 ))}
               </div>
@@ -369,7 +392,7 @@ export default function MemberProductivitySuite({ userId }) {
                 onChange={(e) => persist({ ...data, weeklyReview: e.target.value })}
                 rows={5}
                 placeholder={t("member.productivity.reviewPlaceholder")}
-                className="w-full bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm outline-none focus:border-yellow-400/40 resize-y min-h-[120px]"
+                className="w-full bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm outline-none focus:border-primary/40 resize-y min-h-[120px]"
               />
             </div>
           </div>

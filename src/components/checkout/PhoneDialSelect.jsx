@@ -16,7 +16,7 @@ export default function PhoneDialSelect({ value, onChange, className = "" }) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       aria-label={t("checkout.phoneDialLabel")}
-      className={`checkout-field bg-black/40 border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 rounded-xl px-2.5 sm:px-3 text-white outline-none transition-colors w-full sm:w-auto sm:max-w-[11rem] sm:shrink-0 ${className}`}
+      className={`checkout-field bg-black/40 border border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-2.5 sm:px-3 text-white outline-none transition-colors w-full sm:w-auto sm:max-w-[11rem] sm:shrink-0 ${className}`}
     >
       <optgroup label={t("checkout.phonePopularCountries")}>
         {popular.map((c) => (

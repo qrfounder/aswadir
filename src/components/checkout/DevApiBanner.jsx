@@ -43,17 +43,17 @@ export default function DevApiBanner() {
       </p>
       <p className="text-red-200/90 text-xs leading-relaxed">
         {t("checkoutDev.hint")}{" "}
-        <code className="text-yellow-300 font-mono text-[11px]">http://localhost:5173</code>{" "}
+        <code className="text-brand font-mono text-[11px]">http://localhost:5173</code>{" "}
         {t("checkoutDev.run")}
       </p>
       <pre className="text-[11px] text-gray-300 bg-black/50 rounded-lg p-3 overflow-x-auto font-mono flex items-start gap-2">
-        <Terminal className="w-3.5 h-3.5 text-yellow-400 mt-0.5 flex-shrink-0" />
+        <Terminal className="w-3.5 h-3.5 text-primary mt-0.5 flex-shrink-0" />
         npm run dev:all
       </pre>
       <p className="text-gray-500 text-[11px]">
         {t("checkoutDev.alt")}{" "}
-        <code className="text-yellow-300/80">npm run build && npm run dev:server</code> {t("checkoutDev.then")}{" "}
-        <code className="text-yellow-300/80">http://localhost:3000</code>
+        <code className="text-brand/80">npm run build && npm run dev:server</code> {t("checkoutDev.then")}{" "}
+        <code className="text-brand/80">http://localhost:3000</code>
       </p>
     </div>
   );

@@ -57,17 +57,17 @@ export default function SubscriptionBanner({ subscription }) {
   };
 
   return (
-    <div className="dark-card rounded-2xl p-4 sm:p-5 border border-yellow-400/20 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+    <div className="dark-card rounded-2xl p-4 sm:p-5 border border-brand/20 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
       <div className="flex gap-3 items-start min-w-0">
-        <div className="w-10 h-10 rounded-xl bg-yellow-400/10 flex items-center justify-center flex-shrink-0">
-          <Sparkles className="w-5 h-5 text-yellow-400" />
+        <div className="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center flex-shrink-0">
+          <Sparkles className="w-5 h-5 text-primary" />
         </div>
         <div className="min-w-0">
           <p className="text-white font-black text-sm">
             {t("member.subYourPlan", { name: subscription.productName })}
           </p>
           <p className="text-gray-400 text-xs mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span className="text-emerald-400/90 font-bold">{statusLabel}</span>
+            <span className="text-success/90 font-bold">{statusLabel}</span>
             {periodLabel && (
               <>
                 <span className="text-gray-600" aria-hidden>
@@ -90,7 +90,7 @@ export default function SubscriptionBanner({ subscription }) {
         type="button"
         onClick={openPortal}
         disabled={loading}
-        className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-yellow-400/30 text-yellow-300 text-sm font-bold hover:bg-yellow-400/10 transition-colors disabled:opacity-50"
+        className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-brand/30 text-brand text-sm font-bold hover:bg-primary/90/10 transition-colors disabled:opacity-50"
       >
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
         {t("member.manageBilling")}

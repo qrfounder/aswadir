@@ -22,6 +22,14 @@ import {
   handleChangePassword,
 } from "./api/auth-handlers.js";
 import { handleDashboard } from "./api/member-handlers.js";
+import {
+  handleDailyNoteGet,
+  handleDailyNotePut,
+  handleDailyNotesList,
+  handleMemberSyncGet,
+  handleMemberSyncNamespaceGet,
+  handleMemberSyncPut,
+} from "./api/member-sync-handlers.js";
 import { getDb, getDbError } from "./api/db.js";
 import { isStripeConfigured, validateStripeEnvironment } from "./api/stripe-config.js";
 import { getCatalog } from "./api/catalog.js";
@@ -83,6 +91,12 @@ app.post("/api/auth/claim-purchase", handleClaimPurchase);
 app.post("/api/auth/change-password", handleChangePassword);
 
 app.get("/api/member/dashboard", handleDashboard);
+app.get("/api/member/sync", handleMemberSyncGet);
+app.get("/api/member/sync/:namespace", handleMemberSyncNamespaceGet);
+app.put("/api/member/sync/:namespace", handleMemberSyncPut);
+app.get("/api/member/daily-notes", handleDailyNotesList);
+app.get("/api/member/daily-note", handleDailyNoteGet);
+app.put("/api/member/daily-note", handleDailyNotePut);
 app.get("/api/locale/detect", handleLocaleDetect);
 
 app.get("/api/health", (_req, res) => {

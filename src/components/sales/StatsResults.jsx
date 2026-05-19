@@ -9,7 +9,7 @@ export default function StatsResults() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <p className="text-yellow-400/80 text-sm font-bold mb-2">📊 {t("stats.eyebrow")}</p>
+        <p className="text-brand/80 text-sm font-bold mb-2">📊 {t("stats.eyebrow")}</p>
         <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
           {t("stats.title")} <span className="gold-gradient">{t("stats.titleHighlight")}</span>{" "}
           {t("stats.titleEnd")}
@@ -21,7 +21,7 @@ export default function StatsResults() {
           items.map((stat, i) => (
             <div
               key={stat.value}
-              className="dark-card rounded-2xl p-6 text-center border border-yellow-400/10 hover:border-yellow-400/30 transition-colors"
+              className="dark-card rounded-2xl p-6 text-center border border-brand/10 hover:border-primary/30 transition-colors"
             >
               <span className="text-4xl mb-3 block" role="img" aria-hidden>
                 {EMOJIS[i] ?? "📊"}

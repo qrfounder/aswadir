@@ -13,6 +13,7 @@ import DashboardTrackPanel from "@/components/member/dashboard/DashboardTrackPan
 import DashboardToolsPanel from "@/components/member/dashboard/DashboardToolsPanel";
 import DashboardNewsPanel from "@/components/member/dashboard/DashboardNewsPanel";
 import DashboardAccountPanel from "@/components/member/dashboard/DashboardAccountPanel";
+import { hydrateMemberDataFromServer } from "@/lib/member-sync";
 
 function readSectionFromHash() {
   const raw = window.location.hash.replace(/^#/, "");
@@ -27,6 +28,7 @@ export default function DashboardPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [syncStatus, setSyncStatus] = useState(null);
 
   const goToSection = useCallback((next) => {
     if (!isDashboardSection(next)) return;
@@ -61,6 +63,18 @@ export default function DashboardPage() {
     };
   }, [t]);
 
+  useEffect(() => {
+    if (!user?.id) return undefined;
+    let cancelled = false;
+    (async () => {
+      const result = await hydrateMemberDataFromServer(user.id);
+      if (!cancelled) setSyncStatus(result);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
+
   const ownedKeys = [...new Set(data?.entitlements?.map((e) => e.product_key) || [])];
   const hasHabit = hasEntitlement("habit");
   const hasTask = hasEntitlement("task");
@@ -70,13 +84,13 @@ export default function DashboardPage() {
   const subscription = data?.subscription || authSubscription;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col" dir={dir}>
-      <header className="bg-black/70 border-b border-yellow-400/10 sticky top-0 z-40 backdrop-blur-md overflow-visible shrink-0">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+    <div className="min-h-screen bg-background flex flex-col w-full" dir={dir}>
+      <header className="bg-black/70 border-b border-brand/10 sticky top-0 z-40 backdrop-blur-md overflow-visible shrink-0 w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <BrandLogo size="compact" className="flex-shrink-0" />
             <div className="min-w-0 hidden min-[400px]:block">
-              <p className="text-yellow-400 font-black text-xs sm:text-sm">{t("dashboard.memberArea")}</p>
+              <p className="text-primary font-black text-xs sm:text-sm">{t("dashboard.memberArea")}</p>
               <p className="text-gray-500 text-[11px] sm:text-xs truncate max-w-[10rem] sm:max-w-none">
                 {user?.name || user?.email}
               </p>
@@ -100,11 +114,11 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <div className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-5 sm:py-8 pb-24 md:pb-8">
-        <div className="flex flex-col md:flex-row gap-6 lg:gap-8">
-          <DashboardNavSidebar section={section} onSectionChange={goToSection} />
+      <div className="flex flex-1 w-full min-w-0">
+        <DashboardNavSidebar section={section} onSectionChange={goToSection} />
 
-          <main className="flex-1 min-w-0" id="dashboard-main">
+        <div className="flex-1 min-w-0 w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-8 pb-24 md:pb-8">
+          <main className="dashboard-main w-full" id="dashboard-main">
             {section === "track" && (
               <DashboardTrackPanel
                 firstName={firstName}
@@ -117,6 +131,7 @@ export default function DashboardPage() {
                 subscription={subscription}
                 loading={loading}
                 error={error}
+                syncStatus={syncStatus}
               />
             )}
             {section === "tools" && <DashboardToolsPanel userId={user?.id} />}

@@ -29,7 +29,7 @@ export default function BrandLogo({
 
   if (asLink) {
     return (
-      <Link to={to} className="inline-flex flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-lg">
+      <Link to={to} className="inline-flex flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg">
         {img}
       </Link>
     );

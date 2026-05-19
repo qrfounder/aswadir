@@ -7,7 +7,7 @@ export default function PerformersSection() {
   return (
     <div className="space-y-10">
       <div className="text-center max-w-2xl mx-auto">
-        <p className="text-yellow-400/80 text-sm font-bold mb-2">🏆 {t("performers.eyebrow")}</p>
+        <p className="text-brand/80 text-sm font-bold mb-2">🏆 {t("performers.eyebrow")}</p>
         <h2 className="text-2xl md:text-3xl font-black text-white mb-3">
           {t("performers.title")} <span className="gold-gradient">{t("performers.titleHighlight")}</span>
         </h2>

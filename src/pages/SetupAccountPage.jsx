@@ -161,7 +161,7 @@ export default function SetupAccountPage() {
   if (isAuthenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-yellow-400" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -177,7 +177,7 @@ export default function SetupAccountPage() {
 
         {verifying && (
           <div className="dark-card rounded-xl p-4 flex items-center justify-center gap-2 text-gray-300 text-sm">
-            <Loader2 className="w-4 h-4 animate-spin text-yellow-400" />
+            <Loader2 className="w-4 h-4 animate-spin text-primary" />
             {t("auth.setupVerifying")}
           </div>
         )}
@@ -185,7 +185,7 @@ export default function SetupAccountPage() {
         {!paymentRef && (
           <div className="bg-amber-900/20 border border-amber-500/30 rounded-xl p-4 text-amber-100 text-sm">
             {t("auth.setupNoPaymentRef")}{" "}
-            <Link to="/login" className="text-yellow-400 font-bold hover:underline">
+            <Link to="/login" className="text-primary font-bold hover:underline">
               {t("auth.loginLink")}
             </Link>
           </div>
@@ -194,7 +194,7 @@ export default function SetupAccountPage() {
         <form onSubmit={handleSubmit} className="dark-card rounded-2xl p-6 space-y-5">
           <label className="block">
             <span className="text-gray-300 text-sm font-bold mb-2 flex items-center gap-2">
-              <User className="w-4 h-4 text-yellow-400" /> {t("auth.name")}
+              <User className="w-4 h-4 text-primary" /> {t("auth.name")}
             </span>
             <input
               type="text"
@@ -202,13 +202,13 @@ export default function SetupAccountPage() {
               autoComplete="name"
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-3 text-white outline-none"
+              className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-3 text-white outline-none"
             />
           </label>
 
           <label className="block">
             <span className="text-gray-300 text-sm font-bold mb-2 flex items-center gap-2">
-              <Mail className="w-4 h-4 text-yellow-400" /> {t("auth.email")}
+              <Mail className="w-4 h-4 text-primary" /> {t("auth.email")}
             </span>
             <input
               type="email"
@@ -217,13 +217,13 @@ export default function SetupAccountPage() {
               dir="ltr"
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-3 text-white outline-none text-left"
+              className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-3 text-white outline-none text-left"
             />
           </label>
 
           <label className="block">
             <span className="text-gray-300 text-sm font-bold mb-2 flex items-center gap-2">
-              <Lock className="w-4 h-4 text-yellow-400" /> {t("auth.password")}
+              <Lock className="w-4 h-4 text-primary" /> {t("auth.password")}
             </span>
             <input
               type="password"
@@ -232,7 +232,7 @@ export default function SetupAccountPage() {
               autoComplete="new-password"
               value={form.password}
               onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
-              className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-3 text-white outline-none"
+              className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-3 text-white outline-none"
             />
           </label>
 
@@ -244,7 +244,7 @@ export default function SetupAccountPage() {
               autoComplete="new-password"
               value={form.confirm}
               onChange={(e) => setForm((f) => ({ ...f, confirm: e.target.value }))}
-              className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-3 text-white outline-none"
+              className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-3 text-white outline-none"
             />
           </label>
 
@@ -254,7 +254,7 @@ export default function SetupAccountPage() {
               {errorCode === "email_in_use" && checkoutSessionId && (
                 <Link
                   to={`/login?session_id=${encodeURIComponent(checkoutSessionId)}&next=${encodeURIComponent("/dashboard")}`}
-                  className="text-yellow-400 font-bold hover:underline inline-block"
+                  className="text-primary font-bold hover:underline inline-block"
                 >
                   {t("auth.loginToClaim")}
                 </Link>
@@ -281,7 +281,7 @@ export default function SetupAccountPage() {
 
         <p className="text-center text-gray-500 text-sm">
           {t("auth.hasAccount")}{" "}
-          <Link to="/login" className="text-yellow-400 font-bold hover:underline">
+          <Link to="/login" className="text-primary font-bold hover:underline">
             {t("auth.loginLink")}
           </Link>
         </p>

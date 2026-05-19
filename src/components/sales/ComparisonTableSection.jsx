@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 function Cell({ level, titleFull, titlePartial, titleNone }) {
   if (level === "full")
     return (
-      <span className="inline-flex justify-center text-emerald-400" title={titleFull}>
+      <span className="inline-flex justify-center text-success" title={titleFull}>
         <Check className="w-5 h-5" strokeWidth={2.5} />
       </span>
     );
@@ -32,12 +32,12 @@ export default function ComparisonTableSection() {
           {t("landing.comparisonTitle")}
         </h2>
       </div>
-      <div className="overflow-x-auto rounded-2xl border border-yellow-400/15 dark-card">
+      <div className="overflow-x-auto rounded-2xl border border-brand/15 dark-card">
         <table className="w-full min-w-[520px] text-sm border-collapse">
           <thead>
-            <tr className="border-b border-yellow-400/15 bg-yellow-400/5">
+            <tr className="border-b border-brand/15 bg-brand/5">
               <th className="text-start p-4 font-black text-white w-[36%]">Feature</th>
-              <th className="p-4 text-center font-black text-yellow-300 w-[21%]">{t("landing.comparisonMassar")}</th>
+              <th className="p-4 text-center font-black text-brand w-[21%]">{t("landing.comparisonMassar")}</th>
               <th className="p-4 text-center font-bold text-gray-300 w-[21%]">{t("landing.comparisonApps")}</th>
               <th className="p-4 text-center font-bold text-gray-300 w-[22%]">{t("landing.comparisonNotes")}</th>
             </tr>
@@ -45,9 +45,9 @@ export default function ComparisonTableSection() {
           <tbody>
             {Array.isArray(rows) &&
               rows.map((row) => (
-                <tr key={row.feature} className="border-b border-yellow-400/10 last:border-0">
+                <tr key={row.feature} className="border-b border-brand/10 last:border-0">
                   <td className="p-4 text-gray-200 leading-relaxed align-middle">{row.feature}</td>
-                  <td className="p-4 text-center align-middle bg-yellow-400/5">
+                  <td className="p-4 text-center align-middle bg-brand/5">
                     <Cell level={row.massar} titleFull="Full" titlePartial="Partial" titleNone="None" />
                   </td>
                   <td className="p-4 text-center align-middle">

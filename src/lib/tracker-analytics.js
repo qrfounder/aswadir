@@ -66,7 +66,7 @@ export function computeHabitAnalytics(userId, today = new Date(), t = null) {
   })();
 
   const dailyTrend = [];
-  const start = Math.max(1, todayNum - 13);
+  const start = Math.max(1, todayNum - 29);
   for (let d = start; d <= todayNum; d++) {
     dailyTrend.push({
       day: d,

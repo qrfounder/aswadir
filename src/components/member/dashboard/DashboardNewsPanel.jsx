@@ -12,7 +12,7 @@ export default function DashboardNewsPanel({ loading }) {
   return (
     <div className="space-y-5 sm:space-y-6">
       <header className="space-y-2">
-        <div className="inline-flex items-center gap-2 text-yellow-400/90 text-xs font-bold">
+        <div className="inline-flex items-center gap-2 text-primary/90 text-xs font-bold">
           <Bell className="w-4 h-4" aria-hidden />
           {t("dashboard.nav.newsKicker")}
         </div>
@@ -33,10 +33,10 @@ export default function DashboardNewsPanel({ loading }) {
           updates.map((item) => (
             <article
               key={item.id}
-              className="dark-card rounded-2xl p-4 sm:p-5 border border-yellow-400/10 hover:border-yellow-400/25 transition-colors"
+              className="dark-card rounded-2xl p-4 sm:p-5 border border-brand/10 hover:border-primary/40/25 transition-colors"
             >
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="text-xs font-black bg-yellow-400/15 text-yellow-300 px-2 py-0.5 rounded">
+                <span className="text-xs font-black bg-brand/15 text-brand px-2 py-0.5 rounded">
                   {item.tag}
                 </span>
                 <span className="text-gray-600 text-xs">{item.publishedAt}</span>
@@ -50,7 +50,7 @@ export default function DashboardNewsPanel({ loading }) {
         )}
       </div>
 
-      <section className="dark-card rounded-2xl p-5 sm:p-6 border border-dashed border-yellow-400/20">
+      <section className="dark-card rounded-2xl p-5 sm:p-6 border border-dashed border-brand/20">
         <h2 className="text-white font-black text-base mb-2">{t("dashboard.comingTitle")}</h2>
         <p className="text-gray-400 text-sm leading-relaxed">{t("dashboard.comingBody")}</p>
       </section>

@@ -24,7 +24,7 @@ export default function BeforeAfter() {
       </div>
       <div className="before-after-card bg-green-950/20 border border-green-700/30 rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-5">
-          <Trophy className="w-8 h-8 text-yellow-400" />
+          <Trophy className="w-8 h-8 text-primary" />
           <h3 className="text-green-300 font-black text-lg">{t("landing.afterCardTitle")}</h3>
         </div>
         <ul className="space-y-3">

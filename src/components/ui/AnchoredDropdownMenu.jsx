@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
 
 const menuSurfaceClass =
-  "rounded-xl border border-yellow-400/30 bg-[#0f1424] py-1 shadow-2xl shadow-black/60 ring-1 ring-yellow-400/10";
+  "rounded-xl border border-brand/30 bg-[#0f1424] py-1 shadow-2xl shadow-black/60 ring-1 ring-primary/10";
 
 /**
  * @param {{ open: boolean, menuRef: import('react').RefObject<HTMLElement>, pos: { top: number, left: number, minWidth: number }, children: import('react').ReactNode, className?: string, listboxLabel?: string }} props

@@ -63,7 +63,7 @@ export default function MentalMoodLive({ variant = "overview" }) {
         <Trans
           i18nKey="member.analytics.mentalEditHint"
           components={{
-            1: <strong className="text-yellow-400/90" />,
+            1: <strong className="text-primary/90" />,
           }}
         />
       </p>

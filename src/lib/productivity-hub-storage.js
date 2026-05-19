@@ -1,3 +1,5 @@
+import { scheduleTrackerPush } from "@/lib/member-sync";
+
 function key(userId) {
   return `massar_productivity_hub_${userId}`;
 }
@@ -48,11 +50,18 @@ export function loadProductivityHub(userId) {
     pomodoro: parsed.pomodoro && typeof parsed.pomodoro === "object"
       ? { ...base.pomodoro, ...parsed.pomodoro }
       : base.pomodoro,
+    pomodoroSecondsLeft:
+      typeof parsed.pomodoroSecondsLeft === "number" && parsed.pomodoroSecondsLeft >= 0
+        ? parsed.pomodoroSecondsLeft
+        : base.pomodoroSecondsLeft,
+    pomodoroRunning: Boolean(parsed.pomodoroRunning),
+    pomodoroMode: parsed.pomodoroMode === "break" ? "break" : "work",
   };
 }
 
 export function saveProductivityHub(userId, data) {
   localStorage.setItem(key(userId), JSON.stringify(data));
+  scheduleTrackerPush(userId, "productivity", data);
 }
 
 export function pomodoroSessionsToday(userId) {

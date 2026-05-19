@@ -124,6 +124,27 @@ function migrate(database) {
   ensureColumn(database, "purchases", "checkout_session_id", "TEXT");
   ensureColumn(database, "purchases", "subscription_id", "TEXT");
   ensureColumn(database, "purchases", "pending_password_hash", "TEXT");
+
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS member_tracker_data (
+      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      namespace TEXT NOT NULL,
+      payload TEXT NOT NULL,
+      updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (user_id, namespace)
+    );
+
+    CREATE TABLE IF NOT EXISTS member_daily_notes (
+      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      note_date TEXT NOT NULL,
+      content TEXT NOT NULL DEFAULT '',
+      updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (user_id, note_date)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_member_daily_notes_user_date
+      ON member_daily_notes(user_id, note_date DESC);
+  `);
 }
 
 function ensureColumn(database, table, column, typeSql) {

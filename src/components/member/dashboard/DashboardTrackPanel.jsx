@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import DailyNotesPanel from "@/components/member/dashboard/DailyNotesPanel";
 import MemberTrackerHub from "@/components/member/MemberTrackerHub";
 import BundleUpgradeBanner from "@/components/member/BundleUpgradeBanner";
 import SubscriptionBanner from "@/components/member/SubscriptionBanner";
@@ -14,6 +15,7 @@ export default function DashboardTrackPanel({
   subscription,
   loading,
   error,
+  syncStatus,
 }) {
   const { t } = useTranslation();
 
@@ -45,6 +47,8 @@ export default function DashboardTrackPanel({
       )}
 
       {showUpsell && <BundleUpgradeBanner ownedKeys={ownedKeys} />}
+
+      {userId && <DailyNotesPanel userId={userId} syncStatus={syncStatus} />}
 
       {userId && (hasHabit || hasTask) ? (
         <MemberTrackerHub

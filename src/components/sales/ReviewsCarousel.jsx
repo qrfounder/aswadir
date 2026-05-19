@@ -54,7 +54,7 @@ export default function ReviewsCarousel({ testimonials }) {
             <button
               type="button"
               onClick={scrollToMore}
-              className="inline-flex items-center justify-center gap-2 min-w-[14rem] px-6 py-3.5 rounded-2xl border border-yellow-400/50 bg-yellow-400/10 text-yellow-300 font-black text-sm hover:bg-yellow-400/20 hover:border-yellow-400/70 transition-colors shadow-lg shadow-yellow-400/5"
+              className="inline-flex items-center justify-center gap-2 min-w-[14rem] px-6 py-3.5 rounded-2xl border border-brand/50 bg-brand/10 text-brand font-black text-sm hover:bg-primary/20 hover:border-primary/40/70 transition-colors shadow-lg shadow-primary/5"
             >
               {t("testimonials.reviewsScrollMore")}
               <ChevronDown className="w-5 h-5 animate-bounce" aria-hidden />
@@ -65,7 +65,7 @@ export default function ReviewsCarousel({ testimonials }) {
             id="reviews-more"
             ref={moreRef}
             tabIndex={-1}
-            className="scroll-mt-28 space-y-6 pt-4 border-t border-yellow-400/15 outline-none"
+            className="scroll-mt-28 space-y-6 pt-4 border-t border-brand/15 outline-none"
             aria-label={t("testimonials.reviewsMoreRegion")}
           >
             <p className="text-center text-gray-400 text-sm font-bold">

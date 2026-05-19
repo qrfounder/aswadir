@@ -73,7 +73,7 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="dark-card rounded-2xl p-6 space-y-5">
           <label className="block">
             <span className="text-gray-300 text-sm font-bold mb-2 flex items-center gap-2">
-              <Mail className="w-4 h-4 text-yellow-400" /> {t("auth.email")}
+              <Mail className="w-4 h-4 text-primary" /> {t("auth.email")}
             </span>
             <input
               type="email"
@@ -82,13 +82,13 @@ export default function LoginPage() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-3 text-white outline-none text-left"
+              className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-3 text-white outline-none text-left"
             />
           </label>
 
           <label className="block">
             <span className="text-gray-300 text-sm font-bold mb-2 flex items-center gap-2">
-              <Lock className="w-4 h-4 text-yellow-400" /> {t("auth.password")}
+              <Lock className="w-4 h-4 text-primary" /> {t("auth.password")}
             </span>
             <input
               type="password"
@@ -96,14 +96,14 @@ export default function LoginPage() {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-black/40 border border-gray-700 focus:border-yellow-400 rounded-xl px-4 py-3 text-white outline-none"
+              className="w-full bg-black/40 border border-gray-700 focus:border-primary rounded-xl px-4 py-3 text-white outline-none"
             />
           </label>
 
           <button
             type="button"
             onClick={() => setShowClaim(!showClaim)}
-            className="text-yellow-400/90 text-xs font-bold hover:underline flex items-center gap-1"
+            className="text-primary/90 text-xs font-bold hover:underline flex items-center gap-1"
           >
             <KeyRound className="w-3.5 h-3.5" />
             {t("auth.claimPrompt")}
@@ -142,7 +142,7 @@ export default function LoginPage() {
         </form>
 
         <p className="text-center text-gray-500 text-sm">
-          <Link to="/" className="text-gray-400 hover:text-yellow-400">
+          <Link to="/" className="text-gray-400 hover:text-primary">
             {t("auth.backHome")}
           </Link>
         </p>

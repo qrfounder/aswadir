@@ -15,14 +15,14 @@ export default function LanguageSwitcher({ className = "", compact = false }) {
       <button
         type="button"
         onClick={toggle}
-        className={`flex items-center gap-1 rounded-lg border border-yellow-400/25 bg-white/5 text-xs font-bold text-gray-200 hover:border-yellow-400/50 hover:text-white transition-colors ${
+        className={`flex items-center gap-1 rounded-lg border border-brand/25 bg-white/5 text-xs font-bold text-gray-200 hover:border-primary/40/50 hover:text-white transition-colors ${
           compact ? "px-2 py-1.5 min-w-[2.75rem] justify-center" : "gap-1.5 px-2.5 py-1.5"
         }`}
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label={t("lang.label")}
       >
-        <Globe className="w-3.5 h-3.5 text-yellow-400 shrink-0" />
+        <Globe className="w-3.5 h-3.5 text-primary shrink-0" />
         {compact ? (
           <>
             <span className="uppercase tabular-nums sm:hidden">{locale}</span>
@@ -49,10 +49,10 @@ export default function LanguageSwitcher({ className = "", compact = false }) {
                 changeLocale(code);
                 close();
               }}
-              className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-sm text-gray-200 hover:bg-yellow-400/15 hover:text-white text-start"
+              className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-sm text-gray-200 hover:bg-primary/90/15 hover:text-white text-start"
             >
               <span>{t(`lang.${code}`)}</span>
-              {code === locale && <Check className="w-4 h-4 text-yellow-400 shrink-0" />}
+              {code === locale && <Check className="w-4 h-4 text-primary shrink-0" />}
             </button>
           </li>
         ))}

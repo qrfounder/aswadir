@@ -7,9 +7,9 @@ export default function SocialProofBar() {
 
   return (
     <div className="dark-card rounded-2xl p-5">
-      <div className="grid grid-cols-3 gap-4 text-center divide-x divide-yellow-400/20 [&>*]:px-2">
+      <div className="grid grid-cols-3 gap-4 text-center divide-x divide-brand/20 [&>*]:px-2">
         <div className="flex flex-col items-center gap-1">
-          <Users className="w-7 h-7 text-yellow-400 mb-1" />
+          <Users className="w-7 h-7 text-primary mb-1" />
           <p className="text-2xl md:text-3xl font-black gold-gradient leading-none">+15,000</p>
           <p className="text-gray-400 text-xs">{t("socialBar.users")}</p>
         </div>
@@ -21,7 +21,7 @@ export default function SocialProofBar() {
           <p className="text-gray-400 text-xs">+2,544 {t("socialBar.rating")}</p>
         </div>
         <div className="flex flex-col items-center gap-1">
-          <ShieldCheck className="w-7 h-7 text-yellow-400 mb-1" />
+          <ShieldCheck className="w-7 h-7 text-primary mb-1" />
           <p className="text-2xl md:text-3xl font-black gold-gradient leading-none">21</p>
           <p className="text-gray-400 text-xs">{t("socialBar.guarantee")}</p>
         </div>

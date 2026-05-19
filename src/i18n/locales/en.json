@@ -439,7 +439,7 @@
     "welcomeBundle": "Full bundle is active.",
     "welcomeUpgrade": "Upgrade to the full bundle anytime.",
     "trustSecure": "Secure access to your account only",
-    "trustLocal": "Progress saved on your device — full privacy",
+    "trustLocal": "Synced to your account — also cached on this device for speed",
     "loading": "Loading your data…",
     "loadError": "Could not load dashboard. Refresh or sign in again.",
     "yourProducts": "Your active plans",
@@ -482,7 +482,7 @@
       "news": "News",
       "account": "Account",
       "trackTitle": "Track",
-      "trackLead": "Log habits and tasks here — start with Overview, then open Habits or Tasks.",
+      "trackLead": "Start with today's note, then log habits and tasks. Your progress syncs to your account.",
       "toolsKicker": "Extra tools",
       "toolsTitle": "Focus & planning",
       "toolsLead": "Quick todos, pomodoro, goals, and reflection — separate from your main habit and task trackers.",
@@ -495,6 +495,24 @@
       "supportLead": "Billing questions, refunds, or technical issues — check FAQs on the homepage first.",
       "supportFaq": "View FAQs",
       "signedInAs": "Signed in as"
+    },
+    "dailyNote": {
+      "title": "Today's note",
+      "subtitle": "{{date}} — your private daily journal",
+      "placeholder": "What matters today? Wins, worries, one priority…",
+      "saving": "Saving…",
+      "synced": "Saved to your account",
+      "localOnly": "Saved locally — will sync when online"
+    },
+    "todaySummary": {
+      "habits": "Habits today",
+      "habitsDetail": "{{done}} of {{total}} done",
+      "tasks": "Tasks this week",
+      "tasksDetail": "{{total}} total this week",
+      "mental": "Mental",
+      "mentalHint": "From your sliders",
+      "momentum": "Momentum",
+      "momentumHint": "Combined daily score"
     },
     "updateItems": [
       {

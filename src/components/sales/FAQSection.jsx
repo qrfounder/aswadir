@@ -19,14 +19,14 @@ export default function FAQSection() {
             onClick={() => setOpen(open === i ? null : i)}
           >
             <ChevronDown
-              className={`w-5 h-5 text-yellow-400 flex-shrink-0 transition-transform duration-200 ${
+              className={`w-5 h-5 text-primary flex-shrink-0 transition-transform duration-200 ${
                 open === i ? "rotate-180" : ""
               }`}
             />
             <span className="text-white font-bold text-sm flex-1 text-start">{faq.q}</span>
           </button>
           {open === i && (
-            <div className="px-4 pb-4 border-t border-yellow-400/10">
+            <div className="px-4 pb-4 border-t border-brand/10">
               <p className="text-gray-300 text-sm leading-relaxed pt-3">{faq.a}</p>
             </div>
           )}

@@ -16,7 +16,7 @@ function TaskCard({ task, pri, onToggle, onRemove, t }) {
           onClick={onToggle}
           aria-label={task.done ? t("member.taskMarkUndone") : t("member.taskMarkDone")}
           className={`w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center transition-colors ${
-            task.done ? "bg-emerald-400 text-black" : "bg-gray-800 text-gray-500 hover:bg-gray-700"
+            task.done ? "bg-success text-black" : "bg-gray-800 text-gray-500 hover:bg-gray-700"
           }`}
         >
           {task.done ? <Check className="w-4 h-4" strokeWidth={3} /> : null}
@@ -107,19 +107,19 @@ export default function TaskWeeklyBoard({ userId }) {
     <div className="space-y-4 sm:space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
         <div>
-          <p className="text-emerald-400/90 text-xs font-bold">{t("member.taskTracker")}</p>
+          <p className="text-success/90 text-xs font-bold">{t("member.taskTracker")}</p>
           <h3 className="text-white font-black text-lg sm:text-xl">{t("member.taskWeekTitle")}</h3>
         </div>
         <div className="flex gap-2 self-start sm:self-auto">
-          <div className="rounded-xl bg-black/50 border border-emerald-400/25 px-4 py-2 text-center min-w-[80px]">
+          <div className="rounded-xl bg-black/50 border border-success/25 px-4 py-2 text-center min-w-[80px]">
             <p className="text-gray-500 text-[10px] font-bold mb-0.5">{t("member.taskDoneCol")}</p>
-            <p className="text-emerald-300 font-black text-lg tabular-nums">
+            <p className="text-success font-black text-lg tabular-nums">
               {doneCount}/{items.length}
             </p>
           </div>
-          <div className="rounded-xl bg-black/50 border border-emerald-400/25 px-3 py-2 text-center min-w-[72px]">
+          <div className="rounded-xl bg-black/50 border border-success/25 px-3 py-2 text-center min-w-[72px]">
             <p className="text-gray-500 text-[10px] font-bold mb-0.5">{t("member.taskRateCol")}</p>
-            <AnimatedValue value={weekPct} suffix="%" className="text-emerald-300 font-black text-lg" />
+            <AnimatedValue value={weekPct} suffix="%" className="text-success font-black text-lg" />
           </div>
         </div>
       </div>
@@ -135,10 +135,10 @@ export default function TaskWeeklyBoard({ userId }) {
           return (
             <div
               key={dayLabel}
-              className="flex-shrink-0 w-[min(88vw,300px)] sm:w-[280px] lg:w-full lg:min-w-[9.5rem] snap-center rounded-xl border border-emerald-400/15 bg-[#0d1117]/95 min-h-[240px] flex flex-col"
+              className="flex-shrink-0 w-[min(88vw,300px)] sm:w-[280px] lg:w-full lg:min-w-[9.5rem] snap-center rounded-xl border border-success/15 bg-[#0d1117]/95 min-h-[240px] flex flex-col"
             >
-              <div className="px-3 py-2.5 bg-emerald-900/35 border-b border-emerald-400/20 text-center flex-shrink-0">
-                <p className="text-emerald-100 font-black text-sm">{dayLabel}</p>
+              <div className="px-3 py-2.5 bg-success/20 border-b border-success/20 text-center flex-shrink-0">
+                <p className="text-success font-black text-sm">{dayLabel}</p>
                 <p className="text-gray-500 text-[11px] mt-0.5 tabular-nums">
                   {t("member.taskDayProgress", { done: dayDone, total: dayTasks.length })}
                 </p>
@@ -171,7 +171,7 @@ export default function TaskWeeklyBoard({ userId }) {
         })}
       </div>
 
-      <div className="dark-card rounded-xl p-4 sm:p-5 border border-emerald-400/20 space-y-3">
+      <div className="dark-card rounded-xl p-4 sm:p-5 border border-success/20 space-y-3">
         <p className="text-white font-bold text-sm">{t("member.taskNew")}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
           <input
@@ -180,7 +180,7 @@ export default function TaskWeeklyBoard({ userId }) {
             onChange={(e) => setDraft({ ...draft, title: e.target.value })}
             onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTask())}
             placeholder={t("member.taskPlaceholder")}
-            className="sm:col-span-2 bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm min-h-[44px] outline-none focus:border-emerald-400/50"
+            className="sm:col-span-2 bg-black/40 border border-gray-700 rounded-xl px-3 py-3 text-white text-sm min-h-[44px] outline-none focus:border-success/50"
           />
           <select
             value={draft.day}
@@ -210,7 +210,7 @@ export default function TaskWeeklyBoard({ userId }) {
         <button
           type="button"
           onClick={addTask}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-400/20 border border-emerald-400/40 text-emerald-100 px-6 py-3 rounded-xl font-bold text-sm hover:bg-emerald-400/30 min-h-[44px]"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-success/20 border border-success/40 text-success px-6 py-3 rounded-xl font-bold text-sm hover:bg-success/30 min-h-[44px]"
         >
           <Plus className="w-5 h-5" />
           {t("member.taskAddBtn")}

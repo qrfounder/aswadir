@@ -14,7 +14,7 @@ export default function TrustBadges({ className = "" }) {
           const Icon = ICONS[i] ?? ShieldCheck;
           return (
             <div key={i} className="flex flex-col items-center gap-2 dark-card rounded-xl p-4 text-center">
-              <Icon className="w-7 h-7 text-yellow-400" aria-hidden />
+              <Icon className="w-7 h-7 text-primary" aria-hidden />
               <p className="text-white text-xs font-bold leading-snug">{badge.text}</p>
               <p className="text-gray-400 text-xs">{badge.sub}</p>
             </div>
