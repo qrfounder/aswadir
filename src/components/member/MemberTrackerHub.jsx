@@ -1,7 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTrackerCatalog } from "@/lib/useTrackerCatalog";
-import { TrackerProvider } from "@/lib/TrackerContext";
 import DailyHabitsPanel from "@/components/member/DailyHabitsPanel";
 import TaskWeeklyBoard from "@/components/member/TaskWeeklyBoard";
 import InsightFlash from "@/components/member/analytics/InsightFlash";
@@ -21,7 +20,15 @@ function tabButtonClass(active, tabId) {
   return "bg-brand/20 text-brand border border-brand/40 shadow-sm shadow-primary/10";
 }
 
-export default function MemberTrackerHub({ userId, hasHabit, hasTask, hasBundle }) {
+export default function MemberTrackerHub({
+  userId,
+  hasHabit,
+  hasTask,
+  hasBundle,
+  activeTab: controlledTab,
+  onTabChange,
+  showTodaySummary = true,
+}) {
   const { t } = useTranslation();
   const { packMeta } = useTrackerCatalog();
 
@@ -41,7 +48,16 @@ export default function MemberTrackerHub({ userId, hasHabit, hasTask, hasBundle 
     return list;
   }, [hasHabit, hasTask, overviewTab, packMeta]);
 
-  const [active, setActive] = useState("overview");
+  const [internalTab, setInternalTab] = useState("overview");
+  const active = controlledTab ?? internalTab;
+  const setActive = (tab) => {
+    setInternalTab(tab);
+    onTabChange?.(tab);
+  };
+
+  useEffect(() => {
+    if (controlledTab != null) setInternalTab(controlledTab);
+  }, [controlledTab]);
 
   if (!hasHabit && !hasTask) {
     return (
@@ -51,10 +67,9 @@ export default function MemberTrackerHub({ userId, hasHabit, hasTask, hasBundle 
 
   const activeMeta = tabs.find((tab) => tab.id === active);
 
-  return (
-    <TrackerProvider userId={userId} hasHabit={hasHabit} hasTask={hasTask}>
+  const content = (
       <section
-        className="dark-card rounded-2xl border border-brand/15 overflow-hidden"
+        className="dashboard-tracker-hub dark-card rounded-2xl border border-brand/15 overflow-hidden"
         aria-label={t("tracker.ariaLabel")}
       >
         <div className="px-4 sm:px-5 pt-4 pb-3 border-b border-gray-800/80 bg-black/40 space-y-3">
@@ -100,7 +115,7 @@ export default function MemberTrackerHub({ userId, hasHabit, hasTask, hasBundle 
         <div className="p-4 sm:p-5 md:p-6" role="tabpanel" aria-label={activeMeta?.name}>
           {active === "overview" && (
             <>
-              <TodaySummaryCard />
+              {showTodaySummary && <TodaySummaryCard />}
               <ProgressCommandCenter hasHabit={hasHabit} hasTask={hasTask} />
             </>
           )}
@@ -108,6 +123,7 @@ export default function MemberTrackerHub({ userId, hasHabit, hasTask, hasBundle 
           {active === "task" && hasTask && <TaskWeeklyBoard userId={userId} />}
         </div>
       </section>
-    </TrackerProvider>
   );
+
+  return content;
 }

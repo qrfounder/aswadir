@@ -387,7 +387,60 @@ html[dir="ltr"] .member-sticky-col {
   background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.06), transparent);
 }
 
-/* Full-width member dashboard shell */
+/* ——— Member dashboard shell ——— */
+.dashboard-shell {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, hsl(168 62% 42% / 0.08), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 0%, hsl(43 74% 52% / 0.06), transparent 45%),
+    hsl(var(--background));
+}
+
+.dashboard-topbar {
+  background: hsl(222 47% 5% / 0.88);
+  border-bottom: 1px solid hsl(var(--brand) / 0.12);
+  backdrop-filter: blur(16px);
+}
+
+.dashboard-sidebar {
+  background: hsl(222 40% 7% / 0.65);
+}
+
+.dashboard-bottom-nav {
+  background: hsl(222 47% 5% / 0.96);
+  border-top: 1px solid hsl(var(--primary) / 0.15);
+  backdrop-filter: blur(20px);
+}
+
+.dashboard-hero {
+  background:
+    linear-gradient(145deg, hsl(222 40% 9% / 0.95) 0%, hsl(222 47% 5% / 0.98) 100%);
+  box-shadow:
+    0 0 0 1px hsl(var(--brand) / 0.12),
+    0 24px 48px -24px hsl(0 0% 0% / 0.55);
+}
+
+.dashboard-tracker-hub {
+  box-shadow: 0 20px 40px -28px hsl(0 0% 0% / 0.7);
+}
+
+.dashboard-daily-note {
+  box-shadow: 0 12px 32px -20px hsl(var(--info) / 0.25);
+}
+
+.dashboard-loading-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  animation: dashboard-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes dashboard-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
 .dashboard-main {
   width: 100%;
   max-width: none;

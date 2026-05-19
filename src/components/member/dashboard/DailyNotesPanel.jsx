@@ -58,12 +58,12 @@ export default function DailyNotesPanel({ userId, syncStatus }) {
 
   return (
     <section
-      className="dark-card rounded-2xl border border-sky-400/20 bg-gradient-to-br from-sky-950/40 to-black/50 p-4 sm:p-5"
+      className="dashboard-daily-note dark-card rounded-2xl border border-info/25 bg-gradient-to-br from-info/10 via-black/40 to-black/60 p-4 sm:p-5"
       aria-labelledby="daily-notes-heading"
     >
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-2 min-w-0">
-          <BookOpen className="w-5 h-5 text-sky-300 flex-shrink-0" aria-hidden />
+          <BookOpen className="w-5 h-5 text-info flex-shrink-0" aria-hidden />
           <div>
             <h2 id="daily-notes-heading" className="text-white font-black text-base sm:text-lg leading-tight">
               {t("dashboard.dailyNote.title")}
@@ -89,7 +89,7 @@ export default function DailyNotesPanel({ userId, syncStatus }) {
         disabled={!loaded}
         placeholder={t("dashboard.dailyNote.placeholder")}
         rows={4}
-        className="w-full rounded-xl bg-black/50 border border-gray-700/80 text-gray-100 text-sm p-3 sm:p-4 resize-y min-h-[6rem] focus:border-sky-400/50 focus:outline-none focus:ring-1 focus:ring-sky-400/30 placeholder:text-gray-600"
+        className="w-full rounded-xl bg-black/50 border border-gray-700/80 text-gray-100 text-sm p-3 sm:p-4 resize-y min-h-[6rem] focus:border-info/50 focus:outline-none focus:ring-1 focus:ring-info/30 placeholder:text-gray-600"
         aria-label={t("dashboard.dailyNote.title")}
       />
     </section>

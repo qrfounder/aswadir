@@ -84,13 +84,13 @@ export default function DashboardPage() {
   const subscription = data?.subscription || authSubscription;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col w-full" dir={dir}>
-      <header className="bg-black/70 border-b border-brand/10 sticky top-0 z-40 backdrop-blur-md overflow-visible shrink-0 w-full">
+    <div className="dashboard-shell min-h-screen bg-background flex flex-col w-full" dir={dir}>
+      <header className="dashboard-topbar sticky top-0 z-40 overflow-visible shrink-0 w-full">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <BrandLogo size="compact" className="flex-shrink-0" />
             <div className="min-w-0 hidden min-[400px]:block">
-              <p className="text-primary font-black text-xs sm:text-sm">{t("dashboard.memberArea")}</p>
+              <p className="text-primary font-black text-xs sm:text-sm tracking-wide">{t("dashboard.memberArea")}</p>
               <p className="text-gray-500 text-[11px] sm:text-xs truncate max-w-[10rem] sm:max-w-none">
                 {user?.name || user?.email}
               </p>

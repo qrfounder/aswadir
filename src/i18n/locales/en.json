@@ -494,7 +494,33 @@
       "supportTitle": "Help & contact",
       "supportLead": "Billing questions, refunds, or technical issues — check FAQs on the homepage first.",
       "supportFaq": "View FAQs",
-      "signedInAs": "Signed in as"
+      "signedInAs": "Signed in as",
+      "menuLabel": "Menu"
+    },
+    "hero": {
+      "kicker": {
+        "morning": "Good morning",
+        "afternoon": "Good afternoon",
+        "evening": "Good evening",
+        "night": "Still going"
+      },
+      "greeting": {
+        "morning": "{{name}}, your day starts here",
+        "afternoon": "{{name}}, keep the momentum",
+        "evening": "{{name}}, finish strong tonight",
+        "night": "{{name}}, small steps still count"
+      },
+      "coach": {
+        "high": "You're in the zone. Protect this rhythm — one more honest check-in seals the day.",
+        "mid": "Solid progress. Log your next habit or task while the energy is here.",
+        "low": "No pressure — open one habit, mark it done, and watch the score move.",
+        "start": "Five minutes: one note, one habit, one task. That's how discipline compounds."
+      },
+      "actionHabits": "Log habits",
+      "actionTasks": "Weekly tasks",
+      "streak": "{{count}}-day streak",
+      "momentumHint": "Habits + tasks + mindset",
+      "noTracker": "Activate a plan to unlock your live progress board."
     },
     "dailyNote": {
       "title": "Today's note",
@@ -505,6 +531,8 @@
       "localOnly": "Saved locally — will sync when online"
     },
     "todaySummary": {
+      "title": "Today's pulse",
+      "subtitle": "Live snapshot — updates as you log wins",
       "habits": "Habits today",
       "habitsDetail": "{{done}} of {{total}} done",
       "tasks": "Tasks this week",
