@@ -2,6 +2,7 @@ import { getDb } from "./db.js";
 import { publicUser } from "./auth-handlers.js";
 import { subscriptionForClient } from "./subscriptions.js";
 import {
+  analyticsOverviewStats,
   clearAnalyticsEvents,
   eventCountsSince,
   listRecentEvents,
@@ -65,16 +66,6 @@ export function handleAdminOverview(_req, res) {
       `SELECT COUNT(*) AS c FROM subscriptions WHERE status IN ('active', 'trialing', 'past_due')`,
     )
     .get().c;
-  const events24h = db
-    .prepare(`SELECT COUNT(*) AS c FROM analytics_events WHERE created_at >= datetime('now', '-24 hours')`)
-    .get().c;
-  const pageViews24h = db
-    .prepare(
-      `SELECT COUNT(*) AS c FROM analytics_events
-       WHERE event_type = 'page_view' AND created_at >= datetime('now', '-24 hours')`,
-    )
-    .get().c;
-
   const recentUsers = db
     .prepare(`SELECT * FROM users ORDER BY created_at DESC LIMIT 8`)
     .all()
@@ -89,17 +80,16 @@ export function handleAdminOverview(_req, res) {
     .all();
 
   return res.status(200).json({
-    stats: {
+    analytics: analyticsOverviewStats(),
+    eventBreakdown: eventCountsSince(24),
+    commerce: {
       users,
       paidPurchases: paidPurchases.c,
       revenueCents: paidPurchases.revenue,
       pendingPurchases,
       unclaimedPaid: unclaimed,
       activeSubscriptions: activeSubs,
-      events24h,
-      pageViews24h,
     },
-    eventBreakdown: eventCountsSince(24),
     recentUsers,
     recentPurchases: recentPaid,
     products: Object.keys(getCatalog()),

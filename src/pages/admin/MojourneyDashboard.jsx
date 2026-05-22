@@ -102,6 +102,7 @@ export default function MojourneyDashboard() {
   const [loading, setLoading] = useState(true);
   const [liveSince, setLiveSince] = useState(null);
   const [resetting, setResetting] = useState(false);
+  const [resetNotice, setResetNotice] = useState(null);
 
   const loadOverview = useCallback(async () => {
     const data = await client.admin.overview();
@@ -188,6 +189,41 @@ export default function MojourneyDashboard() {
     setSelectedUser(data);
   };
 
+  const resetAnalytics = async () => {
+    if (
+      !window.confirm(
+        "Reset all site traffic to zero? This deletes every row in analytics only. Users, orders, and subscriptions stay unchanged.",
+      )
+    ) {
+      return;
+    }
+    setResetting(true);
+    setResetNotice(null);
+    try {
+      const result = await client.admin.resetAnalytics();
+      setAnalytics(null);
+      setLive([]);
+      setLiveSince(null);
+      setResetNotice(
+        result.deleted != null
+          ? `Analytics reset — removed ${result.deleted} events. Counters are now zero.`
+          : "Analytics reset. Counters are now zero.",
+      );
+      await loadOverview();
+      if (tab === "analytics") await loadAnalytics();
+    } catch (err) {
+      const msg =
+        err.status === 401
+          ? "Session expired — sign in again."
+          : err.status === 404
+            ? "Reset API missing — redeploy the latest server build."
+            : "Could not reset analytics. Try refresh, then again.";
+      setResetNotice(msg);
+    } finally {
+      setResetting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0e1a] text-gray-100">
       <header className="border-b border-white/10 bg-black/30 sticky top-0 z-20 backdrop-blur-md">
@@ -250,19 +286,48 @@ export default function MojourneyDashboard() {
 
           {tab === "overview" && overview && (
             <div className="space-y-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <StatCard label="Users" value={overview.stats.users} />
-                <StatCard
-                  label="Revenue (paid)"
-                  value={formatMoney(overview.stats.revenueCents)}
-                  sub={`${overview.stats.paidPurchases} orders`}
-                />
-                <StatCard label="Active subs" value={overview.stats.activeSubscriptions} />
-                <StatCard
-                  label="24h events"
-                  value={overview.stats.events24h}
-                  sub={`${overview.stats.pageViews24h} page views`}
-                />
+              <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h3 className="font-black text-white text-sm uppercase tracking-wider">Site traffic</h3>
+                    <p className="text-gray-400 text-xs mt-1">All numbers below come only from analytics events.</p>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={resetting}
+                    onClick={resetAnalytics}
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-destructive/50 bg-destructive/10 text-destructive text-xs font-black uppercase tracking-wide hover:bg-destructive/20 disabled:opacity-50"
+                  >
+                    {resetting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                    Reset traffic to zero
+                  </button>
+                </div>
+                {resetNotice && (
+                  <p
+                    className={`text-sm font-medium ${resetNotice.includes("reset") || resetNotice.includes("removed") ? "text-success" : "text-destructive"}`}
+                    role="status"
+                  >
+                    {resetNotice}
+                  </p>
+                )}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <StatCard label="Total events" value={overview.analytics?.totalEvents ?? 0} />
+                  <StatCard
+                    label="24h events"
+                    value={overview.analytics?.events24h ?? 0}
+                    sub={`${overview.analytics?.pageViews24h ?? 0} page views`}
+                  />
+                  <StatCard
+                    label="Visitors (24h)"
+                    value={overview.analytics?.uniqueVisitors24h ?? 0}
+                    sub="unique sessions"
+                  />
+                  <StatCard
+                    label="Visitors (all)"
+                    value={overview.analytics?.uniqueVisitorsTotal ?? 0}
+                    sub="since last reset"
+                  />
+                </div>
               </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-white/10 p-4">
@@ -275,15 +340,23 @@ export default function MojourneyDashboard() {
                       </li>
                     ))}
                     {!Object.keys(eventBreakdownMap).length && (
-                      <li className="text-gray-500">No events yet — traffic will appear here.</li>
+                      <li className="text-gray-500">No events — reset is done or traffic not recorded yet.</li>
                     )}
                   </ul>
                 </div>
                 <div className="rounded-2xl border border-white/10 p-4">
-                  <h3 className="font-black text-white mb-3">Ops</h3>
+                  <h3 className="font-black text-white mb-3">Commerce</h3>
                   <ul className="space-y-2 text-sm text-gray-300">
-                    <li>Pending checkouts: <strong className="text-white">{overview.stats.pendingPurchases}</strong></li>
-                    <li>Unclaimed paid orders: <strong className="text-warning">{overview.stats.unclaimedPaid}</strong></li>
+                    <li>Users: <strong className="text-white">{overview.commerce?.users ?? 0}</strong></li>
+                    <li>
+                      Revenue (paid):{" "}
+                      <strong className="text-success">{formatMoney(overview.commerce?.revenueCents)}</strong>
+                      {" · "}
+                      {overview.commerce?.paidPurchases ?? 0} orders
+                    </li>
+                    <li>Active subs: <strong className="text-white">{overview.commerce?.activeSubscriptions ?? 0}</strong></li>
+                    <li>Pending checkouts: <strong className="text-white">{overview.commerce?.pendingPurchases ?? 0}</strong></li>
+                    <li>Unclaimed paid: <strong className="text-warning">{overview.commerce?.unclaimedPaid ?? 0}</strong></li>
                     <li>Products: {overview.products.join(", ")}</li>
                     {overview.siteUrl ? (
                       <li className="truncate">Site: {overview.siteUrl}</li>
@@ -476,9 +549,14 @@ export default function MojourneyDashboard() {
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-destructive/40 text-destructive text-sm font-bold hover:bg-destructive/10 disabled:opacity-50"
                 >
                   {resetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-                  Reset all analytics
+                  Reset traffic to zero
                 </button>
               </div>
+              {resetNotice && (
+                <p className="text-sm text-success font-medium" role="status">
+                  {resetNotice}
+                </p>
+              )}
               <div className="rounded-2xl border border-white/10 p-4">
                 <h3 className="font-black text-white mb-3">Funnel (unique sessions, 7d)</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 text-sm">

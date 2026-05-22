@@ -142,6 +142,41 @@ export function clearAnalyticsEvents() {
   return { deleted: before };
 }
 
+/** All Mojourney traffic numbers — sourced only from analytics_events. */
+export function analyticsOverviewStats() {
+  const db = getDb();
+  const totalEvents = db.prepare(`SELECT COUNT(*) AS c FROM analytics_events`).get().c;
+  const events24h = db
+    .prepare(`SELECT COUNT(*) AS c FROM analytics_events WHERE created_at >= datetime('now', '-24 hours')`)
+    .get().c;
+  const pageViews24h = db
+    .prepare(
+      `SELECT COUNT(*) AS c FROM analytics_events
+       WHERE event_type = 'page_view' AND created_at >= datetime('now', '-24 hours')`,
+    )
+    .get().c;
+  const uniqueVisitors24h = db
+    .prepare(
+      `SELECT COUNT(DISTINCT session_id) AS c FROM analytics_events
+       WHERE event_type = 'page_view' AND session_id IS NOT NULL
+         AND created_at >= datetime('now', '-24 hours')`,
+    )
+    .get().c;
+  const uniqueVisitorsTotal = db
+    .prepare(
+      `SELECT COUNT(DISTINCT session_id) AS c FROM analytics_events
+       WHERE event_type = 'page_view' AND session_id IS NOT NULL`,
+    )
+    .get().c;
+  return {
+    totalEvents,
+    events24h,
+    pageViews24h,
+    uniqueVisitors24h,
+    uniqueVisitorsTotal,
+  };
+}
+
 /** Unique visitors (sessions) with latest geo from stored events. */
 export function listVisitors({ hours = 168, limit = 100 } = {}) {
   const db = getDb();
