@@ -3,6 +3,8 @@ import Stripe from "stripe";
 import { getCatalogProduct } from "./catalog.js";
 import { createPendingCheckout, createDevSimulatedCheckout } from "./purchases.js";
 import { isStripeConfigured } from "./stripe-config.js";
+import { getCheckoutCharge, normalizeCurrency } from "../shared/product-prices.js";
+import { buildSubscriptionLineItem } from "./stripe-line-items.js";
 import {
   normalizeAppLocale,
   stripeCheckoutSessionLocale,
@@ -33,11 +35,15 @@ function formatWhatsApp(digits, dialCode) {
   return `${normalized}${digits}`;
 }
 
-function simulateCheckout(res, { product, productId, cleanName, cleanEmail, whatsappE164, pendingPasswordHash }) {
+function simulateCheckout(
+  res,
+  { product, productId, charge, cleanName, cleanEmail, whatsappE164, pendingPasswordHash },
+) {
   const checkoutSessionId = createDevSimulatedCheckout({
     productId,
     productName: product.name,
-    amount: product.amount,
+    amount: charge.unitAmount,
+    currency: charge.stripeCurrency,
     customerName: cleanName,
     customerEmail: cleanEmail,
     whatsapp: whatsappE164,
@@ -84,6 +90,7 @@ export default async function createCheckoutSession(req, res) {
       embedded = false,
       locale: preferredLocale,
       password,
+      currency: requestedCurrency,
     } = body;
     const preferredReturnOrigin = body.returnOrigin ?? body.return_origin;
     const product = getCatalogProduct(productId);
@@ -114,6 +121,17 @@ export default async function createCheckoutSession(req, res) {
     }
     const pendingPasswordHash = await bcrypt.hash(cleanPassword, SALT_ROUNDS);
 
+    const displayCurrency = normalizeCurrency(requestedCurrency);
+    let charge;
+    try {
+      charge = getCheckoutCharge(productId, displayCurrency);
+    } catch (err) {
+      if (err?.message === "invalid_checkout_amount") {
+        return res.status(400).json({ error: "invalid_currency" });
+      }
+      throw err;
+    }
+
     if (!isStripeConfigured()) {
       if (process.env.NODE_ENV === "production") {
         return res.status(503).json({ error: "payments_not_configured" });
@@ -121,6 +139,7 @@ export default async function createCheckoutSession(req, res) {
       return simulateCheckout(res, {
         product,
         productId,
+        charge,
         cleanName,
         cleanEmail,
         whatsappE164,
@@ -130,14 +149,19 @@ export default async function createCheckoutSession(req, res) {
 
     const base = siteUrl(req, preferredReturnOrigin);
     const stripe = getStripe();
+    const { lineItem } = await buildSubscriptionLineItem(
+      stripe,
+      { productId, priceId: product.priceId },
+      displayCurrency,
+    );
     const useEmbedded = embedded === true || embedded === "true";
-    const returnParams = `session_id={CHECKOUT_SESSION_ID}&productId=${encodeURIComponent(productId)}&product=${encodeURIComponent(product.name)}&price=${product.salePrice}&currency=usd`;
+    const returnParams = `session_id={CHECKOUT_SESSION_ID}&productId=${encodeURIComponent(productId)}&product=${encodeURIComponent(product.name)}&price=${charge.displaySale}&currency=${charge.stripeCurrency}`;
 
     const sessionParams = {
       mode: "subscription",
       ui_mode: useEmbedded ? "embedded" : "hosted",
       customer_email: cleanEmail,
-      line_items: [{ price: product.priceId, quantity: 1 }],
+      line_items: [lineItem],
       locale: stripeCheckoutSessionLocale(preferredLocale),
       payment_method_collection: "always",
       metadata: {
@@ -147,6 +171,7 @@ export default async function createCheckoutSession(req, res) {
         customerEmail: cleanEmail,
         whatsapp: whatsappE164,
         appLocale: normalizeAppLocale(preferredLocale),
+        checkoutCurrency: charge.displayCurrency,
       },
       subscription_data: {
         metadata: {
@@ -154,6 +179,7 @@ export default async function createCheckoutSession(req, res) {
           customerName: cleanName,
           customerEmail: cleanEmail,
           whatsapp: whatsappE164,
+          checkoutCurrency: charge.displayCurrency,
         },
       },
       allow_promotion_codes: true,
@@ -186,7 +212,8 @@ export default async function createCheckoutSession(req, res) {
       checkoutSessionId: session.id,
       productId,
       productName: product.name,
-      amount: product.amount,
+      amount: charge.unitAmount,
+      currency: charge.stripeCurrency,
       customerName: cleanName,
       customerEmail: cleanEmail,
       whatsapp: whatsappE164,

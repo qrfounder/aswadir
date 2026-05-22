@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useLocale } from "@/lib/LocaleContext";
 import {
-  CHECKOUT_CHARGE_CURRENCY,
   formatMoney,
   formatPerDayFromMonthlySale,
   formatProductPrice,
@@ -45,8 +44,6 @@ export function usePricing() {
     [currency, locale],
   );
 
-  const checkoutNoteNeeded = currency !== CHECKOUT_CHARGE_CURRENCY;
-
   return useMemo(
     () => ({
       currency,
@@ -59,8 +56,8 @@ export function usePricing() {
       amountsFor,
       lowestSaleAmount,
       lowestPriceFor,
-      checkoutNoteNeeded,
-      chargeCurrency: CHECKOUT_CHARGE_CURRENCY,
+      /** Stripe checkout uses the same currency as the site switcher. */
+      chargeCurrency: currency,
     }),
     [
       currency,
@@ -73,7 +70,6 @@ export function usePricing() {
       amountsFor,
       lowestSaleAmount,
       lowestPriceFor,
-      checkoutNoteNeeded,
     ],
   );
 }

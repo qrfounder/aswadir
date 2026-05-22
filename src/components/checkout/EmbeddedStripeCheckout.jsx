@@ -5,6 +5,7 @@ import { getStripeForLocale } from "@/lib/stripe";
 import { normalizeAppLocale } from "@/lib/stripeLocale";
 import { client } from "@/api/client";
 import { getDialCountry } from "@/lib/phoneDialCodes";
+import { useLocale } from "@/lib/LocaleContext";
 
 /**
  * Stripe Embedded Checkout — Apple Pay + cards on-page (no redirect).
@@ -12,6 +13,7 @@ import { getDialCountry } from "@/lib/phoneDialCodes";
  */
 export default function EmbeddedStripeCheckout({ product, customer, password, locale, onError }) {
   const { t } = useTranslation();
+  const { currency } = useLocale();
   const mountRef = useRef(null);
   const checkoutRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -28,6 +30,7 @@ export default function EmbeddedStripeCheckout({ product, customer, password, lo
       try {
         const res = await client.functions.invoke("createCheckoutSession", {
           productId: product.id,
+          currency,
           customerName: customer.name.trim(),
           customerEmail: customer.email.trim().toLowerCase(),
           password: String(password || ""),
@@ -91,6 +94,7 @@ export default function EmbeddedStripeCheckout({ product, customer, password, lo
     customer.whatsapp,
     customer.dialIso,
     password,
+    currency,
     onError,
     appLocale,
   ]);

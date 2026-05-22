@@ -40,6 +40,7 @@ export function createPendingCheckout({
   productId,
   productName,
   amount,
+  currency = "usd",
   customerName,
   customerEmail,
   whatsapp,
@@ -49,9 +50,9 @@ export function createPendingCheckout({
   const ref = checkoutSessionId;
   db.prepare(
     `INSERT INTO purchases (
-      payment_intent_id, checkout_session_id, product_id, product_name, amount,
+      payment_intent_id, checkout_session_id, product_id, product_name, amount, currency,
       customer_name, customer_email, whatsapp, status, pending_password_hash
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
     ON CONFLICT(payment_intent_id) DO NOTHING`,
   ).run(
     ref,
@@ -59,6 +60,7 @@ export function createPendingCheckout({
     productId,
     productName,
     amount,
+    String(currency || "usd").toLowerCase(),
     customerName,
     customerEmail || null,
     whatsapp || null,
@@ -237,6 +239,7 @@ export function createDevSimulatedCheckout({
   productId,
   productName,
   amount,
+  currency = "usd",
   customerName,
   customerEmail,
   whatsapp,
@@ -246,15 +249,16 @@ export function createDevSimulatedCheckout({
   const db = getDb();
   db.prepare(
     `INSERT INTO purchases (
-      payment_intent_id, checkout_session_id, product_id, product_name, amount,
+      payment_intent_id, checkout_session_id, product_id, product_name, amount, currency,
       customer_name, customer_email, whatsapp, status, paid_at, pending_password_hash
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'paid', datetime('now'), ?)`,
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'paid', datetime('now'), ?)`,
   ).run(
     checkoutSessionId,
     checkoutSessionId,
     productId,
     productName,
     amount,
+    String(currency || "usd").toLowerCase(),
     customerName,
     customerEmail,
     whatsapp || null,

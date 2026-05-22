@@ -65,7 +65,7 @@ function StepDot({ active, done, num, label }) {
 export default function CheckoutPage() {
   const { t } = useTranslation();
   const { locale, currency, detectedCountry } = useLocale();
-  const { format, priceFor, perDayPriceFor, originalPriceFor, checkoutNoteNeeded, chargeCurrency } = usePricing();
+  const { format, priceFor, perDayPriceFor, originalPriceFor } = usePricing();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -155,6 +155,7 @@ export default function CheckoutPage() {
     try {
       const res = await client.functions.invoke("createCheckoutSession", {
         productId: product.id,
+        currency,
         customerName: customer.name.trim(),
         customerEmail: customer.email.trim().toLowerCase(),
         password: customer.password,

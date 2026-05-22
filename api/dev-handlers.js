@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { getCatalogProduct } from "./catalog.js";
 import { createDevSimulatedCheckout } from "./purchases.js";
+import { getCheckoutCharge, normalizeCurrency } from "../shared/product-prices.js";
 
 const SALT_ROUNDS = 12;
 
@@ -10,7 +11,7 @@ export async function handleDevSimulateOrder(req, res) {
     return res.status(404).json({ error: "not_found" });
   }
 
-  const { productId, customerName, customerEmail, whatsapp, password } = req.body || {};
+  const { productId, customerName, customerEmail, whatsapp, password, currency } = req.body || {};
   const product = getCatalogProduct(productId);
   if (!product) {
     return res.status(400).json({ error: "invalid_product" });
@@ -33,10 +34,12 @@ export async function handleDevSimulateOrder(req, res) {
     pendingPasswordHash = await bcrypt.hash(cleanPassword, SALT_ROUNDS);
   }
 
+  const charge = getCheckoutCharge(productId, normalizeCurrency(currency));
   const checkoutSessionId = createDevSimulatedCheckout({
     productId,
     productName: product.name,
-    amount: product.amount,
+    amount: charge.unitAmount,
+    currency: charge.stripeCurrency,
     customerName: cleanName,
     customerEmail: cleanEmail,
     whatsapp: `+966${cleanPhone}`,
