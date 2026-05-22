@@ -34,6 +34,7 @@ import {
   validateNationalNumber,
 } from "@/lib/phoneDialCodes";
 import {
+  trackAddPaymentInfo,
   trackCheckoutStarted,
   trackCheckoutView,
   trackAddToCart,
@@ -117,6 +118,12 @@ export default function CheckoutPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
+
+  useEffect(() => {
+    if (step === 2 && paymentsEnabled === true) {
+      trackAddPaymentInfo(product.id);
+    }
+  }, [step, paymentsEnabled, product.id]);
 
   const proceedToPayment = (e) => {
     e.preventDefault();

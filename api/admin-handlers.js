@@ -226,7 +226,14 @@ export function handleAdminAnalytics(req, res) {
 function buildFunnel(hours) {
   const db = getDb();
   const window = `-${hours} hours`;
-  const types = ["page_view", "checkout_view", "add_to_cart", "checkout_started", "payment_success"];
+  const types = [
+    "page_view",
+    "checkout_view",
+    "add_to_cart",
+    "checkout_started",
+    "add_payment_info",
+    "payment_success",
+  ];
   const counts = {};
   for (const type of types) {
     counts[type] =

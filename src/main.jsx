@@ -3,6 +3,9 @@ import ReactDOM from "react-dom/client";
 import App from "@/App.jsx";
 import i18n from "@/i18n/index.js";
 import "@/index.css";
+import { initTikTokPixel } from "@/lib/tiktok-pixel";
+
+initTikTokPixel();
 
 class RootErrorBoundary extends React.Component {
   constructor(props) {

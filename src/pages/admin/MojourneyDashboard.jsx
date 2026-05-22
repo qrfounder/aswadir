@@ -51,7 +51,8 @@ function eventLabel(type) {
     checkout_view: "Checkout view",
     add_to_cart: "Add to cart",
     checkout_started: "Checkout started",
-    payment_success: "Payment",
+    add_payment_info: "Add payment info",
+    payment_success: "Purchase",
     lead_register: "New account",
     user_login: "Login",
     subscription_updated: "Subscription",
@@ -62,6 +63,7 @@ function eventLabel(type) {
 function eventColor(type) {
   if (type === "payment_success") return "text-success";
   if (type === "lead_register" || type === "user_login") return "text-primary";
+  if (type === "add_payment_info") return "text-info";
   if (type === "checkout_started" || type === "add_to_cart") return "text-brand";
   return "text-gray-300";
 }
@@ -457,7 +459,7 @@ export default function MojourneyDashboard() {
             <div className="space-y-4">
               <div className="rounded-2xl border border-white/10 p-4">
                 <h3 className="font-black text-white mb-3">Funnel (unique sessions, 7d)</h3>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 text-sm">
                   {Object.entries(analytics.funnel || {}).map(([k, v]) => (
                     <div key={k} className="bg-white/5 rounded-xl p-3 text-center">
                       <p className="text-gray-500 text-xs">{eventLabel(k)}</p>

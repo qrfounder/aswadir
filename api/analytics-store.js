@@ -5,6 +5,7 @@ const ALLOWED_TYPES = new Set([
   "checkout_view",
   "add_to_cart",
   "checkout_started",
+  "add_payment_info",
   "payment_success",
   "lead_register",
   "user_login",
@@ -116,7 +117,7 @@ export function trafficBreakdown(hours = 168) {
       `SELECT COALESCE(NULLIF(product_id, ''), '—') AS label, COUNT(*) AS count
        FROM analytics_events
        WHERE created_at >= datetime('now', ?)
-         AND event_type IN ('checkout_view', 'add_to_cart', 'checkout_started', 'payment_success')
+         AND event_type IN ('checkout_view', 'add_to_cart', 'checkout_started', 'add_payment_info', 'payment_success')
        GROUP BY label ORDER BY count DESC`,
     )
     .all(window);

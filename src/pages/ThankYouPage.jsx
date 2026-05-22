@@ -4,6 +4,7 @@ import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import { client } from "@/api/client";
+import { trackPurchase } from "@/lib/analytics-tracker";
 
 /** Legacy route: Stripe used to land here; forward to setup-account → dashboard. */
 export default function ThankYouPage() {
@@ -29,6 +30,13 @@ export default function ThankYouPage() {
       try {
         await client.checkout.complete(checkoutSessionId);
         if (cancelled) return;
+
+        trackPurchase(searchParams.get("productId") || "bundle", {
+          checkoutSessionId,
+          value: Number.parseFloat(searchParams.get("price") || "") || undefined,
+          currency: searchParams.get("currency") || undefined,
+          path: "/thank-you",
+        });
 
         if (isAuthenticated) {
           await claimPurchase({ checkoutSessionId });

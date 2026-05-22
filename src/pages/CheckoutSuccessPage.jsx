@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import { client } from "@/api/client";
 import BrandLogo from "@/components/BrandLogo";
+import { trackPurchase } from "@/lib/analytics-tracker";
 
 export default function CheckoutSuccessPage() {
   const { t } = useTranslation();
@@ -27,6 +28,17 @@ export default function CheckoutSuccessPage() {
       try {
         await client.checkout.activate(checkoutSessionId);
         if (cancelled) return;
+
+        const productId = searchParams.get("productId") || "bundle";
+        const price = Number.parseFloat(searchParams.get("price") || "");
+        const currency = searchParams.get("currency") || undefined;
+        trackPurchase(productId, {
+          checkoutSessionId,
+          value: Number.isFinite(price) ? price : undefined,
+          currency,
+          path: "/checkout/success",
+        });
+
         await checkUserAuth();
         if (!cancelled) navigate("/dashboard", { replace: true });
       } catch (err) {
