@@ -38,7 +38,7 @@ export default async function createPaymentIntent(req, res) {
       {
         amount: product.amount,
         currency: "usd",
-        automatic_payment_methods: { enabled: true },
+        payment_method_types: ["card"],
         description: product.name,
         receipt_email: cleanEmail,
         metadata: {

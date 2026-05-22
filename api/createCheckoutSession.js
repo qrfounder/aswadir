@@ -5,6 +5,7 @@ import { createPendingCheckout, createDevSimulatedCheckout } from "./purchases.j
 import { isStripeConfigured } from "./stripe-config.js";
 import { getCheckoutCharge, normalizeCurrency } from "../shared/product-prices.js";
 import { buildSubscriptionLineItem } from "./stripe-line-items.js";
+import { checkoutPaymentMethodRestrictions } from "./stripe-checkout-payment-methods.js";
 import {
   normalizeAppLocale,
   stripeCheckoutSessionLocale,
@@ -163,6 +164,7 @@ export default async function createCheckoutSession(req, res) {
       customer_email: cleanEmail,
       line_items: [lineItem],
       locale: stripeCheckoutSessionLocale(preferredLocale),
+      ...checkoutPaymentMethodRestrictions(),
       payment_method_collection: "always",
       metadata: {
         productId,
