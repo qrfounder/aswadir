@@ -1,7 +1,7 @@
 import { getDb } from "./db.js";
 import { entitlementsForProduct, getCatalogProduct } from "./catalog.js";
 
-const ACTIVE_STATUSES = new Set(["active", "trialing"]);
+import { subscriptionGrantsMemberAccess } from "./subscription-access.js";
 
 /** Resolve purchases.payment_intent_id for FK-safe entitlement rows */
 function purchaseKeyForSubscription(subscription) {
@@ -83,7 +83,7 @@ export function getActiveSubscriptionForUser(userId) {
     .prepare(
       `SELECT * FROM subscriptions
        WHERE user_id = ?
-         AND status IN ('active', 'trialing', 'past_due')
+         AND status IN ('active', 'past_due')
        ORDER BY updated_at DESC
        LIMIT 1`,
     )
@@ -96,7 +96,7 @@ export function syncEntitlementsFromSubscription(subscription) {
   const db = getDb();
   const keys = entitlementsForProduct(subscription.product_id);
   const sourceRef = purchaseKeyForSubscription(subscription);
-  const isActive = ACTIVE_STATUSES.has(subscription.status);
+  const isActive = subscriptionGrantsMemberAccess(subscription.status);
 
   const tx = db.transaction(() => {
     if (isActive) {
@@ -139,22 +139,21 @@ export function subscriptionForClient(row) {
     status: row.status,
     currentPeriodEnd: row.current_period_end,
     cancelAtPeriodEnd: Boolean(row.cancel_at_period_end),
-    isActive: ACTIVE_STATUSES.has(row.status) || row.status === "past_due",
+    isActive: subscriptionGrantsMemberAccess(row.status),
   };
 }
 
 export function createDevSimulatedSubscription({ productId, userId = null, checkoutSessionId }) {
   const subId = `dev_sub_${Date.now()}`;
   const customerId = `dev_cus_${Date.now()}`;
-  const trialDays = Number.parseInt(process.env.STRIPE_TRIAL_DAYS ?? "0", 10) || 0;
   const periodEnd = new Date();
-  periodEnd.setDate(periodEnd.getDate() + (trialDays > 0 ? trialDays : 30));
+  periodEnd.setDate(periodEnd.getDate() + 30);
 
   upsertSubscription({
     stripeSubscriptionId: subId,
     stripeCustomerId: customerId,
     productId,
-    status: trialDays > 0 ? "trialing" : "active",
+    status: "active",
     currentPeriodEnd: periodEnd.toISOString(),
     cancelAtPeriodEnd: false,
     checkoutSessionId,

@@ -3,7 +3,6 @@ import Stripe from "stripe";
 import { getCatalogProduct } from "./catalog.js";
 import { createPendingCheckout, createDevSimulatedCheckout } from "./purchases.js";
 import { isStripeConfigured } from "./stripe-config.js";
-import { getTrialPeriodDays } from "./stripe-trial.js";
 import {
   normalizeAppLocale,
   stripeCheckoutSessionLocale,
@@ -131,9 +130,8 @@ export default async function createCheckoutSession(req, res) {
 
     const base = siteUrl(req, preferredReturnOrigin);
     const stripe = getStripe();
-    const trialDays = getTrialPeriodDays();
     const useEmbedded = embedded === true || embedded === "true";
-    const returnParams = `session_id={CHECKOUT_SESSION_ID}&productId=${encodeURIComponent(productId)}&product=${encodeURIComponent(product.name)}&price=${product.salePrice}&currency=usd&trial=${trialDays}`;
+    const returnParams = `session_id={CHECKOUT_SESSION_ID}&productId=${encodeURIComponent(productId)}&product=${encodeURIComponent(product.name)}&price=${product.salePrice}&currency=usd`;
 
     const sessionParams = {
       mode: "subscription",
@@ -141,6 +139,7 @@ export default async function createCheckoutSession(req, res) {
       customer_email: cleanEmail,
       line_items: [{ price: product.priceId, quantity: 1 }],
       locale: stripeCheckoutSessionLocale(preferredLocale),
+      payment_method_collection: "always",
       metadata: {
         productId,
         productName: product.name,
@@ -150,7 +149,6 @@ export default async function createCheckoutSession(req, res) {
         appLocale: normalizeAppLocale(preferredLocale),
       },
       subscription_data: {
-        ...(trialDays > 0 ? { trial_period_days: trialDays } : {}),
         metadata: {
           productId,
           customerName: cleanName,

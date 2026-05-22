@@ -3,8 +3,11 @@ import { getCatalogProduct } from "./catalog.js";
 import { getPurchaseByCheckoutSession, markCheckoutPaid } from "./purchases.js";
 import { isStripeConfigured } from "./stripe-config.js";
 import {
+  checkoutPaymentConfirmed,
+  subscriptionGrantsMemberAccess,
+} from "./subscription-access.js";
+import {
   getSubscriptionByStripeId,
-  linkSubscriptionToUser,
   syncEntitlementsFromSubscription,
   upsertSubscription,
 } from "./subscriptions.js";
@@ -43,7 +46,10 @@ export async function syncStripeSubscription(subscription, checkoutSessionId = n
     syncEntitlementsFromSubscription(row);
   }
 
-  if (checkoutSessionId) {
+  if (
+    checkoutSessionId &&
+    subscriptionGrantsMemberAccess(subscription.status)
+  ) {
     markCheckoutPaid(checkoutSessionId, { subscriptionId: subscription.id });
   }
 }
@@ -97,21 +103,34 @@ export async function fulfillCheckoutSession(checkoutSessionId) {
     };
   }
 
+  let subscription = null;
   if (session.mode === "subscription" && session.subscription) {
-    const subscription =
+    subscription =
       typeof session.subscription === "object"
         ? session.subscription
         : await stripe.subscriptions.retrieve(String(session.subscription));
     await syncStripeSubscription(subscription, id);
   } else if (session.payment_status === "paid") {
     markCheckoutPaid(id);
-  } else if (session.payment_status === "no_payment_required") {
-    markCheckoutPaid(id);
+  }
+
+  if (!checkoutPaymentConfirmed(session, subscription)) {
+    return {
+      ok: false,
+      error: "payment_not_confirmed",
+      status: session.payment_status,
+      subscriptionStatus: subscription?.status,
+    };
   }
 
   purchase = getPurchaseByCheckoutSession(id);
   if (purchase.status !== "paid") {
-    return { ok: false, error: "payment_not_confirmed", status: session.payment_status };
+    return {
+      ok: false,
+      error: "payment_not_confirmed",
+      status: session.payment_status,
+      subscriptionStatus: subscription?.status,
+    };
   }
 
   return purchasePayload(purchase, {

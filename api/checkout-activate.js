@@ -34,7 +34,12 @@ export default async function activateCheckoutAccount(req, res) {
 
     const fulfill = await fulfillCheckoutSession(checkoutSessionId);
     if (!fulfill.ok || !fulfill.paid) {
-      const status = fulfill.error === "checkout_incomplete" ? 409 : 400;
+      const status =
+        fulfill.error === "checkout_incomplete"
+          ? 409
+          : fulfill.error === "payment_not_confirmed"
+            ? 402
+            : 400;
       return res.status(status).json({
         error: fulfill.error || "payment_not_confirmed",
       });
@@ -54,9 +59,13 @@ export default async function activateCheckoutAccount(req, res) {
       const { sessionId, expiresAt } = createSession(user.id);
       attachSession(res, sessionId, expiresAt);
       repairEntitlementsForUser(user.id);
+      const entitlements = getUserEntitlements(user.id);
+      if (!entitlements.length) {
+        return res.status(402).json({ error: "payment_not_confirmed" });
+      }
       return res.status(200).json({
         user: publicUser(user),
-        entitlements: getUserEntitlements(user.id),
+        entitlements,
         subscription: subscriptionForClient(getActiveSubscriptionForUser(user.id)),
         alreadyActive: true,
       });
@@ -79,9 +88,13 @@ export default async function activateCheckoutAccount(req, res) {
       const { sessionId, expiresAt } = createSession(existing.id);
       attachSession(res, sessionId, expiresAt);
       repairEntitlementsForUser(existing.id);
+      const entitlements = getUserEntitlements(existing.id);
+      if (!entitlements.length) {
+        return res.status(402).json({ error: "payment_not_confirmed" });
+      }
       return res.status(200).json({
         user: publicUser(existing),
-        entitlements: getUserEntitlements(existing.id),
+        entitlements,
         subscription: subscriptionForClient(getActiveSubscriptionForUser(existing.id)),
         linkedExisting: true,
       });
@@ -117,10 +130,14 @@ export default async function activateCheckoutAccount(req, res) {
     const { sessionId, expiresAt } = createSession(userId);
     attachSession(res, sessionId, expiresAt);
     repairEntitlementsForUser(userId);
+    const entitlements = getUserEntitlements(userId);
+    if (!entitlements.length) {
+      return res.status(402).json({ error: "payment_not_confirmed" });
+    }
 
     return res.status(201).json({
       user: publicUser(user),
-      entitlements: getUserEntitlements(userId),
+      entitlements,
       subscription: subscriptionForClient(getActiveSubscriptionForUser(userId)),
     });
   } catch (err) {

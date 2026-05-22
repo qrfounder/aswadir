@@ -36,4 +36,4 @@ console.log("Add to .env / Easypanel:");
 console.log("  STRIPE_PRICE_HABIT=price_...");
 console.log("  STRIPE_PRICE_TASK=price_...");
 console.log("  STRIPE_PRICE_BUNDLE=price_...");
-console.log("  STRIPE_TRIAL_DAYS=1\n");
+console.log("  (No trial — checkout bills immediately; STRIPE_TRIAL_DAYS is ignored.)\n");

@@ -6,6 +6,7 @@ import { AuthProvider } from "@/lib/AuthContext";
 import { LocaleProvider } from "@/lib/LocaleContext";
 import { ThemeProvider } from "@/lib/ThemeContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import PaidMemberGate from "@/components/PaidMemberGate";
 import PageNotFound from "@/lib/PageNotFound";
 import ProductPage from "./pages/ProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
@@ -43,7 +44,9 @@ function App() {
                   />
                 }
               >
-                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route element={<PaidMemberGate />}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                </Route>
               </Route>
               <Route path="/mojourney/login" element={<AdminLoginPage />} />
               <Route element={<ProtectedAdminRoute />}>

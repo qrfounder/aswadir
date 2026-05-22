@@ -139,8 +139,7 @@ console.log("\n--- Add to .env and Easypanel ---\n");
 for (const [envKey, priceId] of Object.entries(priceIds)) {
   console.log(`${envKey}=${priceId}`);
 }
-console.log(`STRIPE_TRIAL_DAYS=${process.env.STRIPE_TRIAL_DAYS ?? "0"}`);
-console.log("\nSet STRIPE_TRIAL_DAYS=0 for no free trial (recommended). Trial is applied at checkout only if > 0.\n");
+console.log("\nNo Stripe trial — checkout charges immediately (STRIPE_TRIAL_DAYS is ignored).\n");
 
 const envPath = path.join(root, ".env");
 if (fs.existsSync(envPath)) {
