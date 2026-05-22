@@ -174,6 +174,10 @@ function migrate(database) {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
+
+  ensureColumn(database, "analytics_events", "ip_address", "TEXT");
+  ensureColumn(database, "analytics_events", "city", "TEXT");
+  ensureColumn(database, "analytics_events", "region", "TEXT");
 }
 
 function ensureColumn(database, table, column, typeSql) {

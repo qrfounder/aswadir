@@ -33,8 +33,11 @@ Attribution is stored in `sessionStorage` and sent with every analytics event.
 1. Deploy with `VITE_TIKTOK_PIXEL_ID=CU1EACBC77UAQJITPDR0` in build args.
 2. TikTok Events Manager → Test events (or browser extension).
 3. Run funnel: landing → checkout step 1 → step 2 → test payment → success.
-4. Mojourney → **Live** tab: confirm events appear within seconds.
-5. Mojourney → **Analytics** funnel: unique sessions per step.
+4. Mojourney → **Live** tab: confirm events appear within seconds (IP, city, country on each row).
+5. Mojourney → **Analytics**: funnel, **Visitors** table (IP / city / region / country), country breakdown.
+6. **Reset all analytics** clears only `analytics_events` (not users or payments) — use after a test campaign.
+
+Server resolves visitor location from `X-Forwarded-For` + ip-api.com on each `POST /api/analytics/event`.
 
 ```bash
 npm run build

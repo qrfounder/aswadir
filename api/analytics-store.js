@@ -31,8 +31,8 @@ export function insertAnalyticsEvent(payload) {
       `INSERT INTO analytics_events (
         event_type, session_id, user_id, path, product_id, locale,
         utm_source, utm_medium, utm_campaign, utm_content, utm_term,
-        referrer, country, metadata
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        referrer, country, ip_address, city, region, metadata
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
       eventType,
@@ -48,6 +48,9 @@ export function insertAnalyticsEvent(payload) {
       payload.utmTerm || null,
       payload.referrer || null,
       payload.country || null,
+      payload.ipAddress || null,
+      payload.city || null,
+      payload.region || null,
       metadata,
     );
 
@@ -121,7 +124,48 @@ export function trafficBreakdown(hours = 168) {
        GROUP BY label ORDER BY count DESC`,
     )
     .all(window);
-  return { bySource, byLocale, byProduct };
+  const byCountry = db
+    .prepare(
+      `SELECT COALESCE(NULLIF(country, ''), 'unknown') AS label, COUNT(DISTINCT session_id) AS count
+       FROM analytics_events
+       WHERE created_at >= datetime('now', ?) AND event_type = 'page_view' AND session_id IS NOT NULL
+       GROUP BY label ORDER BY count DESC LIMIT 30`,
+    )
+    .all(window);
+  return { bySource, byLocale, byProduct, byCountry };
+}
+
+export function clearAnalyticsEvents() {
+  const db = getDb();
+  const before = db.prepare(`SELECT COUNT(*) AS c FROM analytics_events`).get().c;
+  db.prepare(`DELETE FROM analytics_events`).run();
+  return { deleted: before };
+}
+
+/** Unique visitors (sessions) with latest geo from stored events. */
+export function listVisitors({ hours = 168, limit = 100 } = {}) {
+  const db = getDb();
+  const window = `-${Number(hours) || 168} hours`;
+  const cap = Math.min(Math.max(Number(limit) || 100, 1), 500);
+  return db
+    .prepare(
+      `SELECT
+         session_id AS sessionId,
+         MAX(ip_address) AS ipAddress,
+         MAX(city) AS city,
+         MAX(region) AS region,
+         MAX(country) AS country,
+         MIN(created_at) AS firstSeen,
+         MAX(created_at) AS lastSeen,
+         COUNT(*) AS eventCount,
+         SUM(CASE WHEN event_type = 'page_view' THEN 1 ELSE 0 END) AS pageViews
+       FROM analytics_events
+       WHERE session_id IS NOT NULL AND created_at >= datetime('now', ?)
+       GROUP BY session_id
+       ORDER BY lastSeen DESC
+       LIMIT ?`,
+    )
+    .all(window, cap);
 }
 
 export function pageViewsByPath(hours = 168, limit = 15) {

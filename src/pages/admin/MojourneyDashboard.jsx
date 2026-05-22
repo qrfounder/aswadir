@@ -12,6 +12,7 @@ import {
   Radio,
   RefreshCw,
   Search,
+  Trash2,
   Users,
 } from "lucide-react";
 import { client } from "@/api/client";
@@ -100,6 +101,7 @@ export default function MojourneyDashboard() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [liveSince, setLiveSince] = useState(null);
+  const [resetting, setResetting] = useState(false);
 
   const loadOverview = useCallback(async () => {
     const data = await client.admin.overview();
@@ -337,6 +339,12 @@ export default function MojourneyDashboard() {
                     {ev.productId && <span className="text-brand">#{ev.productId}</span>}
                     {ev.locale && <span className="text-primary uppercase">{ev.locale}</span>}
                     {ev.utmSource && <span className="text-gray-500">src:{ev.utmSource}</span>}
+                    {ev.ipAddress && <span className="text-gray-500">{ev.ipAddress}</span>}
+                    {(ev.city || ev.country) && (
+                      <span className="text-info">
+                        {[ev.city, ev.region, ev.country].filter(Boolean).join(", ")}
+                      </span>
+                    )}
                     {ev.metadata?.email && <span className="text-gray-400">{ev.metadata.email}</span>}
                   </li>
                 ))}
@@ -457,6 +465,20 @@ export default function MojourneyDashboard() {
 
           {tab === "analytics" && analytics && (
             <div className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="text-gray-400 text-sm">
+                  Visitors are detected by session with IP geolocation (city, region, country) on each event.
+                </p>
+                <button
+                  type="button"
+                  disabled={resetting}
+                  onClick={resetAnalytics}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-destructive/40 text-destructive text-sm font-bold hover:bg-destructive/10 disabled:opacity-50"
+                >
+                  {resetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                  Reset all analytics
+                </button>
+              </div>
               <div className="rounded-2xl border border-white/10 p-4">
                 <h3 className="font-black text-white mb-3">Funnel (unique sessions, 7d)</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 text-sm">
@@ -468,9 +490,55 @@ export default function MojourneyDashboard() {
                   ))}
                 </div>
               </div>
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="rounded-2xl border border-white/10 overflow-hidden">
+                <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between">
+                  <h3 className="font-black text-white">
+                    Visitors ({analytics.visitorCount ?? analytics.visitors?.length ?? 0}, 7d)
+                  </h3>
+                  <span className="text-xs text-gray-500">IP · city · country</span>
+                </div>
+                <div className="overflow-x-auto max-h-[50vh] overflow-y-auto">
+                  <table className="w-full text-sm">
+                    <thead className="text-gray-500 text-xs uppercase tracking-wider bg-white/5">
+                      <tr>
+                        <th className="text-start p-3 font-bold">Last seen</th>
+                        <th className="text-start p-3 font-bold">IP</th>
+                        <th className="text-start p-3 font-bold">City</th>
+                        <th className="text-start p-3 font-bold">Region</th>
+                        <th className="text-start p-3 font-bold">Country</th>
+                        <th className="text-end p-3 font-bold">Views</th>
+                        <th className="text-end p-3 font-bold">Events</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {(analytics.visitors || []).map((v) => (
+                        <tr key={v.sessionId} className="hover:bg-white/5">
+                          <td className="p-3 text-gray-400 whitespace-nowrap">
+                            {new Date(v.lastSeen).toLocaleString()}
+                          </td>
+                          <td className="p-3 font-mono text-xs text-gray-300">{v.ipAddress || "—"}</td>
+                          <td className="p-3 text-white">{v.city || "—"}</td>
+                          <td className="p-3 text-gray-300">{v.region || "—"}</td>
+                          <td className="p-3 text-primary font-bold uppercase">{v.country || "—"}</td>
+                          <td className="p-3 text-end font-bold">{v.pageViews}</td>
+                          <td className="p-3 text-end text-gray-500">{v.eventCount}</td>
+                        </tr>
+                      ))}
+                      {!analytics.visitors?.length && (
+                        <tr>
+                          <td colSpan={7} className="p-8 text-center text-gray-500">
+                            No visitors in this window. Browse the site or run ads — geo appears on the next page view.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
                   ["Traffic source", analytics.traffic?.bySource],
+                  ["Country (sessions)", analytics.traffic?.byCountry],
                   ["Locale", analytics.traffic?.byLocale],
                   ["Product interest", analytics.traffic?.byProduct],
                 ].map(([title, rows]) => (

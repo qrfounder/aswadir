@@ -55,6 +55,7 @@ import {
   handleAdminPurchases,
   handleAdminSubscriptions,
   handleAdminAnalytics,
+  handleAdminResetAnalytics,
   handleAdminCampaignLinks,
 } from "./api/admin-handlers.js";
 
@@ -130,6 +131,7 @@ app.get("/api/admin/users/:id", requireAdmin, handleAdminUserDetail);
 app.get("/api/admin/purchases", requireAdmin, handleAdminPurchases);
 app.get("/api/admin/subscriptions", requireAdmin, handleAdminSubscriptions);
 app.get("/api/admin/analytics", requireAdmin, handleAdminAnalytics);
+app.post("/api/admin/analytics/reset", requireAdmin, handleAdminResetAnalytics);
 app.get("/api/admin/campaign-links", requireAdmin, handleAdminCampaignLinks);
 
 app.get("/api/health", (_req, res) => {

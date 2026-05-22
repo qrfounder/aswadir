@@ -2,8 +2,10 @@ import { getDb } from "./db.js";
 import { publicUser } from "./auth-handlers.js";
 import { subscriptionForClient } from "./subscriptions.js";
 import {
+  clearAnalyticsEvents,
   eventCountsSince,
   listRecentEvents,
+  listVisitors,
   pageViewsByPath,
   trafficBreakdown,
 } from "./analytics-store.js";
@@ -32,9 +34,17 @@ function mapEvent(row) {
     utmCampaign: row.utm_campaign,
     referrer: row.referrer,
     country: row.country,
+    ipAddress: row.ip_address,
+    city: row.city,
+    region: row.region,
     metadata: parseMetadata(row),
     createdAt: row.created_at,
   };
+}
+
+function formatVisitorLabel(row) {
+  const parts = [row.city, row.region, row.country].filter(Boolean);
+  return parts.length ? parts.join(", ") : "Unknown";
 }
 
 export function handleAdminOverview(_req, res) {
@@ -215,11 +225,34 @@ export function handleAdminSubscriptions(req, res) {
 
 export function handleAdminAnalytics(req, res) {
   const hours = Number(req.query.hours) || 168;
+  const visitors = listVisitors({ hours, limit: 150 }).map((row) => ({
+    sessionId: row.sessionId,
+    ipAddress: row.ipAddress,
+    city: row.city,
+    region: row.region,
+    country: row.country,
+    locationLabel: formatVisitorLabel(row),
+    firstSeen: row.firstSeen,
+    lastSeen: row.lastSeen,
+    eventCount: row.eventCount,
+    pageViews: row.pageViews,
+  }));
   return res.status(200).json({
     eventCounts: eventCountsSince(hours),
     traffic: trafficBreakdown(hours),
     topPages: pageViewsByPath(hours),
     funnel: buildFunnel(hours),
+    visitors,
+    visitorCount: visitors.length,
+  });
+}
+
+export function handleAdminResetAnalytics(_req, res) {
+  const result = clearAnalyticsEvents();
+  return res.status(200).json({
+    ok: true,
+    deleted: result.deleted,
+    message: `Cleared ${result.deleted} analytics events. New visitors will be tracked with IP and location.`,
   });
 }
 

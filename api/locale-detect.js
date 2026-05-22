@@ -1,3 +1,5 @@
+import { countryFromRequestHeaders } from "./request-geo.js";
+
 const COUNTRY_TO_CURRENCY = {
   SA: "SAR",
   AE: "AED",
@@ -61,17 +63,6 @@ function normalizeLocale(code) {
   return "en";
 }
 
-function countryFromRequest(req) {
-  const headers = req.headers || {};
-  const cf = headers["cf-ipcountry"];
-  if (cf && cf !== "XX" && cf.length === 2) return cf.toUpperCase();
-  const vercel = headers["x-vercel-ip-country"];
-  if (vercel && vercel.length === 2) return vercel.toUpperCase();
-  const fly = headers["fly-client-country"];
-  if (fly && fly.length === 2) return fly.toUpperCase();
-  return null;
-}
-
 function localeFromAcceptLanguage(header) {
   if (!header) return null;
   for (const part of String(header).split(",")) {
@@ -83,7 +74,7 @@ function localeFromAcceptLanguage(header) {
 
 /** GET /api/locale/detect — suggest locale from IP country + Accept-Language */
 export function handleLocaleDetect(req, res) {
-  const country = countryFromRequest(req);
+  const country = countryFromRequestHeaders(req);
   const fromCountry = country && COUNTRY_TO_LOCALE[country];
   const fromHeader = localeFromAcceptLanguage(req.headers["accept-language"]);
 

@@ -203,6 +203,9 @@ export const client = {
       const suffix = q.toString() ? `?${q}` : "";
       return request(`/api/admin/analytics${suffix}`);
     },
+    async resetAnalytics() {
+      return request("/api/admin/analytics/reset", { method: "POST" });
+    },
     async campaignLinks() {
       return request("/api/admin/campaign-links");
     },
