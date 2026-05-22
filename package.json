@@ -16,6 +16,7 @@
     "preview": "vite preview",
     "preview:all": "concurrently -n api,preview -c blue,magenta \"npm run dev:server\" \"vite preview --host 127.0.0.1 --port 4173\"",
     "verify:checkout": "node scripts/verify-checkout-page.mjs",
+    "scan:pages": "node scripts/scan-all-pages.mjs",
     "build:sheets": "node scripts/build-sheets.mjs",
     "preview:sheets": "node scripts/preview-sheets.mjs && npx --yes serve deliverables -l 4177",
     "smoke:member": "NODE_ENV=development node scripts/smoke-member-flow.mjs http://127.0.0.1:3000",

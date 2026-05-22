@@ -2,6 +2,7 @@ import { insertAnalyticsEvent } from "./analytics-store.js";
 
 export function handleAnalyticsEvent(req, res) {
   const body = req.body || {};
+  try {
   const result = insertAnalyticsEvent({
     eventType: body.eventType,
     sessionId: body.sessionId,
@@ -23,4 +24,8 @@ export function handleAnalyticsEvent(req, res) {
     return res.status(400).json({ error: result.error || "invalid_event" });
   }
   return res.status(201).json({ ok: true, id: result.id });
+  } catch (err) {
+    console.error("[massar] analytics event failed:", err?.message || err);
+    return res.status(500).json({ error: "analytics_store_failed" });
+  }
 }

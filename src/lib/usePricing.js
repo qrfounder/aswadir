@@ -6,6 +6,7 @@ import {
   formatPerDayFromMonthlySale,
   formatProductPrice,
   getLowestSalePrice,
+  getProductPrices,
 } from "@/lib/currency";
 
 /** Format catalog amounts for the active display currency. */

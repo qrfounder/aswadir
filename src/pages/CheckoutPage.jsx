@@ -111,8 +111,8 @@ export default function CheckoutPage() {
   }, []);
 
   useEffect(() => {
-    trackCheckoutView(productId);
-  }, [productId]);
+    trackCheckoutView(product.id);
+  }, [product.id]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
