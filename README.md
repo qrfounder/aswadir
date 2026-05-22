@@ -64,6 +64,11 @@ Copy `.env.example` to `.env.local` for local dev. In Easypanel, set these in th
 | `PORT` | Runtime (server) | Defaults to 3000, Easypanel sets this automatically |
 | `HOST` | Runtime (server) | Defaults to 0.0.0.0 |
 | `DATABASE_PATH` | Runtime (server) | SQLite file, e.g. `/app/data/massar.db` — **use a persistent volume** |
+| `ADMIN_USERNAME` | Runtime (server) | Mojourney admin login (`/mojourney/login`). Defaults to `admin` |
+| `ADMIN_PASSWORD` | Runtime (server) | Plain password for admin login — **never commit** |
+| `ADMIN_PASSWORD_HASH` | Runtime (server) | Optional bcrypt hash instead of `ADMIN_PASSWORD` (`node scripts/hash-admin-password.mjs`) |
+
+After deploy, verify admin is wired: `GET /api/health` must show `"adminConfigured": true`. If `false`, login returns `admin_not_configured` (503).
 
 The `VITE_*` vars are baked into the static bundle at build time. The non-prefixed vars are read by `server.js` at runtime.
 
@@ -108,6 +113,8 @@ STRIPE_SECRET_KEY=sk_test_xxxxx
 STRIPE_WEBHOOK_SECRET=whsec_xxxxx
 NODE_ENV=production
 DATABASE_PATH=/app/data/massar.db
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=your-strong-password-here
 ```
 
 ### 3b. Persistent storage (required for member accounts)

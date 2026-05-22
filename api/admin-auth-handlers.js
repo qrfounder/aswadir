@@ -11,8 +11,18 @@ function configuredUsername() {
   return String(process.env.ADMIN_USERNAME || "admin").trim();
 }
 
-function adminAuthConfigured() {
-  return Boolean(process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD_HASH);
+export function adminAuthConfigured() {
+  const hash = process.env.ADMIN_PASSWORD_HASH?.trim();
+  const plain = process.env.ADMIN_PASSWORD?.trim();
+  return Boolean(hash || plain);
+}
+
+/** Safe status for /api/health — no secrets. */
+export function getAdminAuthStatus() {
+  return {
+    configured: adminAuthConfigured(),
+    username: configuredUsername(),
+  };
 }
 
 async function verifyAdminPassword(password) {

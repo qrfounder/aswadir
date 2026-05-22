@@ -40,6 +40,8 @@ import {
 import { handleLocaleDetect } from "./api/locale-detect.js";
 import { handleAnalyticsEvent } from "./api/analytics-handlers.js";
 import {
+  adminAuthConfigured,
+  getAdminAuthStatus,
   handleAdminLogin,
   handleAdminLogout,
   handleAdminMe,
@@ -136,6 +138,7 @@ app.get("/api/health", (_req, res) => {
   const priceCheck = getStripePriceValidation();
   const stripeReady =
     stripeCheck.ok && (!priceCheck.checked || priceCheck.ok) && isStripeConfigured();
+  const adminAuth = getAdminAuthStatus();
   res.status(200).json({
     ok: true,
     server: "up",
@@ -143,6 +146,8 @@ app.get("/api/health", (_req, res) => {
     db: dbError ? "error" : "ok",
     dbError: dbError || undefined,
     dist: fs.existsSync(path.join(distPath, "index.html")),
+    adminConfigured: adminAuth.configured,
+    adminUsername: adminAuth.username,
     payments: isStripeConfigured(),
     stripeMode: stripeCheck.mode,
     stripeReady,
@@ -219,6 +224,14 @@ app.listen(PORT, HOST, () => {
   }
   for (const w of stripe.warnings) console.warn(`[massar] Stripe warning: ${w}`);
   for (const e of stripe.errors) console.error(`[massar] Stripe error: ${e}`);
+
+  if (!adminAuthConfigured()) {
+    console.warn(
+      "[massar] Mojourney admin login is OFF — set ADMIN_PASSWORD (or ADMIN_PASSWORD_HASH) in Easypanel Environment, then redeploy. Check GET /api/health → adminConfigured.",
+    );
+  } else {
+    console.log(`[massar] Mojourney admin login enabled (username: ${getAdminAuthStatus().username})`);
+  }
 
   if (isStripeConfigured()) {
     validateStripePrices().then((result) => {
